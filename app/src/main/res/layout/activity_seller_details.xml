@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.nexgensm.reswye.ui.lead.SellerDetailsActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/toolbar"
+        android:orientation="horizontal"
+        android:background="@color/toolbarcolor">
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/leadSellerDetails_Back"
+            android:background="@null"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="10dp"/>
+
+        <TextView
+            android:id="@+id/leadSellerDetailsToolbartxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/AddNewHeader"
+            android:gravity="center_horizontal"
+            android:textColor="#FFFFFF"/>
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonlayout"
+        android:layout_below="@id/toolbar"
+        android:layout_marginTop="10dp">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:id="@+id/personalbtn"
+            style="@style/AddNewButtonStyle"
+            android:text="Personal"
+            android:layout_alignParentLeft="true"
+            android:layout_margin="10dp"
+            android:textAllCaps="false"
+            />
+
+
+        <Button
+            android:id="@+id/propertybtn"
+            style="@style/AddNewButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_centerInParent="true"
+            android:text="Property"
+            android:layout_margin="10dp"
+            android:textAllCaps="false"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:id="@+id/upload"
+            style="@style/AddNewButtonStyle"
+            android:text="Documents"
+            android:layout_alignParentRight="true"
+            android:layout_margin="10dp"
+            android:textAllCaps="false"
+            />
+    </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/Lead_Details"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/buttonlayout"
+        />
+
+
+</RelativeLayout>

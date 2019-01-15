@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.nexgensm.reswye.ui.calendar.AlarmSnoozeActivity">
+    <ImageView
+        android:id="@+id/backbtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/back_arrow_black"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"/>
+<TextView
+    android:id="@+id/todayTxt"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="TODAY"
+    android:gravity="center_horizontal"
+    android:layout_marginTop="50dp"
+    android:textSize="25dp"
+    android:textStyle="bold"
+    android:textColor="#8B858F"
+   android:layout_below="@+id/backbtn" />
+    <TextView
+        android:id="@+id/dateTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="20 Jan 2017 12:30 PM"
+        android:layout_below="@+id/todayTxt"
+        />
+    <TextView
+        android:id="@+id/TimeTXt"
+        android:layout_width="175dp"
+        android:layout_height="175dp"
+        android:background="@drawable/blue_round_textview"
+        android:gravity="center"
+        android:layout_marginTop="20dp"
+        android:text="10:30"
+        android:textSize="30dp"
+        android:textColor="#000000"
+        android:layout_below="@+id/dateTime"
+        android:layout_centerHorizontal="true"
+        android:drawableBottom="@mipmap/pm"
+        android:drawableTop="@mipmap/clock"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        />
+    <TextView
+        android:id="@+id/nameTxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Appointment with Charlie Deits"
+        android:gravity="center_horizontal"
+        android:layout_below="@+id/TimeTXt"
+        android:layout_marginTop="10dp"
+        android:textSize="20dp"
+        android:textStyle="bold"/>
+    <TextView
+        android:id="@+id/day_dateTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="Monday 20 Jan 2017 12:30 PM"
+        android:layout_below="@+id/nameTxt"
+        android:layout_marginTop="4dp"
+        />
+    <TextView
+        android:id="@+id/location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="2466 Bancroft Ln san Pablo"
+        android:layout_marginTop="4dp"
+        android:layout_below="@+id/day_dateTime"
+
+        />
+
+        <ImageView
+            android:id="@+id/SnoozeBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/snooz"
+            android:layout_below="@+id/location"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="40dp"
+            />
+        <ImageView
+            android:id="@+id/stopBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/close"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/location"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="40dp"
+
+          />
+
+</RelativeLayout>

@@ -1,0 +1,1 @@
+ResWye is a Revolutionary Mobile-Cloud Platform redefining and simplifying the Digital Realty Space. It is a social economic platform for a digital agent, a digital broker, a digital attorney, and a digital governance system to provide equal opportunity for investors, buyers and sellers

@@ -1,0 +1,549 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.nexgensm.reswye.ui.lead.LeadFindActivity">
+
+    <RelativeLayout
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/Find_Lead_header"
+            style="@style/AppHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/title_find_lead"
+            android:textAlignment="center"
+            android:textColor="#60626F" />
+
+        <ImageButton
+            android:id="@+id/navigation_lead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_margin="10dp"
+            android:background="@mipmap/status_bar_back_arrow" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="17dp"
+            android:background="@mipmap/star_material" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/looking_leads"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp"
+                android:text="Yes I am looking for Leads..." />
+
+            <TextView
+                android:id="@+id/lead_status"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@id/looking_leads"
+                android:layout_marginTop="20dp"
+                android:background="#EEEEEE"
+                android:paddingStart="20dp"
+                android:paddingTop="10dp"
+                android:text="With Lead Status"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/btnLinearLyt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/lead_status"
+                android:layout_marginTop="20dp"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/newleadbtn"
+                    style="@style/AddNewButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_margin="10dp"
+                    android:text="New"
+                    android:textAllCaps="false" />
+
+                <Button
+                    android:id="@+id/convertedleadbtn"
+                    style="@style/AddNewButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_margin="10dp"
+                    android:text="Converted"
+                    android:textAllCaps="false" />
+
+                <Button
+                    android:id="@+id/inactiveleadbtn"
+                    style="@style/AddNewButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_margin="10dp"
+                    android:text="Inactive"
+                    android:textAllCaps="false" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/from_loc"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@+id/btnLinearLyt"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="20dp"
+                android:background="#EEEEEE"
+                android:paddingStart="20dp"
+                android:paddingTop="10dp"
+                android:text="From Location"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/location"
+                style="@style/spinnerbox"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@+id/from_loc"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="20dp"
+                android:drawableRight="@mipmap/loaction"
+                android:hint="Location"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:textColorHint="#A9A9A9" />
+
+            <TextView
+                android:id="@+id/created"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@+id/location"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="20dp"
+                android:background="#EEEEEE"
+                android:paddingStart="20dp"
+                android:paddingTop="10dp"
+                android:text="Created On"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/datepic"
+                style="@style/spinnerbox"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@+id/created"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="20dp"
+                android:clickable="true"
+                android:drawableRight="@mipmap/calendar"
+                android:focusable="false"
+                android:hint="select date"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:textColorHint="#A9A9A9" />
+
+            <TextView
+                android:id="@+id/price"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@+id/datepic"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="20dp"
+                android:background="#EEEEEE"
+                android:paddingStart="20dp"
+                android:paddingTop="10dp"
+                android:text="Price Range"
+                android:textStyle="bold" />
+
+            <!--<TextView-->
+                <!--android:id="@+id/minText"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_alignParentLeft="true"-->
+                <!--android:layout_below="@+id/price"-->
+                <!--android:gravity="left"-->
+                <!--android:paddingTop="10dp"-->
+                <!--android:paddingLeft="20dp"-->
+
+                <!--android:text="Min" />-->
+
+
+
+
+            <!--<com.yahoo.mobile.client.android.util.rangeseekbar.RangeSeekBar-->
+                <!--android:id="@+id/seekbar"-->
+                <!--android:layout_width="fill_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_below="@+id/minText"-->
+
+
+                <!--/>-->
+            <LinearLayout
+
+                android:id="@+id/seekbar"
+                android:layout_below="@+id/price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+
+                <EditText
+                    android:id="@+id/minimunprice"
+                    style="@style/spinnerbox"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="20dp"
+                  android:layout_weight="1"
+                    android:hint="Min"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:textColorHint="#A9A9A9" />
+
+                <EditText
+
+                    android:layout_weight="1"
+                    android:id="@+id/maximunprice"
+                    style="@style/spinnerbox"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="20dp"
+
+                    android:hint="Max"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:textColorHint="#A9A9A9" />
+
+            </LinearLayout>
+
+            />
+            <!--<SeekBar-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@+id/price"-->
+            <!--android:id="@+id/seekbar"-->
+            <!--android:layout_marginTop="20dp"-->
+            <!--android:layout_marginLeft="20dp"-->
+            <!--android:layout_marginRight="20dp"-->
+            <!--/>-->
+            <!--<com.example.materialrangebar.RangeBar-->
+            <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+            <!--android:id="@+id/rangebar1"-->
+            <!--android:layout_below="@+id/price"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--app:mrb_rangeBarColor="@color/accent"-->
+            <!--app:mrb_pinMaxFont="13sp"-->
+            <!--app:mrb_pinRadius="15dp"-->
+            <!--app:mrb_tickHeight="2dp"-->
+            <!--app:mrb_rangeBarPaddingBottom="20dp"-->
+            <!--app:mrb_selectorBoundaryColor="@color/accent"-->
+            <!--app:mrb_selectorBoundarySize="2dp"-->
+            <!--app:mrb_pinTextColor="#FFFFFF"-->
+            <!--app:mrb_selectorSize="10dp"-->
+            <!--app:mrb_tickEnd="2018"-->
+            <!--app:mrb_tickInterval="1"-->
+            <!--app:mrb_tickStart="1988"/>-->
+            <TextView
+                android:id="@+id/prospecttxt"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@+id/seekbar"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="20dp"
+                android:background="#EEEEEE"
+                android:paddingStart="20dp"
+                android:paddingTop="10dp"
+                android:text="With Prospect Level"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/linaerlyt2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/prospecttxt"
+                android:layout_marginTop="20dp"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/warmbtn"
+                    style="@style/AddNewButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_margin="10dp"
+                    android:text="Warm"
+                    android:textAllCaps="false" />
+
+                <Button
+                    android:id="@+id/neutralbtn"
+                    style="@style/AddNewButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_margin="10dp"
+                    android:text="Neutral"
+                    android:textAllCaps="false" />
+
+                <Button
+                    android:id="@+id/coldbtn"
+                    style="@style/AddNewButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_margin="10dp"
+                    android:text="Cold"
+                    android:textAllCaps="false" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/linaerlyt3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/linaerlyt2"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/prospectlvl"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_centerVertical="true"
+                    android:background="#EEEEEE"
+                    android:paddingStart="20dp"
+                    android:paddingTop="10dp"
+                    android:text="With category"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignRight="@+id/prospectlvl"
+                    android:orientation="horizontal"
+                    android:paddingRight="10dp"
+                    android:paddingTop="8dp">
+
+                    <android.support.v7.widget.SwitchCompat
+                        android:id="@+id/category_toggle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="false"
+                        android:text="SELLER"
+                        android:theme="@style/SCBSwitch"
+                        tools:text="Male" />
+
+                    <TextView
+                        android:id="@+id/Signup_femaletxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignRight="@+id/seller_buyer"
+                        android:text="BUYER"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/linearlyt4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/linaerlyt3"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/transfer_sts"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_centerVertical="true"
+                    android:background="#EEEEEE"
+                    android:paddingStart="20dp"
+                    android:paddingTop="10dp"
+                    android:text="Transfer Status"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignRight="@+id/transfer_sts"
+                    android:orientation="horizontal"
+                    android:paddingRight="10dp"
+                    android:paddingTop="8dp">
+
+                    <android.support.v7.widget.SwitchCompat
+                        android:id="@+id/transfer_status_toggle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="false"
+                        android:text="NO"
+                        android:theme="@style/SCBSwitch"
+                        tools:text="Male" />
+
+                    <TextView
+                        android:id="@+id/yesOrno"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignRight="@+id/yes_no"
+                        android:text="YES"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/transfered_to"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@+id/linearlyt4"
+                android:layout_centerVertical="true"
+                android:background="#EEEEEE"
+                android:paddingStart="20dp"
+                android:paddingTop="10dp"
+                android:text="Transfer To"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/Agent_name"
+                style="@style/spinnerbox"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@+id/transfered_to"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="20dp"
+                android:hint="Agent Name"
+                android:paddingLeft="10dp"
+                android:textColorHint="#A9A9A9" />
+
+            <TextView
+                android:id="@+id/personal_det"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@+id/Agent_name"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="20dp"
+                android:background="#EEEEEE"
+                android:paddingStart="20dp"
+                android:paddingTop="10dp"
+                android:text="With Personal Details"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/first_name"
+                style="@style/spinnerbox"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@+id/personal_det"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="20dp"
+                android:hint="First Name"
+                android:paddingLeft="10dp"
+                android:textColorHint="#A9A9A9" />
+
+            <EditText
+                android:id="@+id/last_name"
+                style="@style/spinnerbox"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@+id/first_name"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="20dp"
+                android:hint="Last Name"
+                android:paddingLeft="10dp"
+                android:textColorHint="#A9A9A9" />
+
+            <EditText
+                android:id="@+id/Mobile_no"
+                style="@style/spinnerbox"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@+id/last_name"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="20dp"
+                android:hint="Mobile No "
+                android:paddingLeft="10dp"
+                android:textColorHint="#A9A9A9" />
+
+            <EditText
+                android:id="@+id/Email_id"
+                style="@style/spinnerbox"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@+id/Mobile_no"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="20dp"
+                android:hint="Email Id "
+                android:paddingLeft="10dp"
+                android:textColorHint="#A9A9A9" />
+
+            <TextView
+                android:id="@+id/propery_id"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@+id/Email_id"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="20dp"
+                android:background="#EEEEEE"
+                android:paddingStart="20dp"
+                android:paddingTop="10dp"
+                android:text="With Property Id"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/propery_txt"
+                style="@style/spinnerbox"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@+id/propery_id"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="20dp"
+                android:hint=" "
+                android:paddingLeft="10dp"
+                android:textColorHint="#A9A9A9" />
+
+            <Button
+                android:id="@+id/apply_btn"
+                style="@style/AppButton"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@+id/propery_txt"
+                android:layout_marginBottom="30dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="20dp"
+                android:text="Apply"
+                android:textAllCaps="false"
+                android:textColor="@color/colorPrimary"
+                android:textSize="20sp" />
+        </RelativeLayout>
+
+    </ScrollView>
+</RelativeLayout>

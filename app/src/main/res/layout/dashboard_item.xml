@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/followupdate"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="This Week"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+       >
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/missed"
+        android:layout_marginTop="40dp"
+        android:layout_weight="1"
+        >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/missedfollowupscount"
+        android:text="120"
+        android:textSize="18sp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="40dp"
+        android:drawableRight="@drawable/up"
+        android:textStyle="bold"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/missedfollowupstxt"
+        android:text="Missed Followups"
+        android:textStyle="bold"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+
+       />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="40dp"
+        android:id="@+id/upcoming"
+        android:layout_weight="1.6"
+        android:layout_alignParentEnd="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/upcomingfollowupscount"
+            android:text="700"
+            android:textSize="18sp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="40dp"
+            android:drawableRight="@mipmap/dashboard_down"
+            android:textStyle="bold"
+            />
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/upcomingtxt"
+        android:text="Upcoming FollowUps"
+        android:layout_below="@id/upcomingfollowupscount"
+        android:textStyle="bold"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+
+        />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="40dp"
+        android:id="@+id/dormant"
+        android:layout_toLeftOf="@+id/upcoming"
+        android:layout_weight="1"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/dormantcount"
+            android:layout_below="@id/followupdate"
+            android:text="100"
+            android:textSize="18sp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="40dp"
+            android:drawableRight="@mipmap/dashboard_down"
+            android:textStyle="bold"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/dormant_txt"
+            android:text="Dormant Leads"
+            android:layout_below="@id/upcomingfollowupscount"
+            android:textStyle="bold"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+
+            />
+    </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

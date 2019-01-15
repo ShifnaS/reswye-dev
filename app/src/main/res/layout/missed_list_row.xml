@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:cardview="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#edeeef">
+
+
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/lead_pic"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentTop="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/profile_2"
+        android:layout_marginLeft="5dp"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/seller"
+        android:layout_alignTop="@id/lead_pic"
+        android:layout_alignRight="@id/lead_pic"
+        />
+    <TextView
+        android:id="@+id/lead_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/lead_pic"
+        android:maxLines="1"
+        android:text="Mathew John"
+        android:paddingLeft="30dp"
+        android:paddingTop="10dp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/lead_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/lead_pic"
+        android:layout_below="@id/lead_name"
+        android:layout_alignParentRight="true"
+        android:maxLines="1"
+        android:text="20 jan 2017 12.30 PM "
+        android:paddingLeft="30dp"
+        android:paddingTop="10dp"/>
+    <TextView
+        android:id="@+id/lead_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/lead_pic"
+        android:layout_below="@id/lead_time"
+        android:layout_alignParentRight="true"
+        android:maxLines="4"
+        android:text="12 shelter Bay Dr Great Neck Ny,United States"
+        android:paddingLeft="30dp"
+        android:paddingTop="10dp"/>
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:background="#ffffff"
+        android:layout_below="@id/lead_pic"
+        android:layout_marginTop="5dp"
+        />
+
+</RelativeLayout>
+
+

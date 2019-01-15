@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.nexgensm.reswye.ui.signupactivity.SignupActivity">
+
+    <RelativeLayout
+        android:id="@+id/logoimg"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:background="@mipmap/download">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="50dp"
+            android:src="@mipmap/logo" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imageView"
+            android:layout_alignStart="@+id/imageView"
+            android:layout_alignLeft="@+id/imageView"
+            android:layout_marginTop="11dp"
+            android:text="Welcome to Reswye"
+            android:textColor="#00ffff" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/logoimg">
+
+        <LinearLayout
+            android:id="@+id/relativeLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/logoimg"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:id="@+id/Signup_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:text="@string/signup_text2"
+                android:textColor="#645B6A"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/keypad"
+                style="@style/AppButton"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_below="@id/Signup_text"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:text="show Keypad"
+                android:textAllCaps="false"
+                android:visibility="gone" />
+
+            <EditText
+                android:id="@+id/first_name"
+                style="@style/spinnerbox"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="20dp"
+                android:drawableStart="@drawable/ic_name_circle_black_24dp"
+                android:drawableEnd="@mipmap/mandadatory_star"
+                android:hint="  First Name"
+                android:inputType="text"
+                android:maxLines="1"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:singleLine="true"
+                android:textColorHint="#A9A9A9" />
+
+            <EditText
+                android:id="@+id/last_name"
+                style="@style/spinnerbox"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="20dp"
+                android:drawableStart="@drawable/ic_name_circle_black_24dp"
+                android:drawableEnd="@mipmap/mandadatory_star"
+                android:hint="  Last Name"
+                android:inputType="text"
+                android:maxLines="1"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:singleLine="true"
+                android:textColorHint="#A9A9A9" />
+
+
+            <EditText
+                android:id="@+id/Signup_email"
+                style="@style/spinnerbox"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="20dp"
+                android:drawableStart="@drawable/ic_email_black_24dp"
+                android:drawableEnd="@mipmap/mandadatory_star"
+                android:hint="  Email"
+                android:inputType="textEmailAddress"
+                android:maxLines="1"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:singleLine="true"
+                android:textColorHint="#A9A9A9" />
+
+
+            <EditText
+                android:id="@+id/mobilenum"
+                style="@style/spinnerbox"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="20dp"
+                android:drawableStart="@drawable/ic_phone_android_black_24dp"
+                android:drawableRight="@mipmap/mandadatory_star"
+                android:hint="  Mobile No"
+                android:inputType="phone"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:textColorHint="#A9A9A9" />
+
+
+            <EditText
+                android:id="@+id/Signup_Password"
+                style="@style/spinnerbox"
+                android:layout_width="match_parent"
+
+                android:layout_height="40dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="20dp"
+                android:drawableStart="@drawable/ic_lock_outline_black_24dp"
+                android:drawableEnd="@mipmap/mandadatory_star"
+                android:hint="  Password"
+                android:inputType="textPassword"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:textColorHint="#A9A9A9" />
+
+
+            <EditText
+                android:id="@+id/Signup_Retype"
+                style="@style/spinnerbox"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="20dp"
+                android:drawableStart="@drawable/ic_lock_outline_black_24dp"
+                android:drawableEnd="@mipmap/mandadatory_star"
+                android:hint="  Retype Password"
+                android:inputType="textPassword"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:textColorHint="#A9A9A9" />
+
+
+            <Button
+                android:id="@+id/next_btn"
+                style="@style/OnBoardingButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@+id/Signup_Retype"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="20dp"
+                android:text="@string/Signup_buttontext"
+                android:textAllCaps="false"
+                android:textColor="@color/ButtonTextColor"
+                android:textSize="20sp" />
+
+
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

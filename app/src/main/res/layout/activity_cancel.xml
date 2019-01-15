@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.nexgensm.reswye.ui.calendar.cancelActivity">
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/graphs"
+        android:src="@drawable/reschedule_alert_grphs"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/reshuduletxt"
+        android:text ="Do you want to reshedule the appointment?"
+        android:layout_below="@+id/graphs"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="90dp"
+        android:textSize="15sp"
+        android:layout_centerHorizontal="true"/>
+    <Button
+        android:id="@+id/reshedule_btn"
+        style="@style/AppButton"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginBottom="10dp"
+        android:layout_above="@id/cancelbtn"
+
+        android:text="Yes! Reshedule The Appointment "
+        android:textColor="@color/colorPrimary"
+
+        android:textAllCaps="false"
+        />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:id="@+id/cancelbtn"
+        android:text="No! Cancel The Appointment"
+        android:textAllCaps="false"
+
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@id/indicator"
+
+        style="@style/OnBoardingButtonStyle"/>
+
+</RelativeLayout>

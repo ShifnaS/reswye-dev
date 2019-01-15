@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/relativeLayout">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/toolbar">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/signup_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#2FD3C4"
+            app:contentInsetLeft="10dp"
+            app:contentInsetRight="10dp"
+            app:contentInsetStart="10dp">
+
+            <ImageView
+                android:id="@+id/signup_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/back_arrow"/>
+            <TextView
+                android:id="@+id/agentSignup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/Agent_SignUp_Hedding"
+                android:textColor="#645B6A"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+        </android.support.v7.widget.Toolbar>
+
+    </RelativeLayout>
+
+<ScrollView
+    android:fillViewport="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_below="@+id/toolbar">
+
+
+       <LinearLayout
+           android:id="@+id/relativeLayout2"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:orientation="vertical"
+
+           >
+           <Spinner
+
+               android:id="@+id/userType"
+               style="@style/spinnerbox"
+               android:layout_width="match_parent"
+               android:layout_height="40dp"
+               android:layout_marginTop="20dp"
+               android:layout_below="@+id/ZipCcde"
+               android:layout_marginLeft="20dp"
+               android:layout_marginRight="20dp"
+               android:drawableRight="@mipmap/mandadatory_star"
+               android:entries="@array/userType"
+
+              />
+
+
+           <TextView
+               android:id="@+id/signup_gendertxt"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_marginLeft="20dp"
+               android:layout_marginTop="20dp"
+               android:layout_marginRight="20dp"
+               android:text="@string/Signup2_gender"
+               android:textColor="#645B6A"
+               android:textStyle="bold" />
+
+    <LinearLayout
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:layout_below="@+id/signup_gendertxt"
+         android:orientation="horizontal"
+        android:id="@+id/linearlytSwitch"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp">
+
+           <android.support.v7.widget.SwitchCompat
+               android:id="@+id/signup_gender"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:checked="false"
+               android:text="Male"
+               android:theme="@style/SCBSwitch"
+               tools:text="Male  " />
+
+           <TextView
+               android:id="@+id/Signup_femaletxt"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="  Female"
+               android:layout_alignRight="@+id/signup_gender"
+               android:textStyle="bold" />
+</LinearLayout>
+
+
+               <EditText
+                   android:id="@+id/StreetAddress"
+                   style="@style/spinnerbox"
+                   android:layout_marginLeft="20dp"
+                   android:layout_marginRight="20dp"
+                   android:layout_width="match_parent"
+                   android:layout_height="40dp"
+                   android:layout_marginTop="10dp"
+                   android:layout_below="@+id/linearlytSwitch"
+                   android:drawableRight="@mipmap/mandadatory_star"
+                   android:hint="Street Address"
+                   android:paddingRight="10dp"
+                   android:paddingLeft="10dp"
+                   android:textColorHint="#A9A9A9" />
+           <EditText
+               android:id="@+id/City"
+               style="@style/spinnerbox"
+               android:layout_marginLeft="20dp"
+               android:layout_marginRight="20dp"
+               android:layout_width="match_parent"
+               android:layout_height="40dp"
+               android:layout_marginTop="10dp"
+               android:layout_below="@+id/StreetAddress"
+               android:drawableRight="@mipmap/mandadatory_star"
+               android:hint="City"
+               android:paddingRight="10dp"
+               android:paddingLeft="10dp"
+               android:textColorHint="#A9A9A9" />
+
+           <EditText
+               android:id="@+id/state"
+               style="@style/spinnerbox"
+               android:layout_width="match_parent"
+               android:layout_marginLeft="20dp"
+               android:layout_marginRight="20dp"
+               android:layout_height="40dp"
+               android:layout_below="@+id/City"
+               android:layout_marginTop="10dp"
+               android:drawableRight="@mipmap/mandadatory_star"
+               android:hint="State"
+               android:paddingLeft="10dp"
+               android:paddingRight="10dp"
+               android:textColorHint="#A9A9A9" />
+
+           <EditText
+               android:id="@+id/ZipCcde"
+               style="@style/spinnerbox"
+               android:layout_marginLeft="20dp"
+               android:layout_marginRight="20dp"
+               android:layout_width="match_parent"
+               android:layout_height="40dp"
+               android:layout_marginTop="10dp"
+               android:layout_below="@+id/state"
+               android:drawableRight="@mipmap/mandadatory_star"
+               android:hint="Zip Code"
+               android:paddingRight="10dp"
+               android:paddingLeft="10dp"
+               android:textColorHint="#A9A9A9" />
+
+           <Spinner
+               android:id="@+id/signup_findus"
+               style="@style/spinnerbox"
+               android:layout_width="match_parent"
+               android:layout_height="40dp"
+               android:layout_marginTop="10dp"
+               android:layout_below="@+id/ZipCcde"
+               android:layout_marginLeft="20dp"
+               android:layout_marginRight="20dp"
+               android:drawableRight="@mipmap/mandadatory_star"
+               android:entries="@array/Signup_findus"
+               android:prompt="@string/country_prompt"
+               android:tooltipText="How did you find"/>
+
+           <EditText
+               android:layout_marginRight="20dp"
+               android:layout_marginLeft="20dp"
+               android:id="@+id/referalcode"
+               style="@style/spinnerbox"
+               android:layout_width="match_parent"
+               android:layout_height="40dp"
+               android:layout_below="@+id/signup_findus"
+               android:layout_marginTop="10dp"
+               android:hint="Referal Code"
+               android:textColorHint="#b4adad"
+               android:maxLines="1"
+               android:singleLine="true"
+               android:paddingRight="10dp"
+               android:paddingLeft="10dp"/>
+
+           <Button
+               android:id="@+id/signup2_btn"
+               style="@style/AppButton"
+               android:layout_width="match_parent"
+               android:layout_height="40dp"
+               android:layout_marginRight="20dp"
+               android:layout_marginLeft="20dp"
+               android:layout_marginBottom="30dp"
+               android:layout_marginTop="30dp"
+               android:layout_below="@+id/referalcode"
+               android:text="@string/Signup2_buttontext"
+               android:textColor="@color/colorPrimary"
+               android:textSize="20sp"
+               android:textAllCaps="false"/>
+
+
+       </LinearLayout>
+
+</ScrollView>
+</LinearLayout>

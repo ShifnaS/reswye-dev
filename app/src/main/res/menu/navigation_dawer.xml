@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <group android:checkableBehavior="single">
+    <item
+        android:id="@+id/accountsettings"
+        android:icon="@mipmap/account_settings"
+        android:title="Account Settings"
+        />
+    <item
+        android:id="@+id/notifications"
+        android:icon="@mipmap/notifications"
+        android:title="Notifications" />
+
+        <item
+            android:id="@+id/renew"
+            android:icon="@mipmap/notifications"
+            android:title="Renew Subscription" />
+        <item
+            android:id="@+id/refer"
+            android:icon="@mipmap/notifications"
+            android:title="Refer a friend" />
+
+    <item
+        android:id="@+id/changepass"
+        android:icon="@mipmap/share_this_app"
+        android:title="Share this app" />
+
+    </group>
+    <item android:title="">
+        <menu>
+            <item
+                android:title="" />
+            <item
+                android:title="" />
+            <item
+                android:title="" />  <item
+                android:title="" />
+
+
+            <item
+
+                android:id="@+id/logout"
+                android:icon="@mipmap/logout_icon"
+                android:title="Logout"
+
+                />
+        </menu>
+    </item>
+
+</menu>

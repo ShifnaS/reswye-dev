@@ -1,0 +1,82 @@
+<resources>
+
+    <!-- Base application theme. -->
+
+
+    <style name="AppHeader">
+        <item name="android:padding">@dimen/activity_padding</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:background">@color/toolbarcolor</item>
+    </style>
+
+    <style name="AddNewHeader">
+        <item name="android:padding">@dimen/activity_padding</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="OnBoardingButtonStyle">
+        <item name="android:textColor">@color/ButtonTextColor</item>
+        <item name="android:background">@drawable/white_round_button</item>
+    </style>
+
+    <style name="AddNewButtonStyle">
+        <item name="android:textColor">#000000</item>
+        <item name="android:background">@drawable/add_new_btn</item>
+    </style>
+    <!--keeerthana-->
+    <style name="AppEditbox">
+        <item name="android:background">@mipmap/usernamefield</item>
+        <item name="android:textColorHint">@color/colorPrimary</item>
+    </style>
+
+    <style name="editbox">
+        <item name="android:background">@drawable/lost_focus_style</item>
+    </style>
+
+    <style name="spinnerbox">
+        <item name="android:background">@drawable/spinner_focus</item>
+    </style>
+
+    <style name="AppButton">
+        <item name="android:text">@string/app_button</item>
+        <item name="android:background">@drawable/pink_round_button</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="Btn_subscribe">
+        <item name="android:text">@string/app_button</item>
+        <item name="android:background">@drawable/brown_roundbtn</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="SCBSwitch" parent="Theme.AppCompat.Light">
+        <!-- active thumb & track color (30% transparency) -->
+        <item name="colorControlActivated">#FF4081</item>
+
+        <!-- inactive thumb color -->
+        <item name="colorSwitchThumbNormal">#FF4081
+        </item>
+
+        <!-- inactive track color (30% transparency) -->
+        <item name="android:colorForeground">#FF4081
+        </item>
+    </style>
+
+    <style name="spinner_style">
+        <item name="android:background">@drawable/spinner_bg</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:layout_marginRight">10dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
+    </style>
+
+    <style name="AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+
+</resources>

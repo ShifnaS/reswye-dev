@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.nexgensm.reswye.ui.lead.AddNewSellerActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/toolbar"
+        android:orientation="horizontal"
+        android:background="@color/toolbarcolor">
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/Personal_Lead_Back"
+            android:background="@drawable/status_bar_back_arrow"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="10dp"/>
+
+        <TextView
+            android:id="@+id/transfer_Lead_Text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Transfer Lead "
+            style="@style/AddNewHeader"
+            android:gravity="center_horizontal"
+            android:textColor="#FFFFFF"/>
+    </LinearLayout>
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar"
+        android:background="@color/toolbarcolor"
+        android:layout_centerHorizontal="true">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select the agent to whom the lead"
+            android:textColor="#FFFFFF"
+            android:layout_marginTop="20dp"
+            android:textSize="17dp"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/Select_Agent_line1"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="to be transferred"
+            android:textColor="#FFFFFF"
+            android:textSize="17dp"
+
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/Select_Agent_line1"
+            android:id="@+id/Select_Agent_line2"/>
+        <ImageView
+            android:id="@+id/Transfer_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/transfer_lead_graphics"
+            android:layout_below="@+id/Select_Agent_line2"
+            android:layout_marginTop="10dp"
+            android:layout_centerHorizontal="true"
+            />
+
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/btn_relativelyt"
+        android:clickable="true"
+        android:background="@drawable/white_roundbtn_border_white"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="30dp"
+        android:paddingLeft="20dp">
+
+        <ImageView
+            android:id="@+id/Agent_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:src="@mipmap/icon_agent"
+            android:textColor="#616161"
+            android:layout_marginTop="12dp"
+            />
+
+        <Spinner
+            android:id="@+id/SelectAgent"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="-200dp"
+            android:layout_marginStart="20dp"
+            android:layout_toLeftOf="@+id/transferTXT" />
+
+
+        <TextView
+            android:id="@+id/transferTXT"
+            android:text="Transfer"
+            android:textAppearance="?android:attr/textAppearanceButton"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:paddingLeft="10dp"
+            android:textColor="#B53969"
+            android:layout_marginRight="10dp"
+            android:layout_alignParentEnd="true">
+        </TextView>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/right_arrow"
+            android:layout_toRightOf="@id/transferTXT"
+            android:layout_marginTop="20dp"
+            android:paddingLeft="10dp"
+            />
+
+
+    </RelativeLayout>
+    <!--<ListView-->
+        <!--android:id="@+id/lv"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_above="@+id/tv"-->
+        <!--/>-->
+    <!--<TextView-->
+        <!--android:id="@+id/tv"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textStyle="italic"-->
+        <!--android:textColor="#5f65ff"-->
+        <!--android:background="#d5daff"-->
+        <!--android:padding="5dp"-->
+        <!--android:text="Choose your most favorite."-->
+        <!--android:layout_above="@+id/btn_relativelyt"-->
+        <!--/>-->
+
+
+</RelativeLayout>

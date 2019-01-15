@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.nexgensm.reswye.ui.calendar.EditApointmentActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/toolbar"
+        android:orientation="horizontal"
+        android:background="@color/toolbarcolor">
+
+        <ImageButton
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:id="@+id/edit_app_close"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="10dp"
+            android:src="@drawable/close"/>
+
+        <TextView
+            android:id="@+id/add_app_txt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Edit Appointment "
+            style="@style/AddNewHeader"
+            android:gravity="center_horizontal"
+            android:textColor="#FFFFFF"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
+        >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+
+
+            <ImageView
+                android:id="@+id/lead_pic"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_centerHorizontal="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/profile_2"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/seller"
+                android:layout_alignTop="@id/lead_pic"
+                android:layout_alignRight="@id/lead_pic"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/leadname"
+                android:layout_below="@+id/lead_pic"
+                android:text="Charlie Deets"
+                android:layout_marginStart="20dp"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/leadidtxt"
+                android:layout_below="@+id/leadname"
+                android:text="Lead Id:"
+                android:layout_marginStart="20dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/leadid"
+                android:text="LD103"
+                android:layout_toRightOf="@id/leadidtxt"
+                android:layout_below="@id/leadname"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/appointmentidtxt"
+                android:text="Appointment Id"
+                android:layout_below="@id/leadname"
+                android:layout_toLeftOf="@id/appointmentid"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/appointmentid"
+                android:text="Apt103"
+                android:layout_below="@id/leadname"
+                android:layout_alignParentRight="true"
+                android:layout_marginEnd="20dp"/>
+
+            <EditText
+                android:id="@+id/datepic"
+                style="@style/spinnerbox"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@+id/appointmentid"
+                android:drawableRight="@mipmap/calendar"
+                android:hint="select date"
+                android:clickable="true"
+                android:focusable="false"
+                android:textColorHint="#A9A9A9"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"/>
+
+                <EditText
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:id="@+id/edit_app_time"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="10dp"
+                style="@style/spinnerbox"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:clickable="true"
+                android:focusable="false"
+                android:drawableRight="@drawable/clock"
+                android:hint="10.00 AM"
+                android:layout_below="@id/datepic"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/edit_app_location"
+                android:minHeight="40dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="10dp"
+                style="@style/spinnerbox"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:layout_below="@id/edit_app_time"
+                android:drawableRight="@mipmap/loaction"
+/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/purposetxt"
+                android:layout_below="@+id/edit_app_location"
+                android:hint="Purpose"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:textStyle="bold"
+                />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="40dp"
+                android:id="@+id/purpose"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="10dp"
+                style="@style/spinnerbox"
+                android:paddingStart="10dp"
+                android:layout_below="@id/purposetxt"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/meeting_min"
+                android:layout_below="@+id/purpose"
+                android:hint="Meeting Minutes"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:textStyle="bold"
+                />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/meeting_minTxt"
+                android:minHeight="40dp"
+                android:layout_below="@+id/meeting_min"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="10dp"
+                style="@style/spinnerbox"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="Send Sms"
+                android:layout_centerVertical="true"
+                android:id="@+id/sendsmstxt"
+                android:textStyle="bold"
+                android:layout_below="@id/meeting_minTxt"
+                android:layout_marginTop="10dp"
+                android:padding="10dp"
+                android:layout_marginStart="20dp"
+                />
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/sms"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:theme="@style/SCBSwitch"
+                android:layout_below="@id/meeting_minTxt"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_alignParentRight="true"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="Send Email"
+                android:layout_centerVertical="true"
+                android:id="@+id/sendemailtxt"
+                android:textStyle="bold"
+                android:layout_below="@id/sms"
+                android:layout_marginTop="10dp"
+                android:padding="10dp"
+                android:layout_marginStart="20dp"
+                />
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:theme="@style/SCBSwitch"
+                android:layout_below="@id/sms"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_alignParentRight="true"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@id/email"
+
+                android:text="Set Reminder"
+                android:layout_centerVertical="true"
+                android:id="@+id/set_remaindertxt"
+                android:textStyle="bold"
+                android:paddingStart="10dp"
+                android:paddingTop="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="20dp"
+                />
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/reminder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:theme="@style/SCBSwitch"
+                android:layout_below="@+id/email"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_alignParentRight="true"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_below="@id/reminder"
+                android:text="11 jan 2017 10:00 AM"
+                android:layout_centerVertical="true"
+                android:id="@+id/setremainder"
+                android:textStyle="bold"
+                android:paddingStart="10dp"
+                android:paddingTop="10dp"
+                android:layout_marginStart="20dp"
+                android:drawableRight="@drawable/arrow_down"
+                />
+            <Button
+                android:id="@+id/editAppBtn"
+                style="@style/AppButton"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="30dp"
+
+                android:text="Update Calendar"
+                android:textColor="@color/colorPrimary"
+                android:textSize="20sp"
+                android:textAllCaps="false"
+                android:layout_below="@id/setremainder"
+
+                />
+
+
+
+
+
+
+        </RelativeLayout>
+    </ScrollView>
+
+</RelativeLayout>

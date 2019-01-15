@@ -1,0 +1,459 @@
+<ScrollView xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.nexgensm.reswye.ui.lead.AddNewPropertyBuyerFragment">
+
+  <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="Looking to"
+      android:textStyle="bold"
+      android:layout_marginTop="20dp"
+      android:id="@+id/txt_LookingTO"
+      android:layout_marginRight="20dp"
+      android:layout_marginLeft="20dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_LookingTO"
+        android:orientation="horizontal"
+        android:id="@+id/linearlytSwitch"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp">
+
+        <android.support.v7.widget.SwitchCompat
+            android:id="@+id/signup_selection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="BUY"
+            android:theme="@style/SCBSwitch"
+            />
+
+        <TextView
+            android:id="@+id/Signup_femaletxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="RENT"
+            android:layout_alignRight="@+id/signup_selection"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/Preffered_location"
+        style="@style/spinnerbox"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/spinner_focus"
+        android:layout_below="@+id/linearlytSwitch"
+        android:drawableRight="@mipmap/magnifier_simple_line"
+        android:hint="Type Preferred Location"
+        android:paddingRight="10dp"
+        android:paddingLeft="10dp"
+        android:textColorHint="#A9A9A9" />
+    <EditText
+        android:id="@+id/datepic"
+        style="@style/spinnerbox"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@+id/Preffered_location"
+        android:drawableRight="@mipmap/calendar"
+        android:hint="select date"
+        android:clickable="true"
+        android:focusable="false"
+        android:textColorHint="#A9A9A9"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:background="@drawable/spinner_focus"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="My Budget"
+        android:textStyle="bold"
+        android:layout_marginTop="10dp"
+        android:id="@+id/txt_myBudget"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_below="@+id/datepic"/>
+<LinearLayout
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:weightSum="1"
+    android:id="@+id/linearlyt_budget"
+    android:layout_below="@+id/txt_myBudget"
+    android:layout_marginTop="10dp"
+    android:layout_marginRight="20dp"
+    android:layout_marginLeft="20dp">
+    <EditText
+        android:id="@+id/min_price"
+        style="@style/spinnerbox"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:drawableRight="@mipmap/doller"
+        android:hint="Min Price"
+        android:inputType="number"
+        android:textColorHint="#A9A9A9"
+        android:layout_weight="0.5"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_marginRight="5dp"
+        android:background="@drawable/spinner_focus"
+
+        />
+    <EditText
+        android:id="@+id/max_price"
+        style="@style/spinnerbox"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:drawableRight="@mipmap/doller"
+        android:hint="Max Price"
+        android:textColorHint="#A9A9A9"
+        android:layout_weight="0.5"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_marginLeft="5dp"
+        android:background="@drawable/spinner_focus"
+        android:inputType="number"
+        />
+</LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Area"
+        android:textStyle="bold"
+        android:layout_marginTop="10dp"
+        android:id="@+id/txt_AreaTxt"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_below="@+id/linearlyt_budget"/>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="1"
+        android:id="@+id/linearlyt_Area"
+        android:layout_below="@+id/txt_AreaTxt"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp">
+        <EditText
+            android:id="@+id/min_sqrft"
+            style="@style/spinnerbox"
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:background="@drawable/spinner_focus"
+            android:hint="Min"
+            android:textColorHint="#A9A9A9"
+            android:layout_weight="0.5"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_marginRight="5dp"
+            android:inputType="number"
+            />
+
+        <EditText
+            android:id="@+id/max_sqrft"
+            style="@style/spinnerbox"
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:hint="Max "
+            android:background="@drawable/spinner_focus"
+            android:textColorHint="#A9A9A9"
+            android:layout_weight="0.5"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_marginLeft="5dp"
+            android:inputType="number"
+            />
+
+    </LinearLayout>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/linearlyt_images"
+    android:layout_below="@+id/linearlyt_Area"
+    android:orientation="horizontal"
+    android:layout_marginTop="20dp"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp">
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@mipmap/bed"
+        android:id="@+id/bed_img"/>
+    <ImageView
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:src="@mipmap/minus"
+        android:layout_marginLeft="30dp"
+        android:id="@+id/bed_negative"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:text="3"
+        android:layout_marginLeft="15dp"
+        android:id="@+id/bed_number"/>
+    <ImageView
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:src="@mipmap/plus"
+        android:layout_marginLeft="15dp"
+        android:id="@+id/bed_positive"/>
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@mipmap/bath"
+            android:layout_marginLeft="25dp"
+            android:id="@+id/bath_img"/>
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@mipmap/minus"
+            android:layout_marginLeft="20dp"
+            android:id="@+id/bath_negative"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:text="3"
+            android:layout_marginLeft="15dp"
+            android:id="@+id/bath_number"/>
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@mipmap/plus"
+            android:layout_marginLeft="15dp"
+            android:id="@+id/bath_positive"/>
+    </LinearLayout>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_below="@+id/linearlyt_images"
+    android:id="@+id/linearlyt_year_min"
+    android:layout_marginTop="20dp"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Year Built Min"
+        android:id="@+id/year_built_min"
+        android:textStyle="bold"
+       />
+    <ImageView
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:src="@mipmap/minus"
+        android:layout_marginLeft="30dp"
+        android:id="@+id/year_negative_min"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:text="2018"
+        android:layout_marginLeft="10dp"
+        android:id="@+id/year_txt_min"
+        />
+    <ImageView
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:src="@mipmap/plus"
+        android:layout_marginLeft="10dp"
+        android:id="@+id/year_positive_min"/>
+</LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/linearlyt_year_min"
+        android:id="@+id/linearlyt_year_max"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Year Built Max"
+            android:id="@+id/year_built_max"
+            android:textStyle="bold"
+            />
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@mipmap/minus"
+            android:layout_marginLeft="30dp"
+            android:id="@+id/year_negative_max"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:text="2018"
+            android:layout_marginLeft="10dp"
+            android:id="@+id/year_txt_max"
+            />
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@mipmap/plus"
+            android:layout_marginLeft="10dp"
+            android:id="@+id/year_positive_max"/>
+    </LinearLayout>
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:id="@+id/spinnerpropertytype"
+        android:layout_below="@id/linearlyt_year_max"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginEnd="20dp"
+        style="@style/spinner_style"
+        android:paddingRight="10dp"
+ />
+    <TextView
+        android:id="@+id/featurestxt"
+        style="@style/spinnerbox"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/spinnerpropertytype"
+        android:drawableRight="@mipmap/right_arrow"
+        android:hint="Features"
+        android:clickable="false"
+        android:paddingRight="10dp"
+        android:paddingLeft="10dp"
+        android:background="@drawable/spinner_focus"
+        android:textColorHint="#A9A9A9" />
+    <TextView
+        android:id="@+id/additionalpropertychartxt"
+        style="@style/spinnerbox"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/featurestxt"
+        android:drawableRight="@mipmap/right_arrow"
+        android:hint="Adddtional Property characteristics"
+        android:paddingRight="10dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        android:background="@drawable/spinner_focus"
+        android:textColorHint="#A9A9A9" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/relative_lyt_logged"
+        android:layout_below="@+id/additionalpropertychartxt"
+        android:visibility="gone">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Viewed Propertices"
+        android:textStyle="bold"
+        android:paddingRight="30dp"
+        android:layout_marginTop="10dp"
+        android:id="@+id/txtViewedPropertice"
+        android:layout_marginLeft="20dp"
+     />
+    <ImageView
+        android:id="@+id/AddViewed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/plus"
+        android:layout_marginTop="10dp"
+
+        android:layout_toRightOf="@+id/txtViewedPropertice"/>
+    <EditText
+        android:id="@+id/DateViewed"
+        style="@style/spinnerbox"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:hint="Date and Time "
+        android:background="@drawable/spinner_focus"
+        android:textColorHint="#A9A9A9"
+        android:layout_weight="0.5"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_below="@+id/txtViewedPropertice"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+
+        android:layout_marginRight="20dp"
+        />
+    <EditText
+        android:id="@+id/PropertyId"
+        style="@style/spinnerbox"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:hint="Property Id "
+        android:background="@drawable/spinner_focus"
+        android:textColorHint="#A9A9A9"
+        android:layout_weight="0.5"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_below="@+id/DateViewed"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+
+        />
+    <EditText
+        android:id="@+id/LeadComments"
+        style="@style/spinnerbox"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:hint="Lead Comments"
+        android:background="@drawable/spinner_focus"
+        android:textColorHint="#A9A9A9"
+        android:layout_weight="0.5"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_below="@+id/PropertyId"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
+
+
+        />
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/save_and_proceed"
+        style="@style/AppButton"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginBottom="30dp"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/relative_lyt_logged"
+        android:text="@string/save_and_proceed"
+        android:textColor="@color/colorPrimary"
+        android:textSize="20sp"
+        android:textAllCaps="false"/>
+
+
+</RelativeLayout>
+</ScrollView>

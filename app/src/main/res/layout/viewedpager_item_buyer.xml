@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_arrow_left"
+        android:layout_centerVertical="true"/>
+    <TextView
+        android:id="@+id/DateAndTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Date and Time"
+        android:fontFamily="sans-serif"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"/>
+    <TextView
+        android:id="@+id/DateAndTimeValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="12.08.2018 9:00 AM"
+        android:textStyle="bold"
+        android:layout_below="@+id/viewed_properties"
+        android:layout_toRightOf="@+id/DateAndTime"
+        android:fontFamily="sans-serif"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="60dp"
+        android:layout_marginRight="20dp"
+        />
+
+
+    <TextView
+        android:id="@+id/Property_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Property Id"
+        android:layout_below="@+id/DateAndTimeValue"
+        android:fontFamily="sans-serif"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        />
+    <TextView
+        android:id="@+id/Property_ldValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="http://marvelapp.com/5/766"
+        android:textStyle="bold"
+        android:layout_below="@+id/DateAndTimeValue"
+        android:layout_toRightOf="@+id/Property_id"
+        android:fontFamily="sans-serif"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="80dp"
+        android:layout_marginRight="20dp"
+        />
+
+    <TextView
+        android:id="@+id/leadComments"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lead Comments"
+        android:layout_below="@+id/Property_ldValue"
+        android:fontFamily="sans-serif"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"/>
+    <TextView
+        android:id="@+id/leadCommentsValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lorem ipsum is simply dummy text of thge printing and type setting industry.Lorem ipsum has been the industry's standered dummy text ever since 1500s, when an unknown printer took a gallery of type and scrambled it into make a type specimen book"
+        android:textStyle="bold"
+        android:layout_below="@+id/Property_ldValue"
+        android:layout_toRightOf="@+id/leadComments"
+        android:fontFamily="sans-serif"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="45dp"
+        android:layout_marginBottom="20dp"
+       android:layout_marginRight="20dp" />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_arrow_right"
+        android:layout_centerVertical="true"
+        android:paddingLeft="20dp"
+        android:layout_alignParentEnd="true"
+        />
+
+</RelativeLayout>

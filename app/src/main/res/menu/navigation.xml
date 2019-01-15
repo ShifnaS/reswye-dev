@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+    <item
+        android:id="@+id/navigation_dashboard"
+        android:icon="@drawable/dashboard"
+        android:title="@string/title_dashboard"
+        android:showAsAction="always|withText" />
+    <item
+        android:id="@+id/navigation_lead"
+        android:icon="@drawable/lead"
+        android:title="Leads"
+        android:showAsAction="always|withText" />
+
+    <item
+        android:id="@+id/navigation_properties"
+        android:icon="@drawable/properties"
+        android:title="@string/title_properties"
+        android:showAsAction="always|withText"
+      /> >
+    <item
+        android:id="@+id/navigation_calendar"
+        android:icon="@drawable/calender"
+        android:title="@string/title_calendar"
+        android:showAsAction="always|withText" />
+
+
+
+
+</menu>

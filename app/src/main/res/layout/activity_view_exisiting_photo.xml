@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.nexgensm.reswye.ui.lead.AddNewPhotoActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/toolbar"
+        android:orientation="horizontal"
+        android:background="@color/toolbarcolor">
+        <!--<ImageButton-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:id="@+id/close"-->
+            <!--android:background="@drawable/close"-->
+            <!--android:layout_gravity="center_vertical"-->
+            <!--android:layout_margin="10dp"-->
+            <!--/>-->
+
+        <TextView
+            android:id="@+id/header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add Property Photos"
+            style="@style/AddNewHeader"
+            android:gravity="center_horizontal"
+            android:textColor="#FFFFFF"
+            android:layout_weight="1"/>
+        <Button
+            android:id="@+id/addphotonew"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:text="Add"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:layout_gravity="center_vertical"
+
+            />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar"
+        android:id="@+id/image">
+
+        <!-- <ImageView
+             android:layout_width="match_parent"
+             android:layout_height="300dp"
+             android:id="@+id/pic"
+             android:src="@mipmap/property"
+             />-->
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view_exisiting"
+            android:layout_width="wrap_content"
+            android:layout_height="500dp"
+            android:layout_centerInParent="true" />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/image"
+        android:id="@+id/addphototext"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:text="Click Add to upload more photos"
+        android:gravity="center"
+        android:textColor="#000000"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/addphototext"
+        android:id="@+id/addphototext1"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:text="Swipe Up to see all uploaded photos"
+        android:gravity="center"
+        android:textColor="#000000"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/addphototext1"
+
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:text="Long Press to delete photo"
+        android:gravity="center"
+        android:textColor="#000000"/>
+    <!--<Button-->
+        <!--android:id="@+id/addnew_photo"-->
+        <!--style="@style/AppButton"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="40dp"-->
+        <!--android:layout_marginRight="20dp"-->
+        <!--android:layout_marginLeft="20dp"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:text="Save"-->
+        <!--android:textColor="@color/colorPrimary"-->
+        <!--android:textSize="20sp"-->
+        <!--android:textAllCaps="false"-->
+        <!--android:paddingLeft="5dp"-->
+        <!--android:paddingRight="5dp"-->
+        <!--android:layout_marginBottom="10dp"-->
+        <!--/>-->
+
+
+
+
+
+</RelativeLayout>

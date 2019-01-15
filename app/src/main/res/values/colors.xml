@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#FFFFFF</color>
+    <color name="colorPrimaryDark">#FFFFFF</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="topheadingcolor">#262626</color>
+    <color name="bottomnavigationbuttoncolor">#262626</color>
+    <color name="ButtonTextColor">#FF4081</color>
+    <color name="toolbarcolor">#30D5C8</color>
+    <color name="onboardingstatusbarcolor">#FFFFFF</color>
+    <color name="dark_purple">#443a66</color>
+    <color name="accent">#ff2d6f</color>
+
+
+</resources>

@@ -1,0 +1,178 @@
+<resources>
+    <string name="app_name">Reswye</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_bottom_tabbar">BottomTabbarActivity</string>
+
+
+    <!--Onboarding-->
+    <string name="signup">Sign Up</string>
+    <string name="signin">Sign In</string>
+
+
+    <!--Bottom Tab bar-->
+    <string name="title_activity_bottom_tab_bar">BottomTabBarActivity</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_lead">Lead Listing</string>
+    <string name="title_showassist">Show Assist</string>
+    <string name="title_properties">Properties</string>
+    <string name="title_calendar">Calendar</string>
+
+    <!--keerthana-->
+
+    <!--Signin screen-->
+    <string name="login_forgot">Forgot ?</string>
+    <string name="app_button">Sign in</string>
+    <string name="login_text">Leads waiting for you!</string>
+    <string name="signup_text">Sign Up-></string>
+
+    <!--Sign up screen 1-->
+    <string name="Signup_note">Welcome to RSWS</string>
+    <string name="signup_text2">Fill out the form below to get started</string>
+    <string name="Signup_buttontext">Next</string>
+
+    <!--Sign up screen 2 Agent sign up-->
+    <string name="Agent_SignUp_Hedding">Agent Sign Up</string>
+    <string name="Signup2_gender">Select Gender</string>
+    <string name="country_prompt">Choose a country</string>
+    <string name="Signup2_buttontext">Sign me Up &amp; Proceed</string>
+
+    <string-array name="Signup_User_Type">
+        <item>Agent </item>
+
+    </string-array>
+
+    <string-array name="Signup_City">
+        <item>City </item>
+        <item>Option 1</item>
+        <item>Option 2 </item>
+        <item>Option 3 </item>
+        <item>Option 4 </item>
+    </string-array>
+
+    <string-array name="Signup_State">
+        <item>State </item>
+        <item>Option 1</item>
+        <item>Option 2 </item>
+        <item>Option 3 </item>
+        <item>Option 4 </item>
+    </string-array>
+
+    <string-array name="Signup_findus">
+        <item>How did you find about us ? </item>
+        <item>Option 1</item>
+        <item>Option 2 </item>
+        <item>Option 3 </item>
+        <item>Option 4 </item>
+    </string-array>
+    <string-array name="userType">
+        <item>--User Type--</item>
+        <item>Option 1</item>
+        <item>Option 2 </item>
+    </string-array>
+    <string-array name="cardType">
+        <item>Card Type</item>
+        <item>Credit Card</item>
+        <item>Debit Card</item>
+    </string-array>
+    <string-array name="leadId">
+        <item>Lead Id</item>
+
+        <item>B12</item>
+        <item>B6</item>
+        <item>S1</item>
+    </string-array>
+
+    <string-array name="month">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+    </string-array>
+    <string-array name="year">
+        <item>2019</item>
+        <item>2020</item>
+        <item>2021</item>
+        <item>2022</item>
+        <item>2023</item>
+        <item>2024</item>
+    </string-array>
+    <!--Sign up screen 3 Subscription-->
+    <string name="subscribe_monthly">Monthly </string>
+    <string name="subscribe_Annual">Annual </string>
+    <string name="subscribe_3years">3 Years </string>
+    <string name="subscribe_5years">5 Years </string>
+    <string name="subscribe_Gain">Gained </string>
+    <string name="subscribe_percentage">10% </string>
+    <string name="subscribe_subscription">as compared to monthly subscription </string>
+    <string name="subscribe_chooseplan">Choose this Plan </string>
+    <string name="subscribe_CheckBoxTxt1">I agree to the  </string>
+    <string name="subscribe_loyaltypts">Loyalty Points </string>
+    <string name="subscribe_discount">Discount </string>
+    <string name="subscribe_feature">Feature 3 </string>
+    <!--lead find-->
+
+    <string name="title_find_lead">Can I help you find the Lead ? </string>
+
+    <!--fragment aadnewlead-->
+    <string name="Button_AddnewLead">Save &amp; Proceed To Property Info </string>
+
+    <string-array name="AddNewLead">
+        <item>How did you find about us ? </item>
+        <item>From News</item>
+        <item>From Friends</item>
+        <item>Advertisement</item>
+        <item>Facebook</item>
+    </string-array>
+
+    <!--add new property type-->
+    <string-array name="Property_Type">
+        <item>Property Type </item>
+        <item>Single Family Home</item>
+        <item>Multiple Family Home</item>
+        <item>Townhouse</item>
+        <item>Condo</item>
+        <item>Apartments</item>
+        <item>Land</item>
+    </string-array>
+
+    <!--fragment add new property buyer-->
+    <string name="save_and_proceed">Save &amp; Proceed To Upload Documents </string>
+
+    <!--point of interest-->
+    <string-array name="point_of_interest">
+        <item>Point of Interest </item>
+        <item>Nearby Schools</item>
+        <item>Nearby Hospitals</item>
+        <item>Community Information</item>
+        <item>Weather Information</item>
+    </string-array>
+
+    <!--upload documents-->
+    <string name="save">Save</string>
+    <string name="add_doc">Add</string>emptyString
+    <string name="emptyString"></string>
+
+    <string name="speech_prompt">Say something&#8230;</string>
+    <string name="speech_not_supported">Sorry! Your device doesn\'t support speech input</string>
+
+    <string-array name="dashboard_item">
+        <item>This Week</item>
+        <item>This Month</item>
+
+    </string-array>
+    <string name="title_activity_navigation_dawer">NavigationDawerActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+</resources>

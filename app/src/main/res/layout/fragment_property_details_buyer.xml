@@ -1,0 +1,490 @@
+<ScrollView xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.nexgensm.reswye.ui.lead.AddNewPropertyBuyerFragment">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:background="#EEEEEE"
+            android:text="Preferred Location"
+            android:id="@+id/preferdLocation"
+            android:textStyle="bold"
+            android:paddingStart="20dp"
+            android:paddingTop="10dp"
+            />
+
+                <TextView
+                    android:id="@+id/Neighbourhood"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Neighbourhood"
+                    android:layout_below="@+id/preferdLocation"
+                    android:fontFamily="sans-serif"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="20dp"/>
+                <TextView
+                    android:id="@+id/Williamsburg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Williamsburg"
+                    android:layout_toRightOf="@+id/Neighbourhood"
+                    android:textStyle="bold"
+                    android:layout_below="@+id/preferdLocation"
+                    android:fontFamily="sans-serif"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="70dp"
+                    />
+
+
+             <TextView
+                 android:id="@+id/City"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:text="City"
+                 android:layout_below="@+id/Williamsburg"
+                 android:fontFamily="sans-serif"
+                 android:layout_marginTop="10dp"
+                 android:layout_marginLeft="20dp"
+                 />
+             <TextView
+                 android:id="@+id/CityName"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:text="New York City"
+                 android:textStyle="bold"
+                 android:layout_toRightOf="@+id/Neighbourhood"
+                 android:layout_below="@+id/Williamsburg"
+                 android:fontFamily="sans-serif"
+                 android:layout_marginTop="10dp"
+                 android:layout_marginLeft="70dp"
+                 />
+
+          <TextView
+              android:id="@+id/State"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="State"
+              android:layout_below="@+id/CityName"
+              android:fontFamily="sans-serif"
+              android:layout_marginTop="10dp"
+              android:layout_marginLeft="20dp"
+              />
+          <TextView
+              android:id="@+id/StateName"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="New York"
+              android:textStyle="bold"
+              android:layout_toRightOf="@+id/Neighbourhood"
+              android:layout_below="@+id/CityName"
+              android:fontFamily="sans-serif"
+              android:layout_marginTop="10dp"
+              android:layout_marginLeft="70dp"
+              />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:background="#EEEEEE"
+            android:text="Preferred Property Type"
+            android:id="@+id/Property_type"
+            android:textStyle="bold"
+            android:paddingStart="20dp"
+            android:paddingTop="10dp"
+            android:layout_below="@+id/StateName"
+
+            />
+
+             <TextView
+                 android:id="@+id/PropertyType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Property Type"
+                  android:layout_below="@+id/Property_type"
+                   android:fontFamily="sans-serif"
+                 android:layout_marginTop="10dp"
+                 android:layout_marginLeft="20dp"/>
+                <TextView
+                    android:id="@+id/Buy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Buy"
+                    android:textStyle="bold"
+                    android:layout_toRightOf="@+id/PropertyType"
+                    android:layout_below="@+id/Property_type"
+                    android:fontFamily="sans-serif"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="80dp"
+                    />
+
+               <TextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:background="#EEEEEE"
+            android:text="Property Required Date"
+            android:id="@+id/required_date"
+            android:textStyle="bold"
+            android:paddingStart="20dp"
+            android:paddingTop="10dp"
+                   android:layout_below="@+id/Buy"
+            />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Date"
+                    android:id="@+id/date"
+                    android:layout_below="@+id/required_date"
+                    android:fontFamily="sans-serif"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="20dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="12.08.2018"
+                    android:textStyle="bold"
+                    android:id="@+id/DateTxt"
+                    android:layout_toRightOf="@+id/date"
+                    android:layout_below="@+id/required_date"
+                    android:fontFamily="sans-serif"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="135dp"
+                    />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:background="#EEEEEE"
+            android:text="Preferred Price"
+            android:id="@+id/prefered_price"
+            android:textStyle="bold"
+            android:paddingStart="20dp"
+            android:paddingTop="10dp"
+            android:layout_below="@+id/DateTxt"
+
+            />
+
+
+                <TextView
+                    android:id="@+id/MinimumPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Minimum Price"
+                    android:layout_below="@+id/prefered_price"
+                    android:fontFamily="sans-serif"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="20dp"
+                    />
+                <TextView
+                    android:id="@+id/MinimumPriceValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="$42,343.15"
+                    android:textStyle="bold"
+                    android:layout_toRightOf="@+id/date"
+                    android:layout_below="@+id/prefered_price"
+                    android:fontFamily="sans-serif"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="140dp"
+                    />
+
+
+                <TextView
+                    android:id="@+id/maximumPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Maximum Price"
+                    android:layout_below="@+id/MinimumPriceValue"
+                    android:fontFamily="sans-serif"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="20dp"/>
+                <TextView
+                    android:id="@+id/maximumPriceValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="$72,343.15"
+                    android:textStyle="bold"
+                    android:layout_toRightOf="@+id/date"
+                    android:layout_below="@+id/MinimumPriceValue"
+                    android:fontFamily="sans-serif"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="140dp"
+                    />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:background="#EEEEEE"
+            android:text="Preferred Property Details"
+            android:id="@+id/prefered_property_details"
+            android:textStyle="bold"
+            android:paddingStart="20dp"
+            android:paddingTop="10dp"
+            android:layout_below="@+id/maximumPriceValue"
+            />
+
+
+                <TextView
+                    android:id="@+id/MinimumArea"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Minimum Sq.FT"
+                    android:layout_below="@+id/prefered_property_details"
+                    android:fontFamily="sans-serif"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="20dp"/>
+                <TextView
+                    android:id="@+id/MinimumAreaValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2000 sq.ft"
+                    android:textStyle="bold"
+                    android:layout_toRightOf="@+id/MinimumArea"
+                    android:layout_below="@+id/prefered_property_details"
+                    android:fontFamily="sans-serif"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="70dp"
+                    />
+
+                <TextView
+                    android:id="@+id/MaximumArea"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Maximum Sq.FT"
+                    android:layout_below="@+id/MinimumAreaValue"
+                    android:fontFamily="sans-serif"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="20dp"/>
+                <TextView
+                    android:id="@+id/MaximumAreaValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="3500 sq.ft"
+                    android:textStyle="bold"
+                    android:layout_below="@+id/MinimumAreaValue"
+                    android:layout_toRightOf="@+id/MaximumArea"
+                    android:fontFamily="sans-serif"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="65dp"
+                    />
+
+                <TextView
+                    android:id="@+id/Beds"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Beds"
+                    android:layout_below="@+id/MaximumAreaValue"
+                    android:fontFamily="sans-serif"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="20dp"/>
+                <TextView
+                    android:id="@+id/BedsValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="6"
+                    android:textStyle="bold"
+                    android:layout_below="@+id/MaximumAreaValue"
+                    android:layout_toRightOf="@+id/Beds"
+                    android:fontFamily="sans-serif"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="140dp"
+                    />
+
+                <TextView
+                    android:id="@+id/Baths"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Baths"
+                    android:layout_below="@+id/BedsValue"
+                    android:fontFamily="sans-serif"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="20dp"/>
+                <TextView
+                    android:id="@+id/BathsValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="8"
+                    android:textStyle="bold"
+                    android:layout_below="@+id/BedsValue"
+                    android:layout_toRightOf="@+id/Beds"
+                    android:fontFamily="sans-serif"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="140dp"
+                    />
+
+                <TextView
+                    android:id="@+id/YearBuit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Year Built"
+                    android:layout_below="@+id/BathsValue"
+                    android:fontFamily="sans-serif"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="20dp"
+                    />
+                <TextView
+                    android:id="@+id/YearBuitValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="After 2014"
+                    android:textStyle="bold"
+                    android:layout_below="@+id/BathsValue"
+                    android:layout_toRightOf="@+id/Beds"
+                    android:fontFamily="sans-serif"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="140dp"
+                    />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:background="#EEEEEE"
+            android:text="Property Type"
+            android:id="@+id/property_type"
+            android:textStyle="bold"
+            android:paddingStart="20dp"
+            android:paddingTop="10dp"
+            android:layout_below="@+id/YearBuitValue"
+            />
+
+
+                <TextView
+                    android:id="@+id/PropertyTypeTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Type"
+                    android:layout_below="@+id/property_type"
+                    android:fontFamily="sans-serif"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="20dp"/>
+                <TextView
+                    android:id="@+id/PropertyTypeTxtValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Single family Home"
+                    android:textStyle="bold"
+                    android:layout_below="@+id/property_type"
+                    android:layout_toRightOf="@+id/Beds"
+                    android:fontFamily="sans-serif"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="140dp"
+                    />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:background="#EEEEEE"
+            android:text="Property features"
+            android:id="@+id/property_features"
+            android:textStyle="bold"
+            android:paddingStart="20dp"
+            android:paddingTop="10dp"
+            android:layout_below="@+id/PropertyTypeTxtValue"
+
+            />
+
+
+                <TextView
+                    android:id="@+id/Features"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Features"
+                    android:layout_below="@+id/property_features"
+                    android:fontFamily="sans-serif"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="20dp"
+                    />
+                <TextView
+                    android:id="@+id/FeaturesValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="New construction\nHandicap Access\nWater Front\nPool\nTennis\nGround Floor Master bedroom"
+                    android:textStyle="bold"
+                    android:layout_below="@+id/property_features"
+                    android:layout_toRightOf="@+id/Features"
+                    android:fontFamily="sans-serif"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="120dp"
+                    />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:background="#EEEEEE"
+            android:text="Additional Characterestics"
+            android:id="@+id/additional_chara"
+            android:textStyle="bold"
+            android:paddingStart="20dp"
+            android:paddingTop="10dp"
+            android:layout_below="@+id/FeaturesValue"
+            />
+
+
+                <TextView
+                    android:id="@+id/Charecteristics"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Charecteristics"
+                    android:paddingLeft="20dp"
+                    android:layout_below="@+id/additional_chara"
+                    android:fontFamily="sans-serif"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="20dp"/>
+                <TextView
+                    android:id="@+id/CharecteristicsValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Style \nGarage Spaces \nTownship"
+                    android:textStyle="bold"
+                    android:layout_below="@+id/additional_chara"
+                    android:layout_toRightOf="@+id/Charecteristics"
+                    android:fontFamily="sans-serif"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="60dp"
+                    />
+
+
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:background="#EEEEEE"
+            android:text="Viewed Properties"
+            android:id="@+id/viewed_properties"
+            android:layout_below="@+id/CharecteristicsValue"
+            android:textStyle="bold"
+            android:paddingStart="20dp"
+            android:paddingTop="10dp"
+            />
+
+
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/pagerbuyer"
+            android:layout_width="wrap_content"
+            android:layout_height="250dp"
+            android:layout_below="@+id/viewed_properties"/>
+
+    </RelativeLayout>
+</ScrollView>

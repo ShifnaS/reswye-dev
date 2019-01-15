@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    android:layout_height="400dp"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:id="@+id/search_item"
+        android:title="  Agent 1" />
+    <item android:id="@+id/upload_item"
+        android:title="  Agent 2" />
+    <item android:id="@+id/copy_item"
+        android:title="  Agent 3" />
+    <item android:id="@+id/print_item"
+        android:title="  Agent 4" />
+    <item android:id="@+id/share_item"
+        android:title="  Agent 5" />
+    <item android:id="@+id/bookmark_item"
+        android:title="  Agent 6" />
+</menu>

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.nexgensm.reswye.ui.lead.AddNewLeadCategoryActivity">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/image">
+
+
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="350dp"
+            android:id="@+id/leadcategoryimage"
+            android:background="@color/toolbarcolor"
+            android:src="@drawable/leadcategoryimage"/>
+
+
+
+    </RelativeLayout>
+    
+   <!-- <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:id="@+id/leadcategoryimage"
+        android:background="@color/toolbarcolor"
+        android:src="@drawable/leadcategoryimage"/>-->
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_below="@id/image"
+    android:layout_marginTop="20dp"
+    android:id="@+id/categorybutton">
+    <ImageButton
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:id="@+id/buyer"
+        android:src="@mipmap/buyer_green"
+        android:layout_weight="1"
+        android:clickable="true"
+        android:background="@null"
+        />
+
+    <ImageButton
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:id="@+id/seller"
+        android:src="@drawable/leadcategoryseller"
+        android:layout_weight="1"
+        android:background="@null"/>
+
+</LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/categorytext"
+        android:orientation="horizontal"
+        android:layout_below="@+id/categorybutton">
+
+        <TextView
+            android:layout_width="80dp"
+            android:layout_height="20dp"
+            android:id="@+id/buyertext"
+            android:text ="Buyer"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:textColor="#000000"/>
+        <TextView
+            android:layout_width="80dp"
+            android:layout_height="20dp"
+            android:id="@+id/sellertext"
+            android:text ="Seller"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:textColor="#000000"/>
+
+
+    </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/add_relative_contacts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/categorytext"
+           android:weightSum="1"
+            android:visibility="gone"
+            >
+    <ImageView
+        android:layout_marginTop="20dp"
+        android:id="@+id/add_manuvaly"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/manual"
+        android:layout_marginLeft="60dp"
+        android:layout_weight="0.5"/>
+    <ImageView
+        android:id="@+id/fromContacts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/add_contacts"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="50dp"
+        android:layout_marginTop="20dp"
+        android:layout_weight="0.5"/>
+        </LinearLayout>
+</RelativeLayout>
+    </ScrollView>

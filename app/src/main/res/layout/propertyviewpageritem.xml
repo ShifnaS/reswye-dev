@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.android.volley.toolbox.NetworkImageView
+
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:id="@+id/prop_image"
+        android:scaleType="fitXY"
+        android:src="@mipmap/download"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/leadpersonal_status"
+        android:src="@mipmap/lead_status_new"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="20dp" />
+    <!--<ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/leftarrow"
+        android:src="@mipmap/left_arrow"
+        android:layout_alignTop="@id/prop_image"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/rightarrow"
+        android:src="@mipmap/ight_arrow"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp"
+        />-->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/status"
+        android:text="Short Sale"
+        android:textColor="@color/toolbarcolor"
+        android:layout_marginTop="150dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
+
+        />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/property_status"
+        android:src="@mipmap/saleicon"
+        android:layout_below="@+id/status"
+        android:layout_marginLeft="20dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/salestatustxt"
+        android:text="FOR SALE"
+android:textColor="#FFFFFFFF"
+        android:layout_below="@+id/status"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/property_status"
+        />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/star_status"
+        android:src="@mipmap/saleicon"
+        android:layout_below="@+id/status"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@id/salestatustxt"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/amount"
+        android:text="$12,345,670"
+        android:textColor="#FFFFFFFF"
+
+        android:textSize="25sp"
+        android:layout_below="@+id/star_status"
+        android:layout_marginLeft="20dp"/>
+
+</RelativeLayout>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.nexgensm.reswye">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.USE_FINGERPRINT" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        <provider
+            android:name=".GenericFileProvider"
+            android:authorities="${applicationId}.com.nexgensm.reswye.ui.lead.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCnQ1fk9CCQv2e1HIu6KkZP41AemAdgRMo" />
+
+        <activity android:name=".ui.onboarding.OnBoardingActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.bottomtabbar.BottomTabbarActivity"
+            android:label="@string/title_activity_bottom_tabbar" />
+        <activity android:name=".ui.signinpage.SigninActivity" />
+        <activity android:name=".ui.signupactivity.SignupActivity" />
+        <activity android:name=".ui.signupactivity.AgentSignupActivity" />
+        <activity android:name=".ui.signupactivity.SubscriptionSignupActivity" />
+        <activity android:name=".ui.lead.AddNewSellerActivity" />
+        <activity android:name=".ui.lead.LeadFindActivity" />
+        <activity android:name=".ui.lead.AddNewLeadCategoryActivity" />
+        <activity android:name=".ui.lead.AddNewBuyerActivity" />
+        <activity android:name=".ui.lead.OwnerInfoActivity" />
+        <activity android:name=".ui.lead.AddNewPhotoActivity" />
+        <activity android:name=".ui.lead.ViewExistingPhotoActivity" />
+        <activity android:name=".ui.lead.SellerDetailsActivity" />
+        <activity android:name=".ui.lead.BuyerDetailsActivity" />
+        <activity android:name=".ui.lead.PersonalDetailTransferActivity" />
+        <activity android:name=".ui.lead.PersonalDetailDeleteActivity" />
+        <activity android:name=".ui.lead.PersonalDetailsSendNotification" />
+        <activity android:name=".ui.lead.AddFeatureActivity" />
+        <activity android:name=".ui.lead.PdfViewerActivity" />
+        <activity android:name=".ui.lead.Additional_charecterestics" />
+        <activity android:name=".ui.navigationdrawer.ProfileSettingsActivity" />
+        <activity android:name=".ui.lead.LeadSortedActivity" />
+        <activity android:name=".ui.calendar.AddAppointmentActivity" />
+        <activity android:name=".ui.calendar.AppointmentDetailsActivity" />
+        <activity android:name=".ui.calendar.cancelActivity" />
+        <activity android:name=".ui.calendar.EditApointmentActivity" />
+        <activity android:name=".ui.calendar.AlarmSnoozeActivity" />
+        <activity android:name=".ui.calendar.AppointmentResheduleActivity" />
+        <activity android:name=".ui.calendar.ReminderActivity" />
+
+        <service
+            android:name=".AlarmService"
+            android:enabled="true" />
+
+        <receiver
+            android:name=".AlarmReceiver"
+            android:process=":remote" />
+
+        <activity
+            android:name=".ui.signupactivity.AnimatedGifActivity"
+            android:hardwareAccelerated="false" />
+        <activity android:name=".ui.Dashboard.MissedFollowupsActivity" />
+        <activity android:name=".ui.Dashboard.UpComingFollowUpsActivity" />
+        <activity android:name=".ui.Dashboard.RecentLeadListActivity" />
+        <activity android:name=".ui.Dashboard.DormantListingActivity" />
+        <activity android:name=".ui.signupactivity.PaymentActivity"></activity>
+    </application>
+
+</manifest>

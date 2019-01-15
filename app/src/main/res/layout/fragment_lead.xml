@@ -1,0 +1,146 @@
+
+<android.support.v4.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.nexgensm.reswye.ui.lead.LeadFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+
+
+
+    <RelativeLayout
+        android:id="@+id/first"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/Lead_header"
+            style="@style/AppHeader"
+            android:text="@string/title_lead"
+            android:textAlignment="center"
+
+
+            />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/navigation_lead"
+            android:background="@drawable/hamburger_menu_white"
+            android:layout_margin="20dp"
+
+
+
+
+
+
+            />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/Add_New"
+            android:text="Add New"
+            android:background="@android:color/transparent"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:layout_margin="10dp"
+            android:layout_alignParentRight="true"
+            android:clickable="true"
+
+            />
+
+      <LinearLayout
+          android:id="@+id/search"
+
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          android:layout_below="@id/Lead_header"
+          >
+          <EditText
+              android:id="@+id/lead_search"
+              android:layout_width="0dp"
+              android:layout_weight="1"
+              android:layout_height="40dp"
+              android:layout_alignParentLeft="true"
+              android:layout_marginRight="20dp"
+              android:background="#00000000"
+              android:drawableEnd="@drawable/search_icon"
+              android:drawableRight="@drawable/search_icon"
+
+
+              android:gravity="center"
+              android:hint="Type to search here" />
+          <ImageButton
+              android:id="@+id/lead_sort"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="10dp"
+              android:layout_marginRight="20dp"
+              android:layout_marginBottom="10dp"
+              android:layout_toLeftOf="@id/find_lead"
+              android:background="@drawable/sort_icon" />
+          <ImageButton
+              android:id="@+id/find_lead"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_alignParentRight="true"
+              android:layout_marginTop="10dp"
+              android:layout_marginRight="20dp"
+              android:layout_marginBottom="10dp"
+              android:background="@drawable/filter_icon"
+              />
+
+
+
+
+
+
+      </LinearLayout>
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:layout_below="@+id/search"/>
+
+    </RelativeLayout>
+
+
+
+
+
+</FrameLayout>
+
+    <android.support.design.widget.NavigationView
+        android:id="@+id/nvView"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:headerLayout="@layout/nav_header"
+        app:itemTextColor="#7E7D7E"
+        android:background="#F1F2F4"
+        app:menu="@menu/navigation_dawer" >
+
+
+    </android.support.design.widget.NavigationView>
+
+
+</android.support.v4.widget.DrawerLayout>
