@@ -14,7 +14,6 @@ import android.widget.TextView;
 import com.nexgensm.reswye.R;
 import com.nexgensm.reswye.ui.Dashboard.DashboardFragment;
 import com.nexgensm.reswye.ui.calendar.CalendarFragment;
-import com.nexgensm.reswye.ui.lead.AddNewLeadCategoryActivity;
 import com.nexgensm.reswye.ui.lead.LeadFragment;
 import com.nexgensm.reswye.ui.lead.LeadItems;
 import com.nexgensm.reswye.ui.lead.LeadRecyclerViewAdapter;
@@ -22,7 +21,6 @@ import com.nexgensm.reswye.ui.property.PropertyFragment;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.app.Fragment;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -70,6 +68,8 @@ public class BottomTabbarActivity extends AppCompatActivity implements LeadFragm
                case R.id.navigation_properties:
                    item.setIcon(R.drawable.properties_click);
                    FragmentTransaction fragmentTransaction_property = fragmentManager.beginTransaction();
+                  // fragmentTransaction_property.replace(R.id.framelayout, leadFragment);
+
                    fragmentTransaction_property.replace(R.id.framelayout, propertyFragment);
                    fragmentTransaction_property.addToBackStack(null);
                    fragmentTransaction_property.commit();

@@ -78,10 +78,10 @@
             android:layout_marginEnd="20dp"
             android:layout_marginTop="10dp"
             style="@style/spinnerbox"
+            android:drawableStart="@drawable/ic_name_circle_black_24dp"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
-            android:drawableRight="@mipmap/name"
-            android:hint="Name"/>
+            android:hint=" Name"/>
         <EditText
             android:layout_width="match_parent"
             android:layout_height="40dp"
@@ -90,10 +90,11 @@
             android:layout_marginEnd="20dp"
             android:layout_marginTop="10dp"
             style="@style/spinnerbox"
+            android:drawableStart="@drawable/ic_email_black_24dp"
+
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
-            android:drawableRight="@mipmap/email"
-            android:hint="Email"/>
+            android:hint=" Email"/>
         <EditText
             android:layout_width="match_parent"
             android:layout_height="40dp"
@@ -104,8 +105,8 @@
             style="@style/spinnerbox"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
-            android:drawableRight="@mipmap/pswd"
-            android:hint="Password"/>
+            android:drawableStart="@drawable/ic_lock_outline_black_24dp"
+            android:hint=" Password"/>
         <EditText
             android:layout_width="match_parent"
             android:layout_height="40dp"
@@ -116,12 +117,12 @@
             style="@style/spinnerbox"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
-            android:drawableRight="@mipmap/name"
-            android:hint="Mobile Number"/>
+            android:drawableStart="@drawable/ic_phone_android_black_24dp"
+            android:hint=" Mobile Number"/>
         <EditText
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:hint="City"
+            android:hint=" City"
             android:id="@+id/profile_settings_city"
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
@@ -129,7 +130,9 @@
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
             style="@style/spinnerbox"
-           >
+            android:drawableStart="@drawable/ic_location_city_black_24dp"
+
+            >
           //  android:entries="@array/Signup_City"
 
         </EditText>
@@ -137,7 +140,7 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:hint="State"
+            android:hint=" State"
             android:id="@+id/profile_settings_state"
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
@@ -145,6 +148,7 @@
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
             style="@style/spinnerbox"
+            android:drawableStart="@drawable/ic_location_on_black_24dp"
             android:entries="@array/Signup_State">
 
 
@@ -160,8 +164,9 @@
             style="@style/spinnerbox"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
+            android:drawableStart="@drawable/ic_chrome_reader_mode_black_24dp"
 
-            android:hint="Correspondence Address"/>
+            android:hint=" Correspondence Address"/>
 
         <Button
             android:id="@+id/update_profile"

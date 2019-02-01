@@ -54,6 +54,7 @@ if (propFile.canRead()) {
         android.buildTypes.release.signingConfig = null
     }
 
+
 } else {
     println "RELEASE_BUILD: signing properties not found"
     android.buildTypes.release.signingConfig = null
@@ -83,12 +84,18 @@ dependencies {
     implementation 'com.github.WindSekirun:SectionCalendarView:1.0.3'
     implementation 'com.github.PhilJay:MPAndroidChart:v2.2.4'
     implementation project(':collapsiblecalendarview2')
+    implementation 'pub.devrel:easypermissions:0.2.0'
 
     implementation 'com.android.support:appcompat-v7:27.1.0'
 
     implementation 'com.google.android.gms:play-services:9.2.0'
     //implementation 'com.android.support:design:27.0.0'
     implementation 'com.yahoo.mobile.client.android.util.rangeseekbar:rangeseekbar-library:0.1.0'
+
+    // retrofit, gson
+    compile 'com.google.code.gson:gson:2.6.2'
+    compile 'com.squareup.retrofit2:retrofit:2.0.2'
+    compile 'com.squareup.retrofit2:converter-gson:2.0.2'
 }
 dependencies {
     implementation 'com.android.support.constraint:constraint-layout:+'
@@ -118,3 +125,12 @@ dependencies {
 dependencies {
     implementation 'com.android.support:support-v4:27.+'
 }
+
+dependencies {
+    implementation 'com.android.support.constraint:constraint-layout:+'
+}
+
+dependencies {
+    implementation 'com.android.support:support-v4:27.+'
+}
+

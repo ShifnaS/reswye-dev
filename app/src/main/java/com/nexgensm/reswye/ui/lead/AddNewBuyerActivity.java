@@ -94,15 +94,9 @@ public class AddNewBuyerActivity extends AppCompatActivity implements AddNewLead
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
 
-//        Intent intent = getIntent();
-//        if (null != intent) {
-//            flag = intent.getIntExtra("flag", 0);
-//
-//        }
+
         ImageButton backbtnLead=(ImageButton)findViewById(R.id.AddLead_Back);
         backbtnLead.setImageResource(R.mipmap.status_bar_back_arrow);
-//        Button add=(Button)findViewById(R.id.add_doc);
-//        add.setText("");
 
         leadbtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,15 +113,12 @@ public class AddNewBuyerActivity extends AppCompatActivity implements AddNewLead
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.Lead_Creation, addNewLeadFragment);
                 fragmentTransaction.addToBackStack(null);
-//                Bundle bundle = new Bundle();
-//                bundle.putInt("flag",flag);
-// set MyFragment Arguments
-//                propertyfragment.setArguments(bundle);
+
                 fragmentTransaction.commit();
 
                 ImageButton backbtnLead=(ImageButton)findViewById(R.id.AddLead_Back);
                 backbtnLead.setImageResource(R.mipmap.status_bar_back_arrow);
-//
+
 
 
             }
@@ -150,17 +141,11 @@ public class AddNewBuyerActivity extends AppCompatActivity implements AddNewLead
                fragmentTransactionproperty.replace(R.id.Lead_Creation, propertyfragment);
                fragmentTransactionproperty.addToBackStack(null);
 
-//                Bundle bundle = new Bundle();
-//                bundle.putInt("flag",flag);
-// set MyFragment Arguments
-//                 propertyfragment.setArguments(bundle);
+
                  fragmentTransactionproperty.commit();
-             //   Toast.makeText(AddNewBuyerActivity.this, flag, Toast.LENGTH_SHORT).show();
                 ImageButton backbtnLead=(ImageButton)findViewById(R.id.AddLead_Back);
                 backbtnLead.setImageResource(0);
-//                Button add=(Button)findViewById(R.id.add_doc);
 
-//                add.setText("");
 
             }
         });
@@ -180,17 +165,12 @@ public class AddNewBuyerActivity extends AppCompatActivity implements AddNewLead
                 FragmentTransaction fragmentTransactionupload=fragmentManagerUpload.beginTransaction();
                 fragmentTransactionupload.replace(R.id.Lead_Creation, uploadfragment);
                 fragmentTransactionupload.addToBackStack(null);
-//                Bundle bundle = new Bundle();
-//                bundle.putInt("flag",flag);
-// set MyFragment Arguments
-//                propertyfragment.setArguments(bundle);
+
                 fragmentTransactionupload.commit();
 
                 RelativeLayout currentLayout = (RelativeLayout) findViewById(R.id.buttonlayout);
                 currentLayout.setBackgroundColor(Color.parseColor("#30D5C8"));
 
-//                Button add=(Button)findViewById(R.id.add_doc);
-//                add.setText(R.string.add_doc);
                 ImageButton backbtnLead=(ImageButton)findViewById(R.id.AddLead_Back);
                 backbtnLead.setImageResource(0);
 
@@ -204,55 +184,7 @@ public class AddNewBuyerActivity extends AppCompatActivity implements AddNewLead
                onBackPressed();
             }
         });
-
-//        Button addDocument=(Button)findViewById(R.id.add_doc);
-//        addDocument.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//               getDocument();
-//            }
-//        });
-
     }
-//    private void getDocument()
-//    {
-//        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-//        intent.addCategory(Intent.CATEGORY_OPENABLE);
-//        intent.setType("application/pdf");
-//        //intent.get
-//        startActivityForResult(intent, READ_REQUEST_CODE);
-//
-//    }
-
-//    @Override
-//    public void onActivityResult(int req, int result, Intent data)
-//    {
-//
-//        // TODO Auto-generated method stub
-//        super.onActivityResult(req, result, data);
-//
-//        if (result == RESULT_OK)
-//        {
-//            //Intent intent = getIntent();
-//            //String name = intent.getData().getPath();
-//
-//
-//            //String name = data.getData().getPath();
-//            //Toast.makeText(getApplicationContext(),name,Toast.LENGTH_SHORT).show();
-//            Uri fileuri = data.getData();
-//
-//            Toast.makeText(getApplicationContext(), "Added successfully", Toast.LENGTH_SHORT).show();
-//
-//            try{
-//                uploadfragment.generateImageFromPdf(fileuri,getApplicationContext());
-//               }
-//  catch (Exception e){
-//    e.printStackTrace();
-//  }
-
-
-//        }
-//    }
 
 @Override
     public void onFragmentInteraction(Uri uri){
@@ -262,8 +194,6 @@ public class AddNewBuyerActivity extends AppCompatActivity implements AddNewLead
     public void onBackPressed() {
         finish();
     }
-
-
 
 }
 

@@ -18,6 +18,7 @@
     <EditText
         android:id="@+id/Login_Emailid"
         style="@style/AppEditbox"
+        android:inputType="textEmailAddress"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_width="match_parent"
@@ -27,7 +28,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginTop="225dp"
         android:drawableLeft="@mipmap/mail_icon"
-        android:hint="Email"
+        android:hint=" Email"
         android:maxLines="1"
         android:lines="1"
         android:singleLine="true"
@@ -49,7 +50,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:drawableLeft="@mipmap/pswd_icon"
-        android:hint="Password"
+        android:hint=" Password"
         android:inputType="textPassword"
                android:textSize="15sp"
         android:paddingLeft="10dp"/>

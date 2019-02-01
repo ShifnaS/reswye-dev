@@ -26,12 +26,7 @@
 
     </RelativeLayout>
     
-   <!-- <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="350dp"
-        android:id="@+id/leadcategoryimage"
-        android:background="@color/toolbarcolor"
-        android:src="@drawable/leadcategoryimage"/>-->
+
 
 <LinearLayout
     android:layout_width="match_parent"
@@ -91,8 +86,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/categorytext"
-           android:weightSum="1"
             android:visibility="gone"
+           android:weightSum="1"
             >
     <ImageView
         android:layout_marginTop="20dp"

@@ -84,7 +84,7 @@
         <activity android:name=".ui.Dashboard.UpComingFollowUpsActivity" />
         <activity android:name=".ui.Dashboard.RecentLeadListActivity" />
         <activity android:name=".ui.Dashboard.DormantListingActivity" />
-        <activity android:name=".ui.signupactivity.PaymentActivity"></activity>
+        <activity android:name=".ui.signupactivity.PaymentActivity" />
     </application>
 
 </manifest>

@@ -54,7 +54,20 @@
                 android:text="@string/signup_text2"
                 android:textColor="#645B6A"
                 android:textStyle="bold" />
+            <Spinner
 
+                android:id="@+id/userType"
+                style="@style/spinnerbox"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="20dp"
+                android:layout_below="@+id/ZipCcde"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:drawableRight="@mipmap/mandadatory_star"
+                android:entries="@array/userType"
+
+                />
             <Button
                 android:id="@+id/keypad"
                 style="@style/AppButton"
@@ -105,7 +118,7 @@
 
 
             <EditText
-                android:id="@+id/Signup_email"
+                android:id="@+id/signup_email"
                 style="@style/spinnerbox"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
@@ -141,7 +154,7 @@
 
 
             <EditText
-                android:id="@+id/Signup_Password"
+                android:id="@+id/signup_Password"
                 style="@style/spinnerbox"
                 android:layout_width="match_parent"
 
@@ -159,7 +172,7 @@
 
 
             <EditText
-                android:id="@+id/Signup_Retype"
+                android:id="@+id/signup_Retype"
                 style="@style/spinnerbox"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"

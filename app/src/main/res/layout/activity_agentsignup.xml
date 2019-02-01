@@ -53,20 +53,7 @@
            android:orientation="vertical"
 
            >
-           <Spinner
 
-               android:id="@+id/userType"
-               style="@style/spinnerbox"
-               android:layout_width="match_parent"
-               android:layout_height="40dp"
-               android:layout_marginTop="20dp"
-               android:layout_below="@+id/ZipCcde"
-               android:layout_marginLeft="20dp"
-               android:layout_marginRight="20dp"
-               android:drawableRight="@mipmap/mandadatory_star"
-               android:entries="@array/userType"
-
-              />
 
 
            <TextView
@@ -119,7 +106,8 @@
                    android:layout_marginTop="10dp"
                    android:layout_below="@+id/linearlytSwitch"
                    android:drawableRight="@mipmap/mandadatory_star"
-                   android:hint="Street Address"
+                   android:hint="Street"
+                   android:inputType="text"
                    android:paddingRight="10dp"
                    android:paddingLeft="10dp"
                    android:textColorHint="#A9A9A9" />
@@ -130,8 +118,8 @@
                android:layout_marginRight="20dp"
                android:layout_width="match_parent"
                android:layout_height="40dp"
+               android:inputType="text"
                android:layout_marginTop="10dp"
-               android:layout_below="@+id/StreetAddress"
                android:drawableRight="@mipmap/mandadatory_star"
                android:hint="City"
                android:paddingRight="10dp"
@@ -147,6 +135,7 @@
                android:layout_height="40dp"
                android:layout_below="@+id/City"
                android:layout_marginTop="10dp"
+               android:inputType="text"
                android:drawableRight="@mipmap/mandadatory_star"
                android:hint="State"
                android:paddingLeft="10dp"
@@ -161,12 +150,39 @@
                android:layout_width="match_parent"
                android:layout_height="40dp"
                android:layout_marginTop="10dp"
-               android:layout_below="@+id/state"
                android:drawableRight="@mipmap/mandadatory_star"
                android:hint="Zip Code"
+               android:inputType="number"
                android:paddingRight="10dp"
                android:paddingLeft="10dp"
                android:textColorHint="#A9A9A9" />
+
+
+
+
+           <ScrollView
+               android:id="@+id/ScrollView01"
+               android:layout_width="match_parent"
+               android:layout_height="150dp"
+               style="@style/spinnerbox"
+               android:layout_marginLeft="20dp"
+               android:layout_marginRight="20dp"
+               android:paddingTop="10dp"
+               android:paddingRight="10dp"
+               android:paddingLeft="10dp"
+               android:layout_marginTop="10dp"
+
+               >
+               <EditText
+                   android:id="@+id/address"
+                   android:background="@android:color/transparent"
+                   android:layout_width="match_parent"
+                   android:layout_height="match_parent"
+                   android:drawableRight="@mipmap/mandadatory_star"
+                   android:hint="Address"
+                   android:textColorHint="#A9A9A9" />
+
+           </ScrollView>
 
            <Spinner
                android:id="@+id/signup_findus"
