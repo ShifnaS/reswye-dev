@@ -49,17 +49,22 @@ import com.nexgensm.reswye.R;
 import com.nexgensm.reswye.api.ApiClient;
 import com.nexgensm.reswye.api.ApiInterface;
 import com.nexgensm.reswye.model.Response;
+import com.nexgensm.reswye.model.Result;
 import com.nexgensm.reswye.util.SharedPrefsUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import pub.devrel.easypermissions.EasyPermissions;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -69,12 +74,17 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import static android.Manifest.permission.CAMERA;
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+import static android.support.v4.content.ContextCompat.checkSelfPermission;
 
-public class AddNewLeadFragment extends Fragment implements EasyPermissions.PermissionCallbacks{
+public class AddNewLeadFragment extends Fragment {
+    private ArrayList<String> permissionsToRequest;
+    private ArrayList<String> permissionsRejected = new ArrayList<>();
+    private ArrayList<String> permissions = new ArrayList<>();
+    private final static int ALL_PERMISSIONS_RESULT = 107;
+    private final static int IMAGE_RESULT = 200;
     Bitmap bitmap;
-    ApiInterface apiService;
-    Uri picUri;
-    private int GALLERY = 1, CAMERA = 2;
+    String additional="",frtsName="",address="",lname="",mobile="",email="",gender="",status="",leadwarmth="";
+    //private int GALLERY = 1, CAMERA = 2;
     private static final int RESULT_OK = 1;
     private static final int RESULT_CANCELED = 0;
     private static final String ARG_PARAM1 = "param1";
@@ -87,7 +97,6 @@ public class AddNewLeadFragment extends Fragment implements EasyPermissions.Perm
     Spinner spinneradditionaldetails;
     String[] additionaldetails;
     CircleImageView circleView;
-    String gender_value, status, leadwarmth,image,Token,url,ImageUrl ,encodedImage;
     TextView lead_status;
     SwitchCompat selectgender_selection;
     LinearLayout leadstauslayout;
@@ -96,13 +105,10 @@ public class AddNewLeadFragment extends Fragment implements EasyPermissions.Perm
     SharedPreferences sharedpreferences;
     public static final String mypreference = "mypref";
     EditText firstnameedittext,AddressSelleredittext,lastnameedittext,mobilenumberedittext,emailedittext;
-    MultipartBody.Part fileToUpload;
-    RequestBody filename;
 
     private static final int REQUEST_GALLERY_CODE = 200;
     private static final int READ_REQUEST_CODE = 300;
     private static final String SERVER_PATH = "Path_to_your_server";
-    private Uri uri;
     public AddNewLeadFragment() {
         // Required empty public constructor
     }
@@ -130,6 +136,7 @@ public class AddNewLeadFragment extends Fragment implements EasyPermissions.Perm
         final View myFragmentView = inflater.inflate(R.layout.fragment_add_new_lead, container, false);
         spinneradditionaldetails = (Spinner) myFragmentView.findViewById(R.id.spinner_additional_details);
 
+        context=getContext();
         spinneradditionaldetails.setSelection(0, true);
         additionaldetails = getResources().getStringArray(R.array.AddNewLead);
 
@@ -148,6 +155,7 @@ public class AddNewLeadFragment extends Fragment implements EasyPermissions.Perm
 
         circleView = (CircleImageView) myFragmentView.findViewById(R.id.circleView);
         addnewleadbtn = (Button) myFragmentView.findViewById(R.id.adddetails_lead_save);
+        askPermissions();
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -164,9 +172,9 @@ public class AddNewLeadFragment extends Fragment implements EasyPermissions.Perm
 
 
         if (selectgender_selection.isChecked() == false) {
-            gender_value = "Male";
+            gender = "Male";
         } else {
-            gender_value = "Female";
+            gender = "Female";
         }
 
         if (flag == 1) {
@@ -234,7 +242,9 @@ public class AddNewLeadFragment extends Fragment implements EasyPermissions.Perm
             @Override
             public void onClick(View v) {
                 encodedImage_flag = 1;
-                showPictureDialog();
+               // showPictureDialog();
+                startActivityForResult(getPickImageChooserIntent(), IMAGE_RESULT);
+
             }
         });
 
@@ -242,58 +252,34 @@ public class AddNewLeadFragment extends Fragment implements EasyPermissions.Perm
         addnewleadbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String additional=additional_details.getSelectedItem().toString();
-                String frtsName=firstnameedittext.getText().toString();
-                String address= AddressSelleredittext.getText().toString();
-                String lname= lastnameedittext .getText().toString();
-                String mobile=mobilenumberedittext.getText().toString();
-                String email= emailedittext .getText().toString();
-                String gender=selectgender_selection .getText().toString();
-                String status= lead_status .getText().toString();
+
+                 additional=additional_details.getSelectedItem().toString();
+                 frtsName=firstnameedittext.getText().toString();
+                 address= AddressSelleredittext.getText().toString();
+                 lname= lastnameedittext .getText().toString();
+                 mobile=mobilenumberedittext.getText().toString();
+                 email= emailedittext .getText().toString();
+                // gender=selectgender_selection .getText().toString();
+                 status= lead_status .getText().toString();
 
                 if(frtsName.equals("")||address.equals("")||lname.equals("")||mobile.equals("")||email.equals(""))
                 {
-                    Toast.makeText(context, "Please enter all fields", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Please enter all fields", Toast.LENGTH_SHORT).show();
                 }
                 else if(mobile.length()!=10)
                 {
-                    Toast.makeText(context, "Please Enter a valid mobile no", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Please Enter a valid mobile no", Toast.LENGTH_SHORT).show();
                 }
                 else if(!isValidEmail(email))
                 {
-                    Toast.makeText(context, "Please Enter a valid email id", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Please Enter a valid email id", Toast.LENGTH_SHORT).show();
 
                 }
                 else
                 {
-                    int uid= SharedPrefsUtils.getInstance(getContext()).getUserId();
-
-                    RequestBody leadwarmth1 = RequestBody.create(MediaType.parse("text/plain"), leadwarmth);
-                    RequestBody additional1 = RequestBody.create(MediaType.parse("text/plain"), additional);
-                    RequestBody fname = RequestBody.create(MediaType.parse("text/plain"), frtsName);
-                    RequestBody address1 = RequestBody.create(MediaType.parse("text/plain"), address);
-                    RequestBody lname1 = RequestBody.create(MediaType.parse("text/plain"), lname);
-                    RequestBody email1 = RequestBody.create(MediaType.parse("text/plain"), email);
-                    RequestBody mobile1 = RequestBody.create(MediaType.parse("text/plain"), mobile);
-                    RequestBody gender1 = RequestBody.create(MediaType.parse("text/plain"), gender);
-                    RequestBody user_id = RequestBody.create(MediaType.parse("text/plain"), ""+uid);
+                    multipartImageUpload();
 
 
-                    ApiInterface apiService =ApiClient.getClient().create(ApiInterface.class);
-                    Call<Response> fileUpload = apiService.uploadLeadData(fileToUpload, filename,fname,address1,lname1,email1,mobile1,gender1,additional1,leadwarmth1,user_id);
-                    fileUpload.enqueue(new Callback<Response>() {
-                        @Override
-                        public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
-                            Toast.makeText(getActivity(), "Response " + response.raw().message(), Toast.LENGTH_LONG).show();
-                            Toast.makeText(getActivity(), "Success " + response.body().getStatus(), Toast.LENGTH_LONG).show();
-
-                        }
-
-                        @Override
-                        public void onFailure(Call<Response> call, Throwable t) {
-                            Log.d("TAG", "Error " + t.getMessage());
-                        }
-                    });
                 }
 
             }
@@ -301,111 +287,94 @@ public class AddNewLeadFragment extends Fragment implements EasyPermissions.Perm
 
         return myFragmentView;
     }
+    private void askPermissions() {
+        permissions.add(CAMERA);
+        permissions.add(WRITE_EXTERNAL_STORAGE);
+        permissions.add(READ_EXTERNAL_STORAGE);
+        permissionsToRequest = findUnAskedPermissions(permissions);
 
-    public static String encodeToBase64(Bitmap image, Bitmap.CompressFormat compressFormat, int quality) {
-        ByteArrayOutputStream byteArrayOS = new ByteArrayOutputStream();
-        image.compress(compressFormat, quality, byteArrayOS);
-        return Base64.encodeToString(byteArrayOS.toByteArray(), Base64.DEFAULT);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+
+            if (permissionsToRequest.size() > 0)
+                requestPermissions(permissionsToRequest.toArray(new String[permissionsToRequest.size()]), ALL_PERMISSIONS_RESULT);
+        }
     }
 
-    private void showPictureDialog() {
-        AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this.getActivity());
-        pictureDialog.setTitle("Select Action");
-        String[] pictureDialogItems = {
-                "Select photo from gallery",
-                "Capture photo from camera"};
-        pictureDialog.setItems(pictureDialogItems,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (which) {
-                            case 0:
-                                choosePhotoFromGallary();
-                                break;
-                            case 1:
-                                takePhotoFromCamera();
-                                break;
-                        }
-                    }
-                });
-        pictureDialog.show();
+    private ArrayList<String> findUnAskedPermissions(ArrayList<String> wanted) {
+        ArrayList<String> result = new ArrayList<String>();
 
+        for (String perm : wanted) {
+            if (!hasPermission(perm)) {
+                result.add(perm);
+            }
+        }
 
+        return result;
     }
+
+    private boolean hasPermission(String permission) {
+        if (canMakeSmores()) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                return (checkSelfPermission(getActivity(),permission) == PackageManager.PERMISSION_GRANTED);
+            }
+        }
+        return true;
+    }
+    private boolean canMakeSmores() {
+        return (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1);
+    }
+
+
+
     public static boolean isValidEmail(CharSequence target) {
         return (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches());
     }
 
 
-    public void choosePhotoFromGallary() {
-        Intent galleryIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(galleryIntent, GALLERY);
-    }
-
-    private void takePhotoFromCamera() {
-
-        if (ContextCompat.checkSelfPermission(this.getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-
-            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.CAMERA)) {
-
-
-            } else {
-                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, 1);
-            }
-
-        }
-        //ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 1);
-        Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent, CAMERA);
-
-    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == this.RESULT_CANCELED) {
-            return;
-        }
-
-        if(requestCode == REQUEST_GALLERY_CODE && resultCode == Activity.RESULT_OK){
-            uri = data.getData();
-            try {
-                bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            circleView.setImageBitmap(bitmap);
-            if(EasyPermissions.hasPermissions(getActivity().getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                String filePath = getRealPathFromURIPath(uri, getActivity());
-                File file = new File(filePath);
-                Log.d("TAG", "Filename " + file.getName());
-                //RequestBody mFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
-                RequestBody mFile = RequestBody.create(MediaType.parse("image/*"), file);
-                fileToUpload = MultipartBody.Part.createFormData("file", file.getName(), mFile);
-                filename = RequestBody.create(MediaType.parse("text/plain"), file.getName());
+        if (resultCode == Activity.RESULT_OK) {
 
 
-            }
-            else
-            {
-                EasyPermissions.requestPermissions(this, getString(R.string.read_file), READ_REQUEST_CODE, Manifest.permission.READ_EXTERNAL_STORAGE);
+            if (requestCode == IMAGE_RESULT) {
+
+
+                String filePath = getImageFilePath(data);
+                if (filePath != null) {
+                    bitmap = BitmapFactory.decodeFile(filePath);
+                    circleView.setImageBitmap(bitmap);
+                }
             }
 
-        }
-        else if (requestCode == CAMERA) {
-
-            
-            bitmap = (Bitmap) data.getExtras().get("data");
-            circleView.setImageBitmap(bitmap);
-            encodedImage = encodeToBase64(bitmap, Bitmap.CompressFormat.JPEG, 100);
-
-            Toast.makeText(getActivity(), "Image Updated!", Toast.LENGTH_SHORT).show();
         }
 
     }
 
 
+    private String getImageFromFilePath(Intent data) {
+        boolean isCamera = data == null || data.getData() == null;
+
+        if (isCamera) return getCaptureImageOutputUri().getPath();
+        else return getPathFromURI(data.getData());
+
+    }
+
+    public String getImageFilePath(Intent data) {
+        return getImageFromFilePath(data);
+    }
+
+    private String getPathFromURI(Uri contentUri) {
+        String[] proj = {MediaStore.Audio.Media.DATA};
+        Cursor cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
+    }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -431,34 +400,213 @@ public class AddNewLeadFragment extends Fragment implements EasyPermissions.Perm
         mListener = null;
     }
 
-    @Override
-    public void onPermissionsGranted(int requestCode, List<String> perms) {
-
-    }
-
-    @Override
-    public void onPermissionsDenied(int requestCode, List<String> perms) {
-        Log.d("TAG", "Permission has been denied");
-
-    }
 
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, AddNewLeadFragment.this);
+
+
+
+    public Intent getPickImageChooserIntent() {
+
+        Uri outputFileUri = getCaptureImageOutputUri();
+
+        List<Intent> allIntents = new ArrayList<>();
+        PackageManager packageManager = context.getPackageManager();
+
+        Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        List<ResolveInfo> listCam = packageManager.queryIntentActivities(captureIntent, 0);
+        for (ResolveInfo res : listCam) {
+            Intent intent = new Intent(captureIntent);
+            intent.setComponent(new ComponentName(res.activityInfo.packageName, res.activityInfo.name));
+            intent.setPackage(res.activityInfo.packageName);
+            if (outputFileUri != null) {
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
+            }
+            allIntents.add(intent);
+        }
+
+        Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
+        galleryIntent.setType("image/*");
+        List<ResolveInfo> listGallery = packageManager.queryIntentActivities(galleryIntent, 0);
+        for (ResolveInfo res : listGallery) {
+            Intent intent = new Intent(galleryIntent);
+            intent.setComponent(new ComponentName(res.activityInfo.packageName, res.activityInfo.name));
+            intent.setPackage(res.activityInfo.packageName);
+            allIntents.add(intent);
+        }
+
+        Intent mainIntent = allIntents.get(allIntents.size() - 1);
+        for (Intent intent : allIntents) {
+            if (intent.getComponent().getClassName().equals("com.android.documentsui.DocumentsActivity")) {
+                mainIntent = intent;
+                break;
+            }
+        }
+        allIntents.remove(mainIntent);
+
+        Intent chooserIntent = Intent.createChooser(mainIntent, "Select source");
+        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, allIntents.toArray(new Parcelable[allIntents.size()]));
+
+        return chooserIntent;
     }
-    private String getRealPathFromURIPath(Uri contentURI, Activity activity) {
-        Cursor cursor = activity.getContentResolver().query(contentURI, null, null, null, null);
-        if (cursor == null) {
-            return contentURI.getPath();
-        } else {
-            cursor.moveToFirst();
-            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-            return cursor.getString(idx);
+    private Uri getCaptureImageOutputUri() {
+        Uri outputFileUri = null;
+        File getImage = context.getExternalFilesDir("");
+        if (getImage != null) {
+            outputFileUri = Uri.fromFile(new File(getImage.getPath(), "profile.png"));
+        }
+        return outputFileUri;
+    }
+
+
+    private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
+        new android.support.v7.app.AlertDialog.Builder(getActivity())
+                .setMessage(message)
+                .setPositiveButton("OK", okListener)
+                .setNegativeButton("Cancel", null)
+                .create()
+                .show();
+    }
+
+    @TargetApi(Build.VERSION_CODES.M)
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+
+        switch (requestCode) {
+
+            case ALL_PERMISSIONS_RESULT:
+                for (String perms : permissionsToRequest) {
+                    if (!hasPermission(perms)) {
+                        permissionsRejected.add(perms);
+                    }
+                }
+
+                if (permissionsRejected.size() > 0) {
+
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        if (shouldShowRequestPermissionRationale(permissionsRejected.get(0))) {
+                            showMessageOKCancel("These permissions are mandatory for the application. Please allow access.",
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            requestPermissions(permissionsRejected.toArray(new String[permissionsRejected.size()]), ALL_PERMISSIONS_RESULT);
+                                        }
+                                    });
+                            return;
+                        }
+                    }
+
+                }
+
+                break;
         }
     }
+    private void multipartImageUpload() {
+        try {
+            File filesDir = getActivity().getFilesDir();
+            File file = new File(filesDir, "image" + ".png");
+
+            OutputStream os;
+            try {
+                os = new FileOutputStream(file);
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, os);
+                os.flush();
+                os.close();
+            } catch (Exception e) {
+                Log.e(getClass().getSimpleName(), "Error writing bitmap", e);
+            }
+
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 0, bos);
+            byte[] bitmapdata = bos.toByteArray();
+
+
+            FileOutputStream fos = new FileOutputStream(file);
+            fos.write(bitmapdata);
+            fos.flush();
+            fos.close();
+
+            int uid= SharedPrefsUtils.getInstance(getActivity()).getUserId();
+
+
+           /* RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
+            MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), reqFile);
+            RequestBody name = RequestBody.create(MediaType.parse("text/plain"), "upload");
+            RequestBody lname = RequestBody.create(MediaType.parse("text/plain"), "Shifna");*/
+
+
+            ApiInterface apiService =ApiClient.getClient().create(ApiInterface.class);
+
+            RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
+            MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), reqFile);
+            RequestBody name = RequestBody.create(MediaType.parse("text/plain"), "upload");
+
+            RequestBody leadwarmth1 = RequestBody.create(MediaType.parse("text/plain"), leadwarmth);
+            RequestBody additional1 = RequestBody.create(MediaType.parse("text/plain"), additional);
+            RequestBody fname = RequestBody.create(MediaType.parse("text/plain"), frtsName);
+            RequestBody address1 = RequestBody.create(MediaType.parse("text/plain"), address);
+            RequestBody lname1 = RequestBody.create(MediaType.parse("text/plain"), lname);
+            RequestBody email1 = RequestBody.create(MediaType.parse("text/plain"), email);
+            RequestBody mobile1 = RequestBody.create(MediaType.parse("text/plain"), mobile);
+            RequestBody gender1 = RequestBody.create(MediaType.parse("text/plain"), gender);
+            RequestBody user_id = RequestBody.create(MediaType.parse("text/plain"), ""+uid);
+            Log.e("11111","DATA "+leadwarmth+" "+additional);
+            Log.e("11111","DATA "+uid+" "+address);
+
+
+            Call<Response> req = apiService.uploadLeadData(body,name,fname,address1,lname1,email1,mobile1,gender1,additional1,leadwarmth1,user_id);
+            req.enqueue(new Callback<Response>() {
+                @Override
+                public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+
+                    if (response.code() == 200) {
+                      //  textView.setText("Uploaded Successfully!");
+                       // textView.setTextColor(Color.BLUE);
+                        if(response.body().getStatus().equals("success"))
+                        {
+                            Toast.makeText(getActivity(),  "Uploaded Successfully! ", Toast.LENGTH_SHORT).show();
+                            Result result=response.body().getResult();
+                            int lead_id=result.getLead_Id();
+                            SharedPrefsUtils.getInstance(getActivity()).setLeadId(lead_id);
+                        }
+                        else
+                        {
+                            Toast.makeText(getActivity(),  "Failed! ", Toast.LENGTH_SHORT).show();
+
+                        }
+
+                       /* {
+                            "status": "success",
+                                "result": {
+                            "user_id": "15",
+                                    "lead_id": "2"
+                        }
+                        }*/
+
+                    }
+
+                    Toast.makeText(getActivity(), response.code() + " ", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onFailure(Call<Response> call, Throwable t) {
+
+                    Toast.makeText(getActivity(), "Request failed", Toast.LENGTH_SHORT).show();
+                    Log.e("ERROR ","11111 "+t.getMessage());
+                    t.printStackTrace();
+                }
+            });
+
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }

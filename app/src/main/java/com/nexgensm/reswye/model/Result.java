@@ -4,6 +4,11 @@ import com.google.gson.annotations.SerializedName;
 
 public class Result {
 
+
+    @SerializedName("ffrid")
+    private int ffrid;
+
+
     @SerializedName("User_Id")
     private int User_Id;
 
@@ -18,6 +23,14 @@ public class Result {
 
     @SerializedName("message")
     private String message;
+
+    public int getFfrid() {
+        return ffrid;
+    }
+
+    public void setFfrid(int ffrid) {
+        this.ffrid = ffrid;
+    }
 
     public int getLead_Id() {
         return Lead_Id;

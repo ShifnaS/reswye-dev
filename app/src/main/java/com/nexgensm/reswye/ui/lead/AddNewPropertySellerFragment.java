@@ -1165,7 +1165,9 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import static android.app.Activity.RESULT_OK;
 
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.nexgensm.reswye.model.Result;
 import com.nexgensm.reswye.ui.signinpage.SigninActivity;
+import com.nexgensm.reswye.util.SharedPrefsUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -1315,14 +1317,14 @@ public class AddNewPropertySellerFragment extends Fragment {
             listingtype_value = "Buy";
         }
         if (shortsaleBox.isChecked() == false) {
-            shortsaleBox_value = "false";
+            shortsaleBox_value = "0";
         } else {
-            shortsaleBox_value = "true";
+            shortsaleBox_value = "1";
         }
         if (foreclosureBox.isChecked() == false) {
-            foreclosureBox_value = "false";
+            foreclosureBox_value = "0";
         } else {
-            foreclosureBox_value = "true";
+            foreclosureBox_value = "1";
         }
         spinnerpropertytype.setSelection(0, true);
         propertytype = getResources().getStringArray(R.array.Property_Type);
@@ -1347,7 +1349,7 @@ public class AddNewPropertySellerFragment extends Fragment {
         flag = sharedpreferences.getInt("flag", 0);
         Token=sharedpreferences.getString("token","");
         ImageUrl=sharedpreferences.getString("imageURL","");
-        LeadId = sharedpreferences.getInt("LeadId", 1);
+       // LeadId = sharedpreferences.getInt("LeadId", 1);
 
         if (flag == 1) {
             relative_lyt_loggedSeller = (RelativeLayout) myFragmentView.findViewById(R.id.relative_lyt_loggedSeller);
@@ -1670,49 +1672,58 @@ public class AddNewPropertySellerFragment extends Fragment {
                     final String spinnerpropertytypeTxt = spinnerpropertytype.getSelectedItem().toString();
                     final String spinnerpointofinterestTxt = spinnerpointofinterest.getSelectedItem().toString();
 
+
                     if ((addressTxt.equals("")) || (bedCountTxt.equals("")) || (bathCountTxt.equals("")) || (YearcountMinxt.equals("")) || (propdescriptionTxt.equals(""))) {
                         Toast.makeText(getActivity(), "Please fill all the fields", Toast.LENGTH_SHORT).show();
                     } else {
 
-                        requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
-                        url = "http://202.88.239.14:8169/api/Lead/AddPropertyDetails";
-                        Map<String, Object> jsonParams = new ArrayMap<>();
-                        jsonParams.put("Lead_ID", LeadId);
-                        jsonParams.put("Update", 0);
-                        jsonParams.put("Beds", bedCountTxt);
-                        jsonParams.put("Baths", bathCountTxt);
-                        jsonParams.put("YearBuilt_Start", YearcountMinxt);
-                        jsonParams.put("PropertyType", spinnerpropertytypeTxt);
-                        jsonParams.put("ListingType", listingtype_valueTxt);
-                        jsonParams.put("Listing_Price", listingpriceTxt);
-                        jsonParams.put("PointOfInterest", spinnerpointofinterestTxt);
-                        jsonParams.put("Address_location", addressTxt);
-                        jsonParams.put("Short_Sale", shortsaleBox_value);
-                        jsonParams.put("ForeClosure", foreclosureBox_value);
-                        jsonParams.put("Foreclosure_Date", testdate);
-                        jsonParams.put("Property_Description", propdescriptionTxt);
+                        int lead_id= SharedPrefsUtils.getInstance(getActivity()).getUserId();
 
+
+                        requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
+                        url = "http://192.168.0.3:3000/reswy/addlead_step2";
+                        Map<String, Object> jsonParams = new ArrayMap<>();
+                        jsonParams.put("lead_id", lead_id);
+                        jsonParams.put("Update", 0);
+                        jsonParams.put("beds", bedCountTxt);
+                        jsonParams.put("baths", bathCountTxt);
+                        jsonParams.put("yearbuilt", YearcountMinxt);
+                        jsonParams.put("propertytype", spinnerpropertytypeTxt);
+                        jsonParams.put("listingtype", listingtype_valueTxt);
+                        jsonParams.put("listing_price", listingpriceTxt);
+                        jsonParams.put("pointofinterest", spinnerpointofinterestTxt);
+                        jsonParams.put("address", addressTxt);
+                        jsonParams.put("short_sale", shortsaleBox_value);
+                        jsonParams.put("foreclosure", foreclosureBox_value);
+                        jsonParams.put("foreclosure_date", testdate);
+                        jsonParams.put("propertchara", propdescriptionTxt);
+                        jsonParams.put("propertyid", "11");
+                        jsonParams.put("features", "13");
+
+                /*        {
+                            "status": "success",
+                                "result": {
+                            "ffrid": 138,
+                                    "lead_id": 18
+                        }
+                        }*/
 
                         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(jsonParams),
                                 new Response.Listener<JSONObject>() {
                                     @Override
                                     public void onResponse(JSONObject response) {
+                                        loading.dismiss();
+
                                         try {
                                             responseResult = response.getString("status").toString().trim();
-                                            message = response.getString("message").toString().trim();
+                                            Toast.makeText(getActivity(), responseResult, Toast.LENGTH_SHORT).show();
+                                            JSONObject result=response.getJSONObject("result");
+                                            String lead_id=result.getString("lead_id");
+                                            String ffrid=result.getString("ffrid");
+                                            Toast.makeText(getActivity(), lead_id+" "+ffrid, Toast.LENGTH_SHORT).show();
+
 //                                                Lead_ID = response.getInt("Lead_ID");
 
-
-                                            String str3 = "Success";
-                                            int response_result = responseResult.compareTo(str3);
-                                            if (response_result == 0) {
-                                                loading.dismiss();
-                                                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-
-                                            } else {
-                                                loading.dismiss();
-                                                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-                                            }
 
                                         } catch (JSONException e) {
                                             loading.dismiss();

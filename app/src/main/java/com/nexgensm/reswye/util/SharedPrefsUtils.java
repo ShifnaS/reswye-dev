@@ -41,16 +41,29 @@ import com.nexgensm.reswye.app.Constants;
         int id= sharedPreferences.getInt(Constants.KEY_USER_ID, 0);
         return  id;
     }
+    public boolean setLeadId(int id) {
+        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(Constants.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(Constants.KEY_LEAD_ID,id);
+        editor.apply();
+        return true;
+    }
+    public int getLeadId() {
+        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(Constants.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        int id= sharedPreferences.getInt(Constants.KEY_LEAD_ID, 0);
+        return  id;
+    }
+
     public boolean setAgentId(int id) {
         SharedPreferences sharedPreferences = mCtx.getSharedPreferences(Constants.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt(Constants.KEY_USER_ID,id);
+        editor.putInt(Constants.KEY_AGENT_ID,id);
         editor.apply();
         return true;
     }
     public int getAgentId() {
         SharedPreferences sharedPreferences = mCtx.getSharedPreferences(Constants.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        int id= sharedPreferences.getInt(Constants.KEY_USER_ID, 0);
+        int id= sharedPreferences.getInt(Constants.KEY_AGENT_ID, 0);
         return  id;
     }
     public boolean logout() {

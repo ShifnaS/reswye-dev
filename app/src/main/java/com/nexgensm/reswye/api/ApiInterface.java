@@ -20,6 +20,27 @@ public interface ApiInterface {
     @POST("login")
     Call<Response> getLoginresponse(@Body Request body);
     @Multipart
-    @POST("test")
-    Call<Response> uploadLeadData(@Part MultipartBody.Part file, @Part("uploadfile") RequestBody name,@Part("first_name") RequestBody fname,@Part("address") RequestBody address1,@Part("last_name") RequestBody lname1,@Part("email_id") RequestBody email1,@Part("mobile") RequestBody mobile1,@Part("gender") RequestBody gender1,@Part("howfindabtus") RequestBody additional1,@Part("lead_prospect") RequestBody lead_prospect,@Part("user_id") RequestBody uid);
+    @POST("addlead_step1")
+    Call<Response> uploadLeadData(@Part MultipartBody.Part file,
+                                  @Part("file") RequestBody name,
+                                  @Part("first_name") RequestBody fname,
+                                  @Part("address") RequestBody address1,
+                                  @Part("last_name") RequestBody lname1,
+                                  @Part("email_id") RequestBody email1,
+                                  @Part("mobile") RequestBody mobile1,
+                                  @Part("gender") RequestBody gender1,
+                                  @Part("howfindabtus") RequestBody additional1,
+                                  @Part("lead_prospect") RequestBody lead_prospect,
+                                  @Part("user_id") RequestBody uid);
+
+
+    @Multipart
+    @POST("documentupload")
+    Call<Response> uploadLeadDocument(@Part MultipartBody.Part file,
+                                  @Part("file") RequestBody name,
+                                  @Part("name") RequestBody dname,
+                                  @Part("description") RequestBody discription,
+                                  @Part("lead_id") RequestBody lead_id);
+
+
 }

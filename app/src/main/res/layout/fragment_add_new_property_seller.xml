@@ -123,16 +123,18 @@ android:fillViewport="true">
         android:layout_marginTop="10dp"
 
         />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:id="@+id/ownerinfotext"
-        android:text="Owner Info"
-        android:layout_below="@id/addressedittext"
-        android:layout_marginTop="10dp"
-        android:gravity="center_vertical"
-        android:layout_toRightOf="@id/ownerinfo"
-        android:textColor="#000000"/>
+
+        <TextView
+            android:id="@+id/ownerinfotext"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_below="@id/addressedittext"
+            android:layout_marginLeft="-2dp"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@id/ownerinfo"
+            android:gravity="center_vertical"
+            android:text="Owner Info"
+            android:textColor="#000000" />
 
     <ImageButton
         android:layout_width="50dp"
@@ -406,7 +408,6 @@ android:fillViewport="true">
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@null"
-            android:src="@drawable/ic_settings_voice_black_24dp"
             android:layout_alignBottom="@+id/propertydescription"
             android:layout_marginBottom="12dp"
             android:layout_marginTop="20dp"
