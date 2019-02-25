@@ -30,16 +30,7 @@
         android:fontFamily="sans-serif"
         android:layout_marginTop="20dp"
         android:layout_marginLeft="20dp"/>
-    <!--<TextView-->
-        <!--android:layout_width="250dp"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:id="@+id/bedbathSFrooms"-->
-        <!--android:layout_below="@id/address"-->
-        <!--android:text="12 Bedrooms, 8 Baths, 9,350 SF"-->
-        <!--android:textStyle="bold"-->
-        <!--android:fontFamily="sans-serif"-->
-        <!--android:layout_marginTop="10dp"-->
-        <!--android:layout_marginLeft="20dp"/>-->
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
