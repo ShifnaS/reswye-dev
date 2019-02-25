@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -41,6 +42,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -50,6 +52,8 @@ import com.nexgensm.reswye.api.ApiClient;
 import com.nexgensm.reswye.api.ApiInterface;
 import com.nexgensm.reswye.model.Response;
 import com.nexgensm.reswye.model.Result;
+import com.nexgensm.reswye.ui.signinpage.SigninActivity;
+import com.nexgensm.reswye.util.KeyboardUtils;
 import com.nexgensm.reswye.util.SharedPrefsUtils;
 
 import java.io.ByteArrayOutputStream;
@@ -96,7 +100,7 @@ public class AddNewLeadFragment extends Fragment {
     Context context;
     Spinner spinneradditionaldetails;
     String[] additionaldetails;
-    CircleImageView circleView;
+    ImageView circleView;
     TextView lead_status;
     SwitchCompat selectgender_selection;
     LinearLayout leadstauslayout;
@@ -105,6 +109,8 @@ public class AddNewLeadFragment extends Fragment {
     SharedPreferences sharedpreferences;
     public static final String mypreference = "mypref";
     EditText firstnameedittext,AddressSelleredittext,lastnameedittext,mobilenumberedittext,emailedittext;
+    ProgressDialog pd;
+    ScrollView ScrollView01;
 
     private static final int REQUEST_GALLERY_CODE = 200;
     private static final int READ_REQUEST_CODE = 300;
@@ -126,6 +132,7 @@ public class AddNewLeadFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
     }
     @SuppressLint("NewApi")
     @TargetApi(Build.VERSION_CODES.M)
@@ -135,11 +142,13 @@ public class AddNewLeadFragment extends Fragment {
                              Bundle savedInstanceState) {
         final View myFragmentView = inflater.inflate(R.layout.fragment_add_new_lead, container, false);
         spinneradditionaldetails = (Spinner) myFragmentView.findViewById(R.id.spinner_additional_details);
+        pd = new ProgressDialog(getActivity());
 
         context=getContext();
         spinneradditionaldetails.setSelection(0, true);
         additionaldetails = getResources().getStringArray(R.array.AddNewLead);
 
+        ScrollView01=myFragmentView.findViewById(R.id.ScrollView01);
         additional_details =  myFragmentView.findViewById(R.id.spinner_additional_details);
         firstnameedittext = (EditText) myFragmentView.findViewById(R.id.firstname);
         AddressSelleredittext = (EditText) myFragmentView.findViewById(R.id.AddressSeller);
@@ -153,7 +162,7 @@ public class AddNewLeadFragment extends Fragment {
         coldbtn = (Button) myFragmentView.findViewById(R.id.coldbtn);
         neutral = (Button) myFragmentView.findViewById(R.id.neutral);
 
-        circleView = (CircleImageView) myFragmentView.findViewById(R.id.circleView);
+        circleView = (ImageView) myFragmentView.findViewById(R.id.circleView);
         addnewleadbtn = (Button) myFragmentView.findViewById(R.id.adddetails_lead_save);
         askPermissions();
 
@@ -164,18 +173,21 @@ public class AddNewLeadFragment extends Fragment {
 
         }
 
+        setback();
+
+        KeyboardUtils.hideKeyboard(getActivity());
+
+
+
+
 
         final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, additionaldetails);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinneradditionaldetails.setAdapter(adapter);
+        additional_details.setAdapter(adapter);
 
 
 
-        if (selectgender_selection.isChecked() == false) {
-            gender = "Male";
-        } else {
-            gender = "Female";
-        }
+
 
         if (flag == 1) {
 
@@ -191,7 +203,7 @@ public class AddNewLeadFragment extends Fragment {
         coldbtn.setBackground(btn_unclick);
         neutral.setBackground(btn_unclick);
 
-        warmbtn.setTextColor(Color.WHITE);
+        warmbtn.setTextColor(getContext().getColor(R.color.dark));
         coldbtn.setTextColor(Color.BLACK);
         neutral.setTextColor(Color.BLACK);
         leadwarmth = "Warm";
@@ -202,7 +214,7 @@ public class AddNewLeadFragment extends Fragment {
                 coldbtn.setBackground(btn_unclick);
                 neutral.setBackground(btn_unclick);
 
-                warmbtn.setTextColor(Color.WHITE);
+                warmbtn.setTextColor(getContext().getColor(R.color.dark));
                 coldbtn.setTextColor(Color.BLACK);
                 neutral.setTextColor(Color.BLACK);
                 leadwarmth = "Warm";
@@ -216,7 +228,7 @@ public class AddNewLeadFragment extends Fragment {
                 warmbtn.setBackground(btn_unclick);
                 neutral.setBackground(btn_unclick);
 
-                coldbtn.setTextColor(Color.WHITE);
+                coldbtn.setTextColor(getContext().getColor(R.color.dark));
                 warmbtn.setTextColor(Color.BLACK);
                 neutral.setTextColor(Color.BLACK);
                 leadwarmth = "Cold";
@@ -230,7 +242,7 @@ public class AddNewLeadFragment extends Fragment {
                 coldbtn.setBackground(btn_unclick);
                 warmbtn.setBackground(btn_unclick);
 
-                neutral.setTextColor(Color.WHITE);
+                neutral.setTextColor(getContext().getColor(R.color.dark));
                 coldbtn.setTextColor(Color.BLACK);
                 warmbtn.setTextColor(Color.BLACK);
                 leadwarmth = "Neutral";
@@ -261,9 +273,14 @@ public class AddNewLeadFragment extends Fragment {
                  email= emailedittext .getText().toString();
                 // gender=selectgender_selection .getText().toString();
                  status= lead_status .getText().toString();
-
+                if (selectgender_selection.isChecked() == false) {
+                    gender = "Male";
+                } else {
+                    gender = "Female";
+                }
                 if(frtsName.equals("")||address.equals("")||lname.equals("")||mobile.equals("")||email.equals(""))
                 {
+                   // Toast.makeText(context, "gender "+gender, Toast.LENGTH_SHORT).show();
                     Toast.makeText(getContext(), "Please enter all fields", Toast.LENGTH_SHORT).show();
                 }
                 else if(mobile.length()!=10)
@@ -277,6 +294,8 @@ public class AddNewLeadFragment extends Fragment {
                 }
                 else
                 {
+                    pd.setMessage("Loading");
+                    pd.show();
                     multipartImageUpload();
 
 
@@ -287,6 +306,8 @@ public class AddNewLeadFragment extends Fragment {
 
         return myFragmentView;
     }
+
+
     private void askPermissions() {
         permissions.add(CAMERA);
         permissions.add(WRITE_EXTERNAL_STORAGE);
@@ -506,30 +527,33 @@ public class AddNewLeadFragment extends Fragment {
     }
     private void multipartImageUpload() {
         try {
-            File filesDir = getActivity().getFilesDir();
-            File file = new File(filesDir, "image" + ".png");
 
-            OutputStream os;
-            try {
-                os = new FileOutputStream(file);
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, os);
-                os.flush();
-                os.close();
-            } catch (Exception e) {
-                Log.e(getClass().getSimpleName(), "Error writing bitmap", e);
-            }
+            if(bitmap!=null)
+            {
+                File filesDir = getActivity().getFilesDir();
+                File file = new File(filesDir, "image" + ".png");
 
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, 0, bos);
-            byte[] bitmapdata = bos.toByteArray();
+                OutputStream os;
+                try {
+                    os = new FileOutputStream(file);
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, os);
+                    os.flush();
+                    os.close();
+                } catch (Exception e) {
+                    Log.e(getClass().getSimpleName(), "Error writing bitmap", e);
+                }
+
+                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.PNG, 0, bos);
+                byte[] bitmapdata = bos.toByteArray();
 
 
-            FileOutputStream fos = new FileOutputStream(file);
-            fos.write(bitmapdata);
-            fos.flush();
-            fos.close();
+                FileOutputStream fos = new FileOutputStream(file);
+                fos.write(bitmapdata);
+                fos.flush();
+                fos.close();
 
-            int uid= SharedPrefsUtils.getInstance(getActivity()).getUserId();
+                int uid= SharedPrefsUtils.getInstance(getActivity()).getUserId();
 
 
            /* RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
@@ -538,45 +562,58 @@ public class AddNewLeadFragment extends Fragment {
             RequestBody lname = RequestBody.create(MediaType.parse("text/plain"), "Shifna");*/
 
 
-            ApiInterface apiService =ApiClient.getClient().create(ApiInterface.class);
+                ApiInterface apiService =ApiClient.getClient().create(ApiInterface.class);
 
-            RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
-            MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), reqFile);
-            RequestBody name = RequestBody.create(MediaType.parse("text/plain"), "upload");
+                RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
+                MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), reqFile);
+                RequestBody name = RequestBody.create(MediaType.parse("text/plain"), "upload");
 
-            RequestBody leadwarmth1 = RequestBody.create(MediaType.parse("text/plain"), leadwarmth);
-            RequestBody additional1 = RequestBody.create(MediaType.parse("text/plain"), additional);
-            RequestBody fname = RequestBody.create(MediaType.parse("text/plain"), frtsName);
-            RequestBody address1 = RequestBody.create(MediaType.parse("text/plain"), address);
-            RequestBody lname1 = RequestBody.create(MediaType.parse("text/plain"), lname);
-            RequestBody email1 = RequestBody.create(MediaType.parse("text/plain"), email);
-            RequestBody mobile1 = RequestBody.create(MediaType.parse("text/plain"), mobile);
-            RequestBody gender1 = RequestBody.create(MediaType.parse("text/plain"), gender);
-            RequestBody user_id = RequestBody.create(MediaType.parse("text/plain"), ""+uid);
-            Log.e("11111","DATA "+leadwarmth+" "+additional);
-            Log.e("11111","DATA "+uid+" "+address);
+                RequestBody leadwarmth1 = RequestBody.create(MediaType.parse("text/plain"), leadwarmth);
+                RequestBody additional1 = RequestBody.create(MediaType.parse("text/plain"), additional);
+                RequestBody fname = RequestBody.create(MediaType.parse("text/plain"), frtsName);
+                RequestBody address1 = RequestBody.create(MediaType.parse("text/plain"), address);
+                RequestBody lname1 = RequestBody.create(MediaType.parse("text/plain"), lname);
+                RequestBody email1 = RequestBody.create(MediaType.parse("text/plain"), email);
+                RequestBody mobile1 = RequestBody.create(MediaType.parse("text/plain"), mobile);
+                RequestBody gender1 = RequestBody.create(MediaType.parse("text/plain"), gender);
+                RequestBody user_id = RequestBody.create(MediaType.parse("text/plain"), ""+uid);
+                Log.e("11111","DATA "+leadwarmth+" "+additional);
+                Log.e("11111","DATA "+uid+" "+address);
 
 
-            Call<Response> req = apiService.uploadLeadData(body,name,fname,address1,lname1,email1,mobile1,gender1,additional1,leadwarmth1,user_id);
-            req.enqueue(new Callback<Response>() {
-                @Override
-                public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                Call<Response> req = apiService.uploadLeadData(body,name,fname,address1,lname1,email1,mobile1,gender1,additional1,leadwarmth1,user_id);
+                req.enqueue(new Callback<Response>() {
+                    @Override
+                    public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                        pd.dismiss();
 
-                    if (response.code() == 200) {
-                      //  textView.setText("Uploaded Successfully!");
-                       // textView.setTextColor(Color.BLUE);
-                        if(response.body().getStatus().equals("success"))
-                        {
-                            Toast.makeText(getActivity(),  "Uploaded Successfully! ", Toast.LENGTH_SHORT).show();
-                            Result result=response.body().getResult();
-                            int lead_id=result.getLead_Id();
-                            SharedPrefsUtils.getInstance(getActivity()).setLeadId(lead_id);
-                        }
-                        else
-                        {
-                            Toast.makeText(getActivity(),  "Failed! ", Toast.LENGTH_SHORT).show();
+                        if (response.code() == 200) {
+                            //  textView.setText("Uploaded Successfully!");
+                            // textView.setTextColor(Color.BLUE);
+                            if(response.body().getStatus().equals("success"))
+                            {
+                                Toast.makeText(getActivity(),  "Uploaded Successfully! ", Toast.LENGTH_SHORT).show();
+                                Result result=response.body().getResult();
+                                int lead_id=result.getLead_Id();
+                              //  Toast.makeText(context, "Lead "+lead_id, Toast.LENGTH_SHORT).show();
+                                SharedPrefsUtils.getInstance(getActivity()).setLeadId(lead_id);
 
-                        }
+                            //    additional_details.getSelectedItem().toString();
+                                firstnameedittext.setText("");
+                                AddressSelleredittext.setText("");
+                                lastnameedittext .setText("");
+                                mobilenumberedittext.setText("");
+                                emailedittext .setText("");
+                                // gender=selectgender_selection .getText().toString();
+                                lead_status .setText("");
+
+
+                            }
+                            else
+                            {
+                                Toast.makeText(getActivity(),  "Failed! ", Toast.LENGTH_SHORT).show();
+
+                            }
 
                        /* {
                             "status": "success",
@@ -586,27 +623,108 @@ public class AddNewLeadFragment extends Fragment {
                         }
                         }*/
 
+                        }
+
+                       // Toast.makeText(getActivity(), response.code() + " ", Toast.LENGTH_SHORT).show();
                     }
 
-                    Toast.makeText(getActivity(), response.code() + " ", Toast.LENGTH_SHORT).show();
-                }
+                    @Override
+                    public void onFailure(Call<Response> call, Throwable t) {
+                        pd.dismiss();
 
-                @Override
-                public void onFailure(Call<Response> call, Throwable t) {
+                        Toast.makeText(getActivity(), "Request failed", Toast.LENGTH_SHORT).show();
+                        Log.e("ERROR ","11111 "+t.getMessage());
+                        t.printStackTrace();
+                    }
+                });
 
-                    Toast.makeText(getActivity(), "Request failed", Toast.LENGTH_SHORT).show();
-                    Log.e("ERROR ","11111 "+t.getMessage());
-                    t.printStackTrace();
-                }
-            });
+            }
+            else
+            {
+                pd.dismiss();
+
+                Toast.makeText(context, "Please Select image", Toast.LENGTH_SHORT).show();
+            }
+
 
 
         } catch (FileNotFoundException e) {
+            pd.dismiss();
+
             e.printStackTrace();
         } catch (IOException e) {
+            pd.dismiss();
+
             e.printStackTrace();
         }
+
     }
 
+    private void setback() {
+        firstnameedittext.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+            public void onFocusChange(View view, boolean hasfocus) {
+                if (hasfocus) {
+
+                    view.setBackgroundResource(R.drawable.editbox_style);
+                } else {
+                    view.setBackgroundResource(R.drawable.spinner_focus);
+                }
+            }
+        });
+        lastnameedittext.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+            public void onFocusChange(View view, boolean hasfocus) {
+                if (hasfocus) {
+
+                    view.setBackgroundResource(R.drawable.editbox_style);
+                } else {
+                    view.setBackgroundResource(R.drawable.spinner_focus);
+                }
+            }
+        });
+        AddressSelleredittext.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+            public void onFocusChange(View view, boolean hasfocus) {
+                if (hasfocus) {
+
+                    ScrollView01.setBackgroundResource(R.drawable.editbox_style);
+                } else {
+                    ScrollView01.setBackgroundResource(R.drawable.spinner_focus);
+                }
+            }
+        }); mobilenumberedittext.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+            public void onFocusChange(View view, boolean hasfocus) {
+                if (hasfocus) {
+
+                    view.setBackgroundResource(R.drawable.editbox_style);
+                } else {
+                    view.setBackgroundResource(R.drawable.spinner_focus);
+                }
+            }
+        }); emailedittext.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+            public void onFocusChange(View view, boolean hasfocus) {
+                if (hasfocus) {
+
+                    view.setBackgroundResource(R.drawable.editbox_style);
+                } else {
+                    view.setBackgroundResource(R.drawable.spinner_focus);
+                }
+            }
+        }); additional_details.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+            public void onFocusChange(View view, boolean hasfocus) {
+                if (hasfocus) {
+
+                    view.setBackgroundResource(R.drawable.spinner_bg_focus);
+                } else {
+                    view.setBackgroundResource(R.drawable.spinner_bg);
+                }
+            }
+        });
+
+    }
 
 }

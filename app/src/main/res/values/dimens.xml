@@ -6,6 +6,7 @@
     <dimen name="activity_marginBottom">20dp</dimen>
     <dimen name="activity_marginTop">15dp</dimen>
     <dimen name="activity_padding">15dp</dimen>
+    <dimen name="scale_3dp">3dp</dimen>
 
     <!--Onboarding-->
     <dimen name="onboarding_button_width">150dp</dimen>

@@ -1,6 +1,7 @@
 package com.nexgensm.reswye.ui.signupactivity;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -8,28 +9,34 @@ import android.support.v7.app.AppCompatActivity;
 
 import android.text.TextUtils;
 import android.util.Patterns;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 import com.nexgensm.reswye.R;
+import com.nexgensm.reswye.adapter.ChangeBackground;
 import com.nexgensm.reswye.api.ApiClient;
 import com.nexgensm.reswye.api.ApiInterface;
 import com.nexgensm.reswye.model.Request;
 import com.nexgensm.reswye.model.Response;
 import com.nexgensm.reswye.model.Result;
+import com.nexgensm.reswye.util.KeyboardUtils;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import retrofit2.Call;
 import retrofit2.Callback;
 
-public class SignupActivity extends AppCompatActivity {
+public class SignupActivity extends AppCompatActivity implements View.OnTouchListener  {
     public String mobile, email, first_name,last_name,password,retype_pasword,otp;
     ProgressDialog loading;
     EditText et_mobile,et_email,et_firstName,et_lastName,et_retypePassord,et_password;
-
+    RelativeLayout layout;
 
     ProgressDialog pd;
     Button Signin;
@@ -37,6 +44,8 @@ public class SignupActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_signup);
 
         Window window = this.getWindow();
@@ -45,6 +54,7 @@ public class SignupActivity extends AppCompatActivity {
         window.setStatusBarColor(ContextCompat.getColor(getApplicationContext(), R.color.toolbarcolor));
         pd=new ProgressDialog(SignupActivity.this);
 
+        layout=findViewById(R.id.layout);
         et_firstName=findViewById(R.id.first_name);
         et_lastName=findViewById(R.id.last_name);
         et_email=findViewById(R.id.signup_email);
@@ -52,9 +62,17 @@ public class SignupActivity extends AppCompatActivity {
         et_password=findViewById(R.id.signup_Password);
         et_retypePassord=findViewById(R.id.signup_Retype);
 
+        et_firstName.setOnTouchListener(this);
+        et_lastName.setOnTouchListener(this);
+        et_email.setOnTouchListener(this);
+        et_mobile.setOnTouchListener(this);
+        et_password.setOnTouchListener(this);
+        et_retypePassord.setOnTouchListener(this);
+        layout.setOnTouchListener(this);
+
         Signin = (Button) findViewById(R.id.next_btn);
 
-
+        KeyboardUtils.hideKeyboard(this);
         Signin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,30 +97,72 @@ public class SignupActivity extends AppCompatActivity {
 
     private boolean checkValidation()
     {
-        if(first_name.equals("")||last_name.equals("")||email.equals("")||mobile.equals("")||password.equals("")||retype_pasword.equals(""))
+
+        if(first_name.equals(""))
         {
-            Toast.makeText(this, "Please enter all fields", Toast.LENGTH_SHORT).show();
+            et_firstName.setError("Please enter your First Name");
+            ChangeBackground.setBack(et_firstName,this);
+            ChangeBackground.setBack2(et_lastName,this);
+            ChangeBackground.setBack2(et_email,this);
+            ChangeBackground.setBack2(et_mobile,this);
+            ChangeBackground.setBack2(et_password,this);
+            ChangeBackground.setBack2(et_retypePassord,this);
             return false;
         }
-
-        else if(!isValidEmail(email))
+        else if(last_name.equals(""))
         {
+            ChangeBackground.setBack(et_lastName,this);
+            ChangeBackground.setBack2(et_firstName,this);
+            ChangeBackground.setBack2(et_email,this);
+            ChangeBackground.setBack2(et_mobile,this);
+            ChangeBackground.setBack2(et_password,this);
+            ChangeBackground.setBack2(et_retypePassord,this);
+            et_lastName.setError("Please enter your Last Name");
+            return false;
+        }
+        else if(!isValidEmail(email)||email.equals(""))
+        {
+            ChangeBackground.setBack(et_email,this);
+            ChangeBackground.setBack2(et_firstName,this);
+            ChangeBackground.setBack2(et_lastName,this);
+            ChangeBackground.setBack2(et_mobile,this);
+            ChangeBackground.setBack2(et_password,this);
+            ChangeBackground.setBack2(et_retypePassord,this);
             et_email.setError("Please enter a valid email");
             return false;
         }
-        else if(mobile.length()!=10)
+        else if(mobile.length()!=10||mobile.equals(""))
         {
+            ChangeBackground.setBack(et_mobile,this);
+            ChangeBackground.setBack2(et_email,this);
+            ChangeBackground.setBack2(et_firstName,this);
+            ChangeBackground.setBack2(et_lastName,this);
+            ChangeBackground.setBack2(et_password,this);
+            ChangeBackground.setBack2(et_retypePassord,this);
             et_mobile.setError("Please enter a valid mobile no");
             return false;
 
         }
-        else if(isValidPassword(password))
+        else if(isValidPassword(password)||password.equals(""))
         {
+            ChangeBackground.setBack(et_password,this);
+            ChangeBackground.setBack2(et_email,this);
+            ChangeBackground.setBack2(et_firstName,this);
+            ChangeBackground.setBack2(et_lastName,this);
+            ChangeBackground.setBack2(et_mobile,this);
+            ChangeBackground.setBack2(et_retypePassord,this);
             et_password.setError("password must contain minimum of 1 lower case letter, upper case letter, numeric character and special character");
             return false;
         }
-        else if(!password.equals(retype_pasword))
+
+        else if(!password.equals(retype_pasword)||retype_pasword.equals(""))
         {
+            ChangeBackground.setBack(et_retypePassord,this);
+            ChangeBackground.setBack2(et_email,this);
+            ChangeBackground.setBack2(et_firstName,this);
+            ChangeBackground.setBack2(et_lastName,this);
+            ChangeBackground.setBack2(et_mobile,this);
+            ChangeBackground.setBack2(et_password,this);
             et_retypePassord.setError("Password mismatch");
             return false;
         }
@@ -187,6 +247,84 @@ public class SignupActivity extends AppCompatActivity {
 
     public static boolean isValidEmail(CharSequence target) {
         return (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches());
+    }
+
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        ChangeBackground obj=new ChangeBackground();
+        float TIME_DELAY=2,lastY=0;
+        switch (v.getId())
+        {
+            case R.id.first_name:
+                // do your code
+                ChangeBackground.setBack(v,this);
+                ChangeBackground.setBack2(et_lastName,this);
+                ChangeBackground.setBack2(et_email,this);
+                ChangeBackground.setBack2(et_mobile,this);
+                ChangeBackground.setBack2(et_password,this);
+                ChangeBackground.setBack2(et_retypePassord,this);
+
+                break;
+
+
+
+
+            case R.id.last_name:
+                // do your code
+                ChangeBackground.setBack(v,this);
+                ChangeBackground.setBack2(et_firstName,this);
+                ChangeBackground.setBack2(et_email,this);
+                ChangeBackground.setBack2(et_mobile,this);
+                ChangeBackground.setBack2(et_password,this);
+                ChangeBackground.setBack2(et_retypePassord,this);
+
+                break;
+
+            case R.id.signup_email:
+                // do your code
+                ChangeBackground.setBack2(et_firstName,this);
+                ChangeBackground.setBack2(et_lastName,this);
+                ChangeBackground.setBack(v,this);
+                ChangeBackground.setBack2(et_mobile,this);
+                ChangeBackground.setBack2(et_password,this);
+                ChangeBackground.setBack2(et_retypePassord,this);
+
+                break;
+            case R.id.mobilenum:
+                // do your code
+                ChangeBackground.setBack2(et_firstName,this);
+                ChangeBackground.setBack2(et_lastName,this);
+                ChangeBackground.setBack2(et_email,this);
+                ChangeBackground.setBack(v,this);
+                ChangeBackground.setBack2(et_password,this);
+                ChangeBackground.setBack2(et_retypePassord,this);
+
+                break;
+            case R.id.signup_Password:
+                // do your code
+                ChangeBackground.setBack2(et_firstName,this);
+                ChangeBackground.setBack2(et_lastName,this);
+                ChangeBackground.setBack2(et_email,this);
+                ChangeBackground.setBack2(et_mobile,this);
+                ChangeBackground.setBack(v,this);
+                ChangeBackground.setBack2(et_retypePassord,this);
+
+                break;
+            case R.id.signup_Retype:
+                // do your code
+                ChangeBackground.setBack2(et_firstName,this);
+                ChangeBackground.setBack2(et_lastName,this);
+                ChangeBackground.setBack2(et_email,this);
+                ChangeBackground.setBack2(et_mobile,this);
+                ChangeBackground.setBack2(et_password,this);
+                ChangeBackground.setBack(v,this);
+
+                break;
+
+
+        }
+        return false;
     }
 
 

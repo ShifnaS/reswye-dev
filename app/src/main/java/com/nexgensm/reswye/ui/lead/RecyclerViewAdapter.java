@@ -11,8 +11,11 @@ import android.widget.TextView;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.nexgensm.reswye.R;
+import com.nexgensm.reswye.model.ResultData;
 import com.squareup.picasso.Picasso;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -23,6 +26,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     Context context;
 
     List<LeadListingRecyclerDataAdapter> getDataAdapter;
+    ArrayList<ResultData> list;
 
     ImageLoader imageLoader1;
     int a = 0;
@@ -34,7 +38,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         this.context = context;
         this.a = c;
     }
+    public RecyclerViewAdapter(ArrayList<ResultData> list, Context context, int c,int m) {
 
+        super();
+        this.list = list;
+        this.context = context;
+        this.a = c;
+    }
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v;
@@ -66,21 +76,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         LeadListingRecyclerDataAdapter getDataAdapter1 = getDataAdapter.get(position);
 
-//        imageLoader1 = ServerImageParseAdapter.getInstance(context).getImageLoader();
-//        Log.v("LOADER", "" + getDataAdapter1.getLead_imageUrl());
-//        imageLoader1.get(getDataAdapter1.getLead_imageUrl(),
-//                ImageLoader.getImageListener(
-//                        Viewholder.leadPictureView,//Server Image
-//                        R.mipmap.ic_launcher,//Before loading server image the default showing image.
-//                        android.R.drawable.ic_dialog_alert //Error image if requested image dose not found on server.
-//                )
-//        );
 
-//        Viewholder.leadPictureView.setImageUrl(getDataAdapter1.getLead_imageUrl(), imageLoader1);
-//
-//        Viewholder.leadNameView.setText(getDataAdapter1.getLead_name());
-//        Viewholder.leadTimeView.setText(getDataAdapter1.getLead_time());
-//        Viewholder.leadAddressView.setText(getDataAdapter1.getLead_address());
         if (a == 0) {
             imageLoader1 = ServerImageParseAdapter.getInstance(context).getImageLoader();
             Log.v("LOADER", "" + getDataAdapter1.getLead_imageUrl());

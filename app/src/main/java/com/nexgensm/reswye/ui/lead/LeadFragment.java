@@ -46,8 +46,13 @@ import com.android.volley.toolbox.Volley;
 import com.nexgensm.reswye.R;
 import com.nexgensm.reswye.Singleton;
 import com.nexgensm.reswye.Utlity;
+import com.nexgensm.reswye.api.ApiClient;
+import com.nexgensm.reswye.api.ApiInterface;
+import com.nexgensm.reswye.model.ResponseList;
+import com.nexgensm.reswye.model.Result;
 import com.nexgensm.reswye.ui.navigationdrawer.ProfileSettingsActivity;
 import com.nexgensm.reswye.ui.signinpage.SigninActivity;
+import com.nexgensm.reswye.util.SharedPrefsUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -57,6 +62,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -128,7 +134,7 @@ public class LeadFragment extends Fragment {
 
         jsonObject = new JSONObject();
         GetDataAdapter1 = new ArrayList<>();
-
+        userId = SharedPrefsUtils.getInstance(getActivity()).getUserId();
         Window window = getActivity().getWindow();
 
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -142,6 +148,9 @@ public class LeadFragment extends Fragment {
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+
+       // JSON_DATA_WEB_CALL();
         recyclerView.addOnItemTouchListener(
 
                 new LeadRecyclerItemClickListener(getActivity().getApplicationContext(), new LeadRecyclerItemClickListener.OnItemClickListener() {
@@ -218,10 +227,9 @@ public class LeadFragment extends Fragment {
             }
         });
 
-        // JSON_DATA_WEB_CALL();
+         JSON_DATA_WEB_CALL();
         return myFragmentView;
     }
-
 
     public void JSON_DATA_WEB_CALL() {
         Log.v(TAG, "JSON CALL");
@@ -281,6 +289,7 @@ public class LeadFragment extends Fragment {
             JsonObjectRequest jsObjRequest;
             jsObjRequest = new JsonObjectRequest
                     (Request.Method.POST, Utlity.leadFilterUrl, jsonObject, new Response.Listener<JSONObject>() {
+
                         @Override
                         public void onResponse(JSONObject response) {
 
@@ -352,7 +361,7 @@ public class LeadFragment extends Fragment {
                 Log.v(TAG, "SORT zero");
 
                 @SuppressLint({"NewApi", "LocalSuppress"}) final ProgressDialog loading = ProgressDialog.show(getContext(), "Please wait...", "Fetching data...", false, false);
-                url = "http://202.88.239.14:8169/api/Lead/GetAllLeads/" + userId;
+                url = "http://192.168.0.3:3000/reswy/listleads/"+userId;
                 JsonObjectRequest jsObjRequest1;
                 sortsave = Singleton.getInstance().getSortSaveFlag();
                 jsObjRequest1 = new JsonObjectRequest
@@ -366,9 +375,9 @@ public class LeadFragment extends Fragment {
                                 sharedpreferences = getActivity().getSharedPreferences(mypreference, Context.MODE_PRIVATE);
                                 refresh = sharedpreferences.getInt("refresh", 0);
                                 if (refresh == 1) {
-                                    JSON_PARSE_DATA_AFTER_WEBCALL(response);
-                                }
 
+                                }
+                                JSON_PARSE_DATA_AFTER_WEBCALL(response);
                                 int a = 0;
                                 recyclerViewadapter = new RecyclerViewAdapter(GetDataAdapter1, getActivity().getApplication(), a);
                                 recyclerView.swapAdapter(recyclerViewadapter, true);
@@ -473,13 +482,13 @@ public class LeadFragment extends Fragment {
 
     }
 
+
     public void JSON_PARSE_DATA_AFTER_WEBCALL(JSONObject jsonObject) {
         Log.v(TAG, "json parse");
         sharedpreferences = getActivity().getSharedPreferences(mypreference, Context.MODE_PRIVATE);
-        userId = sharedpreferences.getInt("UserId", 0);
         Token = sharedpreferences.getString("token", "");
         ImageUrl = sharedpreferences.getString("imageURL", "");
-        JSONArray jarray = jsonObject.optJSONArray("data");
+        JSONArray jarray = jsonObject.optJSONArray("result");
 //
 //        Log.v("test", "" + jarray.length());
 //        Log.v("json", "" + jarray.toString());
@@ -489,12 +498,12 @@ public class LeadFragment extends Fragment {
                 JSONObject abc = jarray.getJSONObject(i);
                 //   Log.v("object", "" + abc.toString());
 
-                name1 = abc.getString("firstName");
+                name1 = abc.getString("firstname");
                 address = abc.getString("address");
-                lead_ID = abc.getInt("lead_ID");
-                lead_CreatedDate = abc.getString("lead_CreatedDate");
-                profileimage = abc.getString("leadProfileimage");
-                image = ImageUrl + profileimage;
+                lead_ID = abc.getInt("lead_id");
+                lead_CreatedDate = abc.getString("lead_createddate");
+                profileimage = abc.getString("leadprofileimage");
+                image = "http://192.168.0.3:3000/reswy/upload/file-1549540497209-SAMPLE.jpg";
                 GetDataAdapter2.setLead_name(name1);
                 GetDataAdapter2.setLead_address(address);
                 GetDataAdapter2.setLead_ID(lead_ID);
@@ -514,39 +523,7 @@ public class LeadFragment extends Fragment {
         Log.v(TAG, "RECYCLER");
         recyclerView.swapAdapter(recyclerViewadapter, true);
         recyclerView.removeAllViewsInLayout();
-        //recyclerView.setAdapter(recyclerViewadapter);
-//        recyclerView.addOnItemTouchListener(
-//
-//                new LeadRecyclerItemClickListener(getActivity().getApplicationContext(), new LeadRecyclerItemClickListener.OnItemClickListener() {
-//                    @Override
-//                    public void onItemClick(View view, int position) {
-//                        // TODO Handle item click
-//                        String name = GetDataAdapter1.get(position).getLead_name();
-//                        String image = GetDataAdapter1.get(position).getLead_imageUrl();
-//                        Integer id = GetDataAdapter1.get(position).getLead_ID();
-//                        Log.v(TAG, "ID inside" + id);
-////                        SharedPreferences sp =
-////                                getActivity().getSharedPreferences("CHECKBOX", 0);
-////                        SharedPreferences.Editor edt = sp.edit();
-////                        edt.putString("location", name);
-////                        edt.putString("image", image);
-////                        edt.commit();
-////                        Toast toast = Toast.makeText(getActivity().getApplicationContext(), "Your toast message." + id,
-////                                Toast.LENGTH_SHORT);
-////                        toast.show();
-//                        Intent addnewsellerdetailsactivity = new Intent(getActivity().getApplicationContext(), SellerDetailsActivity.class);
-//                        addnewsellerdetailsactivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                        addnewsellerdetailsactivity.putExtra("LeadId", id);
-//                        getActivity().getApplication().startActivity(addnewsellerdetailsactivity);
-//                       // recyclerView.getRecycledViewPool().clear();
-//
-//                        //   transact();
-//
-//                    }
-//
-//
-//                })
-//        );
+
 
     }
 
@@ -674,29 +651,14 @@ public class LeadFragment extends Fragment {
                                                         nDialog.dismiss();
                                                         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
                                                         dialog.dismiss();
-//                                                        sharedpreferences = getActivity().getSharedPreferences(mypreference, Context.MODE_PRIVATE);
-//                                                        SharedPreferences.Editor editor = sharedpreferences.edit();
-//                                                        editor.putInt("firstTime", 1);
-//                                                        editor.commit();
+//
 
                                                     } else {
                                                         Toast.makeText(getActivity().getApplicationContext(), message, Toast.LENGTH_SHORT).show();
                                                         nDialog.dismiss();
                                                         dialog.dismiss();
                                                     }
-//                                            int result = re.compareTo(str3);
-//                                            if (result == 0) {
-//                                                //   loading.dismiss();
-//                                                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 //
-//
-//                                            } else {
-//                                                //  loading.dismiss();
-//                                                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
-//                                                Intent in = new Intent(SigninActivity.this, SigninActivity.class);
-//                                                startActivity(in);
-//                                                finish();
-//                                            }
 
                                                 } catch (JSONException e) {
                                                     nDialog.dismiss();

@@ -115,16 +115,14 @@ public class PersonalDetailsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View myFragmentView=inflater.inflate(R.layout.fragment_personal_details_buyer, container, false);
-//        sharedpreferences =getActivity().getSharedPreferences(mypreference, Context.MODE_PRIVATE);
-//        LeadId=sharedpreferences.getInt("LeadId",0);
-//        Log.v("LEADIDone",""+LeadId);
-//        Token=sharedpreferences.getString("token","");
+
         sharedpreferences =getActivity().getSharedPreferences(mypreference, Context.MODE_PRIVATE);
         userId=sharedpreferences.getInt("UserId",0);
         flag = sharedpreferences.getInt("flag", 0);
         Token=sharedpreferences.getString("token","");
         ImageUrl=sharedpreferences.getString("imageURL","");
-        LeadId = sharedpreferences.getInt("LeadId", 1);
+       /// LeadId = sharedpreferences.getInt("LeadId", 1);
+         LeadId = getArguments().getInt("leadId");
 
 
         circleView=(CircleImageView)myFragmentView.findViewById(R.id.circleView);
@@ -140,7 +138,7 @@ public class PersonalDetailsFragment extends Fragment {
 
 
         imageUrl="http://202.88.239.14:8169/FileUploads/";
-        url = "http://202.88.239.14:8169/api/Lead/GetLeadPersonalDetails/"+LeadId;
+        url = "http://192.168.0.3:3000/reswy/leadlistpersonal/"+LeadId;
 
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,url, null,
@@ -150,26 +148,28 @@ public class PersonalDetailsFragment extends Fragment {
                     public void onResponse(JSONObject response) {
                         try {
                             Status_missed = response.getString("status").toString().trim();
-                            JSONArray jsonArray=response.getJSONArray("data");
+
+                            if(Status_missed.equals("success"))
+                            {
+
+                                JSONArray jsonArray=response.getJSONArray("result");
 
                                 JSONObject data = jsonArray.getJSONObject(0);
 
-                            firstName = data.getString("firstName");
-                            lastName = data.getString("lastName");
-                            lead_Status = data.getString("lead_Status");
-                            lead_CreatedDate = data.getString("lead_CreatedDate");
-                            address = data.getString("address");
-                            leadProfileimage = data.getString("leadProfileimage");
-                            lead_Category = data.getString("lead_Category");
-                            transferedStatus = data.getString("transfered_Status");
-                            mobileNo = data.getString("mobileNo");
-                            hwfindabtusTxt = data.getString("hwfindabtus");
-                            emailID = data.getString("emailID");
-                         //   transferedAgentName = data.getString("transfered_AgentName");
+                                firstName = data.getString("firstname");
+                                lastName = data.getString("lastname");
+                                lead_Status = data.getString("lead_statusid");
+                                lead_CreatedDate = data.getString("lead_createddate");
+                                address = data.getString("address");
+                                leadProfileimage = data.getString("leadprofileimage");
+                                lead_Category = data.getString("lead_category");
+                                transferedStatus = data.getString("transfered_status");
+                                mobileNo = data.getString("mobileno");
+                                hwfindabtusTxt = data.getString("hwfindabtus");
+                                emailID = data.getString("emailid");
+                                //   transferedAgentName = data.getString("transfered_AgentName");
                                 String image=imageUrl+leadProfileimage;
-                                String str3 = "Success";
-                                int response_result = Status_missed.compareTo(str3);
-                                if (response_result == 0) {
+
 
                                     leadpersonal_name.setText(firstName);
                                     leadpersonal_date.setText(lead_CreatedDate);
@@ -178,15 +178,15 @@ public class PersonalDetailsFragment extends Fragment {
                                     leadpersonal_mail_txt.setText(emailID);
                                     leadpersonal_find.setText(hwfindabtusTxt);
                                     leadpersonal_transfer_statusTxt.setText(transferedStatus);
-                                  //  leadpersonal_transferred_toTxt.setText(transferedAgentName);
-//        URL newurl = new URL(image);
-//        mIcon_val = BitmapFactory.decodeStream(newurl.openConnection().getInputStream());
-//        circleView.setImageBitmap(mIcon_val);
-                                    Picasso.with(getActivity()).load(image).into(circleView);
-                                } else {
-                                    Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
 
-                                }
+                                    Picasso.with(getActivity()).load(image).into(circleView);
+
+                            }
+                            else
+                            {
+                                Toast.makeText(getActivity(), "No data", Toast.LENGTH_SHORT).show();
+                            }
+
 
                         }
                         catch (JSONException e) {
@@ -253,16 +253,6 @@ public class PersonalDetailsFragment extends Fragment {
         }
     }
 
-//    @Override
-//    public void onAttach(Context context) {
-//        super.onAttach(context);
-//        if (context instanceof OnFragmentInteractionListener) {
-//            mListener = (OnFragmentInteractionListener) context;
-//        } else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
-//    }
 
     @Override
     public void onDetach() {
@@ -271,26 +261,9 @@ public class PersonalDetailsFragment extends Fragment {
 
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
-//    @Override
-//    public void onBackPressed() {
-//        //   super.onBackPressed();
-//        // startActivity(new Intent(SellerDetailsActivity.this, BottomTabbarActivity.class));
-//        SellerDetailsActivity.super.onBackPressed();
-//        finish();
-//    }
 
 }

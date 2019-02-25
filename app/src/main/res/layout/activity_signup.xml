@@ -1,14 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/logoimg">
+<RelativeLayout
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.nexgensm.reswye.ui.signupactivity.SignupActivity">
+    tools:context="com.nexgensm.reswye.ui.signupactivity.SignupActivity"
+    android:background="@color/cardview_light_background"
+    android:id="@+id/layout">
 
     <RelativeLayout
         android:id="@+id/logoimg"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="200dp"
         android:background="@mipmap/download">
 
         <ImageView
@@ -32,10 +42,6 @@
             android:textColor="#00ffff" />
     </RelativeLayout>
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/logoimg">
 
         <LinearLayout
             android:id="@+id/relativeLayout2"
@@ -54,10 +60,10 @@
                 android:text="@string/signup_text2"
                 android:textColor="#645B6A"
                 android:textStyle="bold" />
-            <Spinner
+        <!--    <Spinner
 
                 android:id="@+id/userType"
-                style="@style/spinnerbox"
+                android:background="@drawable/spinner_focus"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="20dp"
@@ -67,7 +73,7 @@
                 android:drawableRight="@mipmap/mandadatory_star"
                 android:entries="@array/userType"
 
-                />
+                />-->
             <Button
                 android:id="@+id/keypad"
                 style="@style/AppButton"
@@ -81,8 +87,11 @@
                 android:visibility="gone" />
 
             <EditText
+                android:theme="@style/spinnerbox"
+                android:background="@drawable/spinner_focus"
                 android:id="@+id/first_name"
-                style="@style/spinnerbox"
+                android:nextFocusUp="@id/first_name"
+                android:nextFocusLeft="@id/first_name"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginLeft="20dp"
@@ -97,6 +106,10 @@
                 android:paddingRight="10dp"
                 android:singleLine="true"
                 android:textColorHint="#A9A9A9" />
+
+
+
+
 
             <EditText
                 android:id="@+id/last_name"
@@ -205,5 +218,5 @@
 
 
         </LinearLayout>
-    </ScrollView>
 </RelativeLayout>
+</ScrollView>

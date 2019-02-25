@@ -1,0 +1,38 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data class="SelectedExerciseItemBinding">
+
+        <variable
+            name="exercise"
+            type="com.nexgensm.reswye.ui.propertylisting.ExcercisePojo" />
+
+        <variable
+            name="chooseExerciseListAdapter"
+            type="com.nexgensm.reswye.ui.propertylisting.ExcerciseListAdapter" />
+
+    </data>
+
+    <RelativeLayout
+        android:id="@+id/rl_exercise_type"
+        android:layout_width="75dp"
+        android:layout_height="70dp"
+        android:layout_margin="10dp"
+        android:layout_marginLeft="10dp"
+        android:background="@drawable/shape_pink_circle"
+        android:gravity="center"
+        android:onLongClick="@{chooseExerciseListAdapter.onLongClick}">
+
+
+        <TextView
+            android:id="@+id/tv_exercise_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@{exercise.name}"
+            android:textAllCaps="true"
+            android:textColor="@color/colorPrimary"
+            android:textSize="12sp" />
+
+    </RelativeLayout>
+
+</layout>

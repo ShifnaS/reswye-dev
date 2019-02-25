@@ -1,6 +1,7 @@
 package com.nexgensm.reswye.ui.lead;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v4.content.ContextCompat;
@@ -27,6 +28,8 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.nexgensm.reswye.R;
 import com.nexgensm.reswye.ui.Dashboard.DormantItems;
+import com.nexgensm.reswye.ui.signinpage.SigninActivity;
+import com.nexgensm.reswye.util.SharedPrefsUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -45,6 +48,7 @@ public class OwnerInfoActivity extends AppCompatActivity {
     public static final String mypreference = "mypref";
     String FirstName, LastName, MobileNo, EmailID;
     RequestQueue requestQueue, editView, updateOwner, requestQueue2;
+    ProgressDialog pd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +60,7 @@ public class OwnerInfoActivity extends AppCompatActivity {
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(ContextCompat.getColor(getApplicationContext(), R.color.toolbarcolor));
+        pd = new ProgressDialog(OwnerInfoActivity.this);
 
         ImageButton close = (ImageButton) findViewById(R.id.close);
         close.setOnClickListener(new View.OnClickListener() {
@@ -70,7 +75,8 @@ public class OwnerInfoActivity extends AppCompatActivity {
         flag = sharedpreferences.getInt("flag", 0);
         Token=sharedpreferences.getString("token","");
         ImageUrl=sharedpreferences.getString("imageURL","");
-        leadId = sharedpreferences.getInt("LeadId", 1);
+       // leadId = sharedpreferences.getInt("LeadId", 1);
+        leadId=SharedPrefsUtils.getInstance(getApplicationContext()).getLeadId();
 
         requestQueue = Volley.newRequestQueue(this);
         requestQueue2 = Volley.newRequestQueue(this);
@@ -82,267 +88,145 @@ public class OwnerInfoActivity extends AppCompatActivity {
 
 
         saveOwnerInfo = (Button) findViewById(R.id.saveOwnerInfo);
-        if (flag == 0) {
+        saveOwnerInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pd.setMessage("loading");
+                pd.show();
+                String FnameE = firstname.getText().toString();
+                String LnameE = lastname.getText().toString();
+                String MobE = contactnum.getText().toString();
+                String MailE = emailid.getText().toString();
+                final String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+                if (MobE.length() == 10) {
+                    if (MailE.matches(emailPattern)) {
+                        url ="http://192.168.0.3:3000/reswy/addownerinfo";;
+                        Map<String, Object> jsonParams = new ArrayMap<>();
+                        jsonParams.put("firstname", FnameE);
+                        jsonParams.put("lastname", LnameE);
+                        jsonParams.put("lead_id", leadId);
+                        jsonParams.put("phone", MobE);
+                        jsonParams.put("email", MailE);
 
+                        JsonObjectRequest jsonObject2 = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(jsonParams),
+                                new Response.Listener<JSONObject>() {
+                                    @Override
+                                    public void onResponse(JSONObject response) {
+                                        pd.dismiss();
 
-            saveOwnerInfo.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    final String firstName=firstname.getText().toString();
-                    final  String LName=lastname.getText().toString();
-                    final String ContactNU=contactnum.getText().toString();
-                    final String emailTXT = emailid.getText().toString();
-                    if (contactnum.length() == 10) {
-                        final String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+                                        try {
 
-                        if ((emailTXT.matches(emailPattern))) {
-                            url = "http://202.88.239.14:8169/api/lead/SaveLeadOwnerInfo";
-                            Map<String, Object> jsonParams = new ArrayMap<>();
-                            jsonParams.put("FirstName", firstName);
-                            jsonParams.put("LastName", LName);
-                            jsonParams.put("Lead_ID", leadId);
-                            jsonParams.put("MobileNo", ContactNU);
-                            jsonParams.put("EmailID", emailTXT);
-
-                            JsonObjectRequest jsonObject = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(jsonParams),
-                                    new Response.Listener<JSONObject>() {
-                                        @Override
-                                        public void onResponse(JSONObject response) {
-                                            try {
-                                                Status_missed = response.getString("status").toString().trim();
-                                                String str3 = "Success";
-                                                int response_result = Status_missed.compareTo(str3);
-                                                if (response_result == 0) {
-
-                                                    Toast.makeText(getApplicationContext(), "success", Toast.LENGTH_SHORT).show();
-                                                    finish();
-
-                                                } else {
-                                                    Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
-
-                                                }
-
-                                            } catch (JSONException e) {
-                                                e.printStackTrace();
+                                          /*  {
+                                                "status": "success",
+                                                    "result": {
+                                                "owner_id": 7,
+                                                        "lead_id": 15
                                             }
+                                            }
+
+*/
+                                            Status_missed = response.getString("status").toString().trim();
+                                            String str3 = "success";
+                                            if (Status_missed.equals(str3)) {
+
+                                                Toast.makeText(getApplicationContext(), "Successfully Added", Toast.LENGTH_SHORT).show();
+                                                finish();
+                                                firstname.setText("");
+                                                lastname.setText("");
+                                                contactnum.setText("");
+                                                emailid.setText("");
+                                            } else {
+                                                firstname.setText("");
+                                                lastname.setText("");
+                                                contactnum.setText("");
+                                                emailid.setText("");
+                                                Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
+
+                                            }
+
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
                                         }
-                                    }, new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                    Toast.makeText(getApplicationContext(), "Volley Error" + error, Toast.LENGTH_SHORT).show();
-                                    // do something...
-                                }
-                            }) {
-                                @Override
-                                public Map<String, String> getHeaders() throws AuthFailureError {
-                                    final Map<String, String> headers = new HashMap<>();
-                                    headers.put("Authorization", Token);
-                                    return headers;
-                                }
-                            };
-                            requestQueue.add(jsonObject);
-                        } else {
-                            Toast.makeText(getApplicationContext(), "Enter valid email id", Toast.LENGTH_SHORT).show();
-                        }
+                                    }
+                                }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                pd.dismiss();
+
+                                Toast.makeText(getApplicationContext(), "Volley Error" + error, Toast.LENGTH_SHORT).show();
+                                // do something...
+                            }
+                        }) {
+                            @Override
+                            public Map<String, String> getHeaders() throws AuthFailureError {
+                                pd.dismiss();
+
+                                final Map<String, String> headers = new HashMap<>();
+                                headers.put("Authorization", Token);
+                                return headers;
+                            }
+                        };
+                        requestQueue2.add(jsonObject2);
                     } else {
-                        Toast.makeText(getApplicationContext(), "Enter a valid phone number", Toast.LENGTH_SHORT).show();
+                        pd.dismiss();
+
+                        Toast.makeText(getApplicationContext(), "enter valid Email id", Toast.LENGTH_SHORT).show();
                     }
 
+                } else {
+                    pd.dismiss();
+
+                    Toast.makeText(getApplicationContext(), "Enter valid contact number", Toast.LENGTH_SHORT).show();
                 }
-            });
-        } else {
 
-            editView = Volley.newRequestQueue(this);
-            url = "http://202.88.239.14:8169/api/Lead/GetLeadOwnerInfo/"+leadId;
+            }
+        });
+    }
+    private void setback() {
+        firstname.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 
-            JsonObjectRequest jsonObjectRequest1 = new JsonObjectRequest(Request.Method.GET, url, null,
-                    new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            try {
-                                Status_missed = response.getString("status").toString().trim();
-                                JSONArray jsonArray = response.getJSONArray("data");
+            public void onFocusChange(View view, boolean hasfocus) {
+                if (hasfocus) {
 
-                                if (jsonArray.length() > 0) {
-                                    JSONObject data = jsonArray.getJSONObject(0);
-
-                                    FirstName = data.getString("firstName");
-                                    LastName = data.getString("lastName");
-                                    MobileNo = data.getString("mobileNo");
-                                    EmailID = data.getString("emailID");
-                                    firstname.setText(FirstName);
-                                    lastname.setText(LastName);
-                                    contactnum.setText(MobileNo);
-                                    emailid.setText(EmailID);
-                                }
-
-
-                                String str3 = "Success";
-                                int response_result = Status_missed.compareTo(str3);
-                                if (response_result == 0) {
-
-                                    if (jsonArray.length() > 0) {
-                                        saveOwnerInfo.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                String Fname = firstname.getText().toString();
-                                                String Lname = lastname.getText().toString();
-                                                String Mob = contactnum.getText().toString();
-                                                String Mail = emailid.getText().toString();
-                                                final String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
-                                                if (Mob.length() == 10) {
-                                                    if (Mail.matches(emailPattern)) {
-                                                        url = "http://202.88.239.14:8169/api/Lead/UpdateLeadOwnerInfo";
-                                                        Map<String, Object> jsonParams = new ArrayMap<>();
-                                                        jsonParams.put("FirstName", Fname);
-                                                        jsonParams.put("LastName", Lname);
-                                                        jsonParams.put("MobileNo", Mob);
-                                                        jsonParams.put("EmailID", Mail);
-                                                        jsonParams.put("Lead_ID", leadId);
-
-                                                        JsonObjectRequest jsonObjectRequest2 = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(jsonParams),
-                                                                new Response.Listener<JSONObject>() {
-                                                                    @Override
-                                                                    public void onResponse(JSONObject response) {
-                                                                        try {
-                                                                            Status_missed = response.getString("status").toString().trim();
-
-
-                                                                            String str3 = "Success";
-                                                                            int response_result = Status_missed.compareTo(str3);
-                                                                            if (response_result == 0) {
-                                                                                Toast.makeText(getApplicationContext(), "Updated Owner info", Toast.LENGTH_SHORT).show();
-                                                                                finish();
-
-                                                                            } else {
-                                                                                Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
-
-                                                                            }
-
-                                                                        } catch (JSONException e) {
-                                                                            e.printStackTrace();
-                                                                        }
-                                                                    }
-                                                                }, new Response.ErrorListener() {
-                                                            @Override
-                                                            public void onErrorResponse(VolleyError error) {
-                                                                Toast.makeText(getApplicationContext(), "Volley Error" + error, Toast.LENGTH_SHORT).show();
-                                                                // do something...
-                                                            }
-                                                        }) {
-                                                            @Override
-                                                            public Map<String, String> getHeaders() throws AuthFailureError {
-                                                                final Map<String, String> headers = new HashMap<>();
-                                                                headers.put("Authorization", Token);
-                                                                return headers;
-                                                            }
-                                                        };
-                                                        updateOwner.add(jsonObjectRequest2);
-                                                    } else {
-                                                        Toast.makeText(getApplicationContext(), "enter valid email id", Toast.LENGTH_SHORT).show();
-
-                                                    }
-                                                } else {
-                                                    Toast.makeText(getApplicationContext(), "enter valid mobile number", Toast.LENGTH_SHORT).show();
-                                                }
-
-                                            }
-                                        });
-
-                                    } else {
-                                        saveOwnerInfo.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                String FnameE = firstname.getText().toString();
-                                                String LnameE = lastname.getText().toString();
-                                                String MobE = contactnum.getText().toString();
-                                                String MailE = emailid.getText().toString();
-                                                final String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
-                                                if (MobE.length() == 10) {
-                                                    if (MailE.matches(emailPattern)) {
-                                                        url = "http://202.88.239.14:8169/api/lead/SaveLeadOwnerInfo";
-                                                        Map<String, Object> jsonParams = new ArrayMap<>();
-                                                        jsonParams.put("FirstName", FnameE);
-                                                        jsonParams.put("LastName", LnameE);
-                                                        jsonParams.put("Lead_ID", leadId);
-                                                        jsonParams.put("MobileNo", MobE);
-                                                        jsonParams.put("EmailID", MailE);
-
-                                                        JsonObjectRequest jsonObject2 = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(jsonParams),
-                                                                new Response.Listener<JSONObject>() {
-                                                                    @Override
-                                                                    public void onResponse(JSONObject response) {
-                                                                        try {
-                                                                            Status_missed = response.getString("status").toString().trim();
-                                                                            String str3 = "Success";
-                                                                            int response_result = Status_missed.compareTo(str3);
-                                                                            if (response_result == 0) {
-
-                                                                                Toast.makeText(getApplicationContext(), "success", Toast.LENGTH_SHORT).show();
-
-                                                                            } else {
-                                                                                Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
-
-                                                                            }
-
-                                                                        } catch (JSONException e) {
-                                                                            e.printStackTrace();
-                                                                        }
-                                                                    }
-                                                                }, new Response.ErrorListener() {
-                                                            @Override
-                                                            public void onErrorResponse(VolleyError error) {
-                                                                Toast.makeText(getApplicationContext(), "Volley Error" + error, Toast.LENGTH_SHORT).show();
-                                                                // do something...
-                                                            }
-                                                        }) {
-                                                            @Override
-                                                            public Map<String, String> getHeaders() throws AuthFailureError {
-                                                                final Map<String, String> headers = new HashMap<>();
-                                                                headers.put("Authorization", Token);
-                                                                return headers;
-                                                            }
-                                                        };
-                                                        requestQueue2.add(jsonObject2);
-                                                    } else {
-                                                        Toast.makeText(getApplicationContext(), "enter valid Email id", Toast.LENGTH_SHORT).show();
-                                                    }
-
-                                                } else {
-                                                    Toast.makeText(getApplicationContext(), "Enter valid contact number", Toast.LENGTH_SHORT).show();
-                                                }
-
-                                            }
-                                        });
-
-                                    }
-
-                                } else
-
-                                {
-                                    Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
-
-                                }
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(getApplicationContext(), "Volley Error" + error, Toast.LENGTH_SHORT).show();
-                    // do something...
+                    view.setBackgroundResource(R.drawable.editbox_style);
+                } else {
+                    view.setBackgroundResource(R.drawable.spinner_focus);
                 }
-            }) {
-                @Override
-                public Map<String, String> getHeaders() throws AuthFailureError {
-                    final Map<String, String> headers = new HashMap<>();
-                    headers.put("Authorization", Token);
-                    return headers;
+            }
+        });
+        lastname.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+            public void onFocusChange(View view, boolean hasfocus) {
+                if (hasfocus) {
+
+                    view.setBackgroundResource(R.drawable.editbox_style);
+                } else {
+                    view.setBackgroundResource(R.drawable.spinner_focus);
                 }
-            };
-            editView.add(jsonObjectRequest1);
-        }
+            }
+        });
+        emailid.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+            public void onFocusChange(View view, boolean hasfocus) {
+                if (hasfocus) {
+
+                    view.setBackgroundResource(R.drawable.editbox_style);
+                } else {
+                    view.setBackgroundResource(R.drawable.spinner_focus);
+                }
+            }
+        });
+        contactnum.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+            public void onFocusChange(View view, boolean hasfocus) {
+                if (hasfocus) {
+
+                    view.setBackgroundResource(R.drawable.editbox_style);
+                } else {
+                    view.setBackgroundResource(R.drawable.spinner_focus);
+                }
+            }
+        });
+
     }
 }

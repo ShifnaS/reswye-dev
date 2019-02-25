@@ -29,7 +29,7 @@
 
     <!--Sign up screen 1-->
     <string name="Signup_note">Welcome to RSWS</string>
-    <string name="signup_text2">Fill out the form below to get started</string>
+    <string name="signup_text2">Turn the page to get started.</string>
     <string name="Signup_buttontext">Next</string>
 
     <!--Sign up screen 2 Agent sign up-->
@@ -68,8 +68,7 @@
     </string-array>
     <string-array name="userType">
         <item>--User Type--</item>
-        <item>Option 1</item>
-        <item>Option 2 </item>
+        <item>Agent </item>
     </string-array>
     <string-array name="cardType">
         <item>Card Type</item>
@@ -136,7 +135,6 @@
 
     <!--add new property type-->
     <string-array name="Property_Type">
-        <item>Property Type </item>
         <item>Single Family Home</item>
         <item>Multiple Family Home</item>
         <item>Townhouse</item>
@@ -145,12 +143,22 @@
         <item>Land</item>
     </string-array>
 
+    <string-array name="propertyType">
+        <item>Single Family Home</item>
+        <item>Multiple Family Home</item>
+        <item>Townhouse</item>
+        <item>Condo</item>
+        <item>Apartments</item>
+        <item>Land</item>
+    </string-array>
+
+    <string name="google_maps_api_key">AIzaSyDIoyl48T6r8uVOLSmKJHoCAYVKe7ydaU8</string>
+
     <!--fragment add new property buyer-->
     <string name="save_and_proceed">Save &amp; Proceed To Upload Documents </string>
 
     <!--point of interest-->
     <string-array name="point_of_interest">
-        <item>Point of Interest </item>
         <item>Nearby Schools</item>
         <item>Nearby Hospitals</item>
         <item>Community Information</item>

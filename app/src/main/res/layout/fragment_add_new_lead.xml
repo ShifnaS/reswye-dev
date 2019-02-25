@@ -14,23 +14,16 @@
     tools:context="com.nexgensm.reswye.ui.lead.AddNewSellerActivity">
 
 
-    <de.hdodenhof.circleimageview.CircleImageView
+    <ImageView
         android:layout_gravity="center_vertical|center_horizontal"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
         android:layout_marginTop="20dp"
         android:layout_centerHorizontal="true"
         android:src="@mipmap/man"
         android:id="@+id/circleView"
         />
-<TextView
-    android:id="@+id/fname"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginLeft="20dp"
-    android:layout_marginRight="20dp"
-    android:text="FirstName"
-    />
+
     <EditText
         android:layout_width="match_parent"
         android:layout_height="40dp"
@@ -43,15 +36,9 @@
         android:hint="First Name"
         android:background="@drawable/spinner_focus"
         android:paddingLeft="10dp"
+        android:textColorHint="#A9A9A9"
         android:paddingRight="10dp"/>
-    <TextView
-        android:id="@+id/lname"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="20dp"
-        android:text="Last Name"/>
+
     <EditText
         android:layout_width="match_parent"
         android:layout_height="40dp"
@@ -64,13 +51,7 @@
         android:background="@drawable/spinner_focus"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="20dp"
-        android:text="Address"/>
+
    <!-- <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -108,14 +89,7 @@
 
     </ScrollView>
 
-<TextView
-    android:id="@+id/mobile"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginLeft="20dp"
-    android:layout_marginRight="20dp"
-    android:layout_marginTop="20dp"
-    android:text="Mobile Number"/>
+
     <EditText
         android:layout_width="match_parent"
         android:layout_height="40dp"
@@ -130,14 +104,7 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp"/>
 
-    <TextView
-        android:id="@+id/Email"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="20dp"
-        android:text="Email"/>
+
 
     <EditText
         android:layout_width="match_parent"
@@ -161,6 +128,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:text="Select Gender"
+        android:textStyle="bold"
         android:textColor="#000000"
         />
 
@@ -180,13 +148,13 @@
         android:text="Male"
         android:layout_marginLeft="20dp"
         android:theme="@style/SCBSwitch"
-        tools:text="Male" />
+        tools:text="MALE " />
 
     <TextView
         android:id="@+id/femaletxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Female"
+        android:text="FEMALE"
         android:textStyle="bold"
         android:layout_marginTop="20dp"/>
     </LinearLayout>
@@ -199,14 +167,14 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:text="Additional Details"
-        android:textColor="@color/colorAccent"
+        android:textColor="@color/dark"
         />
     <Spinner
         android:id="@+id/spinner_additional_details"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
-        style="@style/spinner_style"
+        android:layout_height="40dp"
         android:layout_marginTop="20dp"
+        android:background="@drawable/spinner_bg"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         />
@@ -429,17 +397,16 @@
     </LinearLayout>
     <Button
         android:id="@+id/adddetails_lead_save"
-        style="@style/AppButton"
+        android:background="@drawable/pink_round_button"
+        android:layout_margin="20dp"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
         android:layout_alignParentBottom="true"
         android:text="Save"
         android:textAllCaps="false"
         android:textColor="@color/colorPrimary"
         android:textSize="20sp"
-        android:layout_marginBottom="20dp"/>
+        />
 
 </LinearLayout>
 </ScrollView>

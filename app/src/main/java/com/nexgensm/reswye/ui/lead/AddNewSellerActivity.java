@@ -1,12 +1,15 @@
 package com.nexgensm.reswye.ui.lead;
 
+import android.annotation.TargetApi;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.speech.RecognizerIntent;
+import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,6 +26,7 @@ import android.widget.Toast;
 import com.nexgensm.reswye.R;
 import com.nexgensm.reswye.ui.onboarding.OnBoardingActivity;
 import com.nexgensm.reswye.ui.signinpage.SigninActivity;
+import com.nexgensm.reswye.util.KeyboardUtils;
 
 import java.util.ArrayList;
 
@@ -42,6 +46,7 @@ public class AddNewSellerActivity extends AppCompatActivity implements AddNewLea
      RelativeLayout relative_lyt_logged;
     int flag;
 
+    @TargetApi(Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,8 +62,8 @@ public class AddNewSellerActivity extends AppCompatActivity implements AddNewLea
         propertybtn.setBackground(btn_unclick);
         uploadbtn.setBackground(btn_unclick);
         leadbtn.setTextColor(Color.WHITE);
-        propertybtn.setTextColor(Color.BLACK);
-        uploadbtn.setTextColor(Color.BLACK);
+        propertybtn.setTextColor(getApplicationContext().getColor(R.color.darkgrey));
+        uploadbtn.setTextColor(getApplicationContext().getColor(R.color.darkgrey));
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.Lead_Creation, addNewLeadFragment);
@@ -68,24 +73,11 @@ public class AddNewSellerActivity extends AppCompatActivity implements AddNewLea
         ImageButton backbtn = (ImageButton)findViewById(R.id.AddLead_Back);
         backbtn.setImageResource(R.drawable.status_bar_back_arrow);
 
-//        if( getIntent().getExtras() != null) {
-//
-//
-//            flag = getIntent().getExtras().getInt("flag");
-//
-//            String str = Integer.toString(flag);
-//            String strlog = Integer.toString(flaglog);
-//            Bundle bundle = new Bundle();
-//            // bundle.putString("NAME_KEY", nameTxt.getText().toString());
-//            bundle.putInt("flag", flag);
-////            bundle.putInt("flaglog", flaglog);
-//            addNewLeadFragment.setArguments(bundle);
-//
-//
-//
-//        }
+        KeyboardUtils.hideKeyboard(this);
+
 
         leadbtn.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View v) {
 
@@ -94,8 +86,8 @@ public class AddNewSellerActivity extends AppCompatActivity implements AddNewLea
                 uploadbtn.setBackground(btn_unclick);
 
                 leadbtn.setTextColor(Color.WHITE);
-                propertybtn.setTextColor(Color.BLACK);
-                uploadbtn.setTextColor(Color.BLACK);
+                propertybtn.setTextColor(getApplicationContext().getColor(R.color.darkgrey));
+                uploadbtn.setTextColor(getApplicationContext().getColor(R.color.darkgrey));
 
                 FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -119,8 +111,8 @@ public class AddNewSellerActivity extends AppCompatActivity implements AddNewLea
                 leadbtn.setBackground(btn_unclick);
                 uploadbtn.setBackground(btn_unclick);
                 propertybtn.setTextColor(Color.WHITE);
-                leadbtn.setTextColor(Color.BLACK);
-                uploadbtn.setTextColor(Color.BLACK);
+                leadbtn.setTextColor(getApplicationContext().getColor(R.color.darkgrey));
+                uploadbtn.setTextColor(getApplicationContext().getColor(R.color.darkgrey));
 
                 FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -142,8 +134,8 @@ public class AddNewSellerActivity extends AppCompatActivity implements AddNewLea
                 propertybtn.setBackground(btn_unclick);
                 leadbtn.setBackground(btn_unclick);
                 uploadbtn.setTextColor(Color.WHITE);
-                propertybtn.setTextColor(Color.BLACK);
-                leadbtn.setTextColor(Color.BLACK);
+                propertybtn.setTextColor(getApplicationContext().getColor(R.color.darkgrey));
+                leadbtn.setTextColor(getApplicationContext().getColor(R.color.darkgrey));
 
                 FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction fragmentTransactionupload = fragmentManager.beginTransaction();
@@ -172,45 +164,10 @@ public class AddNewSellerActivity extends AppCompatActivity implements AddNewLea
                 onBackPressed();
             }
         });
-//
-//        Button addDocument = (Button) findViewById(R.id.add_doc);
-//        addDocument.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                getDocument();
-//            }
-//        });
+
     }
 
-//    private void getDocument() {
-//        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-//        intent.addCategory(Intent.CATEGORY_OPENABLE);
-//        intent.setType("application/pdf");
-//        startActivityForResult(intent, READ_REQUEST_CODE);
-//
-//    }
-//
-//    @Override
-//    public void onActivityResult(int req, int result, Intent data) {
-//
-//        // TODO Auto-generated method stub
-//        super.onActivityResult(req, result, data);
-//
-//        if (result == RESULT_OK) {
-//
-//            Uri fileuri = data.getData();
-//
-//            Toast.makeText(getApplicationContext(), "Added successfully", Toast.LENGTH_SHORT).show();
-//
-//            try {
-//                uploadfragment.generateImageFromPdf(fileuri, getApplicationContext());
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//
-//
-//        }
-//    }
+   // TODO Auto-generated method stub
 
     @Override
     public void onFragmentInteraction(Uri uri) {

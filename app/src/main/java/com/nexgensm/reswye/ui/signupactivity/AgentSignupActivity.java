@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -21,6 +22,7 @@ import com.nexgensm.reswye.model.Request;
 import com.nexgensm.reswye.model.Response;
 import com.nexgensm.reswye.model.Result;
 import com.nexgensm.reswye.ui.bottomtabbar.BottomTabbarActivity;
+import com.nexgensm.reswye.util.SharedPrefsUtils;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -39,6 +41,7 @@ public class AgentSignupActivity extends AppCompatActivity {
     Button bt_signUp;
     ProgressDialog pd;
     int userIdString;
+    ScrollView ScrollView01;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +65,7 @@ public class AgentSignupActivity extends AppCompatActivity {
         });
         bt_signUp =  findViewById(R.id.signup2_btn);
         sc_gender=findViewById(R.id.signup_gender);
-
+        ScrollView01=findViewById(R.id.ScrollView01);
         et_address =  findViewById(R.id.address);
         et_street =  findViewById(R.id.StreetAddress);
         et_city =  findViewById(R.id.City);
@@ -78,8 +81,8 @@ public class AgentSignupActivity extends AppCompatActivity {
         final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getApplicationContext(), android.R.layout.simple_spinner_item, additionaldetails);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sp_findUs.setAdapter(adapter);
-        
-       
+
+        setback();
 
         bt_signUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,11 +134,11 @@ public class AgentSignupActivity extends AppCompatActivity {
             return false;
 
         }
-        else if(referalCodeString.equals(""))
+       /* else if(referalCodeString.equals(""))
         {
             et_referalcode.setError("Please enter a this field");
             return false;
-        }
+        }*/
         else
         {
             return true;
@@ -180,6 +183,7 @@ public class AgentSignupActivity extends AppCompatActivity {
                         int user_id=result.getUser_Id();
                        // String agent_id=result.getAgent_Id();
                         Toast.makeText(AgentSignupActivity.this, "USERID "+user_id, Toast.LENGTH_SHORT).show();
+                        SharedPrefsUtils.getInstance(getApplicationContext()).setUserId(user_id);
                         goToHome();
                     }
                     else
@@ -217,4 +221,75 @@ public class AgentSignupActivity extends AppCompatActivity {
     public void onBackPressed() {
         finish();
     }
+
+
+    private void setback() {
+        et_street.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+            public void onFocusChange(View view, boolean hasfocus) {
+                if (hasfocus) {
+
+                    view.setBackgroundResource(R.drawable.editbox_style);
+                } else {
+                    view.setBackgroundResource(R.drawable.spinner_focus);
+                }
+            }
+        });
+        et_city.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+            public void onFocusChange(View view, boolean hasfocus) {
+                if (hasfocus) {
+
+                    view.setBackgroundResource(R.drawable.editbox_style);
+                } else {
+                    view.setBackgroundResource(R.drawable.spinner_focus);
+                }
+            }
+        });
+        et_address.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+            public void onFocusChange(View view, boolean hasfocus) {
+                if (hasfocus) {
+
+                    ScrollView01.setBackgroundResource(R.drawable.editbox_style);
+                } else {
+                    ScrollView01.setBackgroundResource(R.drawable.spinner_focus);
+                }
+            }
+        });
+        et_zipCcde.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+            public void onFocusChange(View view, boolean hasfocus) {
+                if (hasfocus) {
+
+                    view.setBackgroundResource(R.drawable.editbox_style);
+                } else {
+                    view.setBackgroundResource(R.drawable.spinner_focus);
+                }
+            }
+        }); et_state.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+            public void onFocusChange(View view, boolean hasfocus) {
+                if (hasfocus) {
+
+                    view.setBackgroundResource(R.drawable.editbox_style);
+                } else {
+                    view.setBackgroundResource(R.drawable.spinner_focus);
+                }
+            }
+        }); et_referalcode.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+            public void onFocusChange(View view, boolean hasfocus) {
+                if (hasfocus) {
+
+                    view.setBackgroundResource(R.drawable.spinner_bg_focus);
+                } else {
+                    view.setBackgroundResource(R.drawable.spinner_bg);
+                }
+            }
+        });
+
+
+    }
+
 }

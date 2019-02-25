@@ -143,7 +143,8 @@ public class PropertyDetailsSellerFragment extends Fragment {
         logged_adapter = new PropertyViewloggedAdapter_seller(getActivity(), amount2);
 
         sharedpreferences = getActivity().getSharedPreferences(mypreference, Context.MODE_PRIVATE);
-        LeadId = sharedpreferences.getInt("LeadId", 0);
+        LeadId = getArguments().getInt("leadId");
+
         Token = sharedpreferences.getString("token", "");
 
         Log.v("LEADID", "" + LeadId);
@@ -173,7 +174,7 @@ public class PropertyDetailsSellerFragment extends Fragment {
 
 
         imageUrl = "http://202.88.239.14:8169/FileUploads/";
-        url = "http://202.88.239.14:8169/api/Lead/GetPropertyDetails";
+        url = "http://192.168.0.3:3000/reswy/leadlistproperty/"+LeadId;
         Map<String, Object> jsonParams = new ArrayMap<>();
         jsonParams.put("Lead_ID", LeadId);
 
@@ -186,27 +187,27 @@ public class PropertyDetailsSellerFragment extends Fragment {
 
                         try {
                             Status_missed = response.getString("status").toString().trim();
-                            JSONArray jsonArray = response.getJSONArray("propertyDetails");
+                            JSONArray jsonArray = response.getJSONArray("result");
                             if (jsonArray.length() != 0) {
                                 JSONObject propertyDetails = jsonArray.getJSONObject(0);
-                                mobileNo = propertyDetails.getString("mobileNo");
-                                emaiL = propertyDetails.getString("email");
-                                discription = propertyDetails.getString("propertyDescription");
-                                firstName = propertyDetails.getString("firstName");
+                               // mobileNo = propertyDetails.getString("mobileNo");
+                              //  emaiL = propertyDetails.getString("email");
+                                discription = propertyDetails.getString("property_description");
+                             //   firstName = propertyDetails.getString("firstName");
                                 beds = propertyDetails.getString("beds");
                                 baths = propertyDetails.getString("baths");
                                 address_location = propertyDetails.getString("address_location");
-                                yearBuiltStart = propertyDetails.getString("yearBuiltStart");
-                                available_on_Date = propertyDetails.getString("available_on_Date");
-                                foreclosure_Date = propertyDetails.getString("foreclosure_Date");
-                                propertyType = propertyDetails.getString("propertyType");
-                                pointOfInterest = propertyDetails.getString("pointOfInterest");
-                                squareFootage_Min = propertyDetails.getString("squareFootage_Min");
-                                squareFootage_Max = propertyDetails.getString("squareFootage_Max");
-                                shortsale = propertyDetails.getString("short_Sale");
+                                yearBuiltStart = propertyDetails.getString("yearbuilt_start");
+                                available_on_Date = propertyDetails.getString("available_on_date");
+                                foreclosure_Date = propertyDetails.getString("foreclosure_date");
+                                propertyType = propertyDetails.getString("propertytype");
+                                pointOfInterest = propertyDetails.getString("pointofinterest");
+                                squareFootage_Min = propertyDetails.getString("squarefootage_min");
+                                squareFootage_Max = propertyDetails.getString("squarefootage_max");
+                                shortsale = propertyDetails.getString("short_sale");
                                 // Log.v("shortsale", "" + shortsale);
-                                listingprice = propertyDetails.getString("listing_Price");
-                                listingtype = propertyDetails.getString("listingType");
+                                listingprice = propertyDetails.getString("listing_price");
+                                listingtype = propertyDetails.getString("listingtype");
                             } else {
 
                                 mobileNo = "Not available";
@@ -298,7 +299,7 @@ public class PropertyDetailsSellerFragment extends Fragment {
                                 GetDataAdapter2.add(GetDataAdapter3);
                             }
 
-                            String str3 = "Success";
+                            String str3 = "success";
                             int response_result = Status_missed.compareTo(str3);
                             if (response_result == 0) {
                                 address.setText(address_location);

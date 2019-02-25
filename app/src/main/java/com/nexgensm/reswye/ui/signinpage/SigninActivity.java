@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nexgensm.reswye.R;
+import com.nexgensm.reswye.adapter.ChangeBackground;
 import com.nexgensm.reswye.api.ApiClient;
 import com.nexgensm.reswye.api.ApiInterface;
 import com.nexgensm.reswye.model.Request;
@@ -26,7 +28,7 @@ import com.nexgensm.reswye.util.SharedPrefsUtils;
 import retrofit2.Call;
 import retrofit2.Callback;
 
-public class SigninActivity extends AppCompatActivity implements View.OnClickListener {
+public class SigninActivity extends AppCompatActivity implements View.OnClickListener, View.OnTouchListener  {
     EditText et_email,et_password;
     TextView tv_signUp;
     Button bt_signIn;
@@ -49,6 +51,7 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
         bt_signIn = (Button) findViewById(R.id.Signin_Btm);
 
         bt_signIn.setOnClickListener(this);
+        tv_signUp.setOnClickListener(this);
 
     }
 
@@ -68,15 +71,13 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
 
     private void login() {
 
-        pd.setMessage("loading");
-        pd.show();
+        goToHome();
 
         getLoginText();
-        Toast.makeText(SigninActivity.this, ""+checkLoginValidation(), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(SigninActivity.this, ""+checkLoginValidation(), Toast.LENGTH_SHORT).show();
         if(checkLoginValidation())
         {
-            pd.setMessage("Loading");
-            pd.show();
+
             postData();
         }
     }
@@ -87,18 +88,32 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
     }
     private boolean checkLoginValidation()
     {
-        if(emailString.equals("")||passwordString.equals(""))
+        if(emailString.equals(""))
         {
-            Toast.makeText(this, "Please enter all fields", Toast.LENGTH_SHORT).show();
+            et_email.setError("Please enter your Email id");
+           // ChangeBackground.setBack(et_email,this);
+           // ChangeBackground.setBack2(et_password,this);
+
+            return false;
+        }
+        else if(passwordString.equals(""))
+        {
+            et_password.setError("Please enter your password");
+          //  ChangeBackground.setBack2(et_email,this);
+          //  ChangeBackground.setBack(et_password,this);
             return false;
         }
         else
         {
             return true;
+
         }
     }
 
     private void postData() {
+
+        pd.setMessage("Loading");
+        pd.show();
         try
         {
 
@@ -162,5 +177,11 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
         setIntent.addCategory(Intent.CATEGORY_HOME);
         setIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(setIntent);
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent motionEvent) {
+
+        return false;
     }
 }

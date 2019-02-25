@@ -44,6 +44,11 @@ import com.android.volley.toolbox.Volley;
 import com.nexgensm.reswye.R;
 import com.nexgensm.reswye.Singleton;
 import com.nexgensm.reswye.Utlity;
+import com.nexgensm.reswye.api.ApiClient;
+import com.nexgensm.reswye.api.ApiInterface;
+import com.nexgensm.reswye.model.Result;
+import com.nexgensm.reswye.ui.signinpage.SigninActivity;
+import com.nexgensm.reswye.util.SharedPrefsUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -58,6 +63,12 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
 
 
 public class AddNewPhotoActivity extends AppCompatActivity {
@@ -80,11 +91,17 @@ public class AddNewPhotoActivity extends AppCompatActivity {
     List<LeadListingRecyclerDataAdapter> GetDataAdapter1;
     RequestQueue requestQueue;
     private ProgressDialog spinner;
+    ArrayList<File> fileList;
+    ProgressDialog pd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_photo);
+        fileList=new ArrayList<>();
+
+        pd = new ProgressDialog(AddNewPhotoActivity.this);
+
         Singleton.getInstance().clearArray();
         arrayList = new ArrayList<>();
         jsonObject = new JSONObject();
@@ -98,127 +115,7 @@ public class AddNewPhotoActivity extends AppCompatActivity {
         Log.v(TAG, "FLAg" + flag);
         showPictureDialog();
         testphotocheck();
-//        if (flag == 1) {
-//
-//            JSON_DATA_WEB_CALL();
-//            viewPhotoFunction();
-//
-//        } else {
-//            viewPhotoFunction();
-//        }
 
-//////////////test///////
-//        encodedImages = Singleton.getInstance().getArrayImages();
-////        Log.v("Tag", "arrayImagecount" + encodedImages.size());
-////        Log.d("oncreate", "set adapter");
-//        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-//
-//        //ViewGroup.LayoutParams params = recyclerView.getLayoutParams();
-//        //params.height = 500;
-//        //recyclerView.setLayoutParams(params);
-//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-//        recyclerView.setLayoutManager(linearLayoutManager);
-//        recyclerView.setItemAnimator(new DefaultItemAnimator());
-//        recyclerView.setAdapter(m);
-//        recyclerView.addOnItemTouchListener(
-//                new RecyclerItemClickListener(this, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
-//                    @Override
-//                    public void onItemClick(View view, int position) {
-//                        // TODO Handle item click
-//                    }
-//
-//                    @Override
-//                    public void onLongClick(View view, int position) {
-//                        encodedImages.remove(position);
-//                        recyclerView.setAdapter(m);
-////                        Toast.makeText(getApplicationContext(), "Long press on position :" + position,
-////                                Toast.LENGTH_LONG).show();
-//                    }
-//                })
-//        );
-//      //  picview = (ImageView) findViewById(R.id.pic);
-//
-//        Button addphoto = (Button) findViewById(R.id.addphoto);
-//        addphoto.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                showPictureDialog();
-//
-//            }
-//        });
-//
-//        ImageButton close = (ImageButton) findViewById(R.id.close);
-//        close.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                finish();
-//            }
-//        });
-//
-//        Button saveButton = (Button) findViewById(R.id.addnew_photo);
-//        saveButton.setOnClickListener(new View.OnClickListener() {
-//            JSONArray jsonArray = new JSONArray();
-//
-//
-//            ///Save button onclick
-//            @Override
-//            public void onClick(View view) {
-//                int count = Singleton.getInstance().getArrayList().size();
-//                Log.v("COUNT CLICK", "" + count);
-//                ArrayList<String> list = new ArrayList<String>();
-//                for (String encoded : Singleton.getInstance().getArrayList()) {
-//                    Log.v("BASE64image", "" + encoded);
-//                    jsonArray.put(encoded);
-//                    list.add(encoded);
-//
-//
-//                }
-//
-//                try {
-//                    jsonObject.put(Utlity.leadID, LeadId);
-//                    jsonObject.put(Utlity.imageFormat, jsonArray);
-//                    // Log.v("JSON", "" + jsonObject.toString());
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//     final ProgressDialog loading = ProgressDialog.show(AddNewPhotoActivity.this, "Please wait...", "Fetching data...", false, false);
-//                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, Utlity.savePropertyPhotoUrl, jsonObject,
-//                        new Response.Listener<JSONObject>() {
-//                            @Override
-//                            public void onResponse(JSONObject jsonObject) {
-//                                  Log.e("Message from server", jsonObject.toString());
-//                                 loading.dismiss();
-//                                Toast.makeText(getApplicationContext(), "Images Uploaded Successfully", Toast.LENGTH_SHORT).show();
-//                                finish();
-//                            }
-//                        }, new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError volleyError) {
-//                        //   Log.e("ErrMessage from server", volleyError.toString());
-//                        Toast.makeText(getApplication(), "Error Occurred", Toast.LENGTH_SHORT).show();
-//                        //    loading.dismiss();
-//                    }
-//
-//
-//                }) {
-//                    /** Passing some request headers* */
-//                    @Override
-//                    public Map<String, String> getHeaders() throws AuthFailureError {
-//                        HashMap<String, String> headers = new HashMap();
-//                        // headers.put("Content-Type", "application/json");
-//                        headers.put("Authorization", Utlity.testToken);
-//                        return headers;
-//                    }
-//                };
-//                jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(200 * 30000,
-//                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-//                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-//                Volley.newRequestQueue(getApplicationContext()).add(jsonObjectRequest);
-//
-//
-//            }
-//
-//        });
 
     }
 
@@ -273,66 +170,12 @@ public class AddNewPhotoActivity extends AppCompatActivity {
 
         Button saveButton = (Button) findViewById(R.id.addnew_photo);
         saveButton.setOnClickListener(new View.OnClickListener() {
-            JSONArray jsonArray = new JSONArray();
 
-
-            ///Save button onclick
             @Override
             public void onClick(View view) {
-                int count = Singleton.getInstance().getArrayList().size();
-                Log.v("COUNT CLICK", "" + count);
-                ArrayList<String> list = new ArrayList<String>();
-                for (String encoded : Singleton.getInstance().getArrayList()) {
-                    Log.v("BASE64image", "" + encoded);
-                    jsonArray.put(encoded);
-                    list.add(encoded);
-                }
-
-                try {
-                    jsonObject.put(Utlity.leadID, LeadId);
-                    jsonObject.put(Utlity.imageFormat, jsonArray);
-                    // Log.v("JSON", "" + jsonObject.toString());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                final ProgressDialog loading = ProgressDialog.show(AddNewPhotoActivity.this, "Please wait...", "Fetching data...", false, false);
-                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, Utlity.savePropertyPhotoUrl, jsonObject,
-                        new Response.Listener<JSONObject>() {
-                            @Override
-                            public void onResponse(JSONObject jsonObject) {
-                                Log.e("Message from server", jsonObject.toString());
-                                loading.dismiss();
-                                Toast.makeText(getApplicationContext(), "Images Uploaded Successfully", Toast.LENGTH_SHORT).show();
-                                Intent ownerInfo = new Intent(AddNewPhotoActivity.this, ViewExistingPhotoActivity.class);
-                                Singleton.getInstance().clearImage();
-                                // Intent ownerInfo = new Intent(getActivity(), ViewExistingPhotoActivity.class);
-                                ownerInfo.putExtra("LeadId",LeadId);
-                                startActivity(ownerInfo);
-                                finish();
-                            }
-                        }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError volleyError) {
-                        //   Log.e("ErrMessage from server", volleyError.toString());
-                        Toast.makeText(getApplication(), "Error Occurred", Toast.LENGTH_SHORT).show();
-                        //    loading.dismiss();
-                    }
-
-
-                }) {
-                    /** Passing some request headers* */
-                    @Override
-                    public Map<String, String> getHeaders() throws AuthFailureError {
-                        HashMap<String, String> headers = new HashMap();
-                        // headers.put("Content-Type", "application/json");
-                        headers.put("Authorization", Utlity.testToken);
-                        return headers;
-                    }
-                };
-                jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(200 * 30000,
-                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-                Volley.newRequestQueue(getApplicationContext()).add(jsonObjectRequest);
+                pd.setMessage("Loading");
+                pd.show();
+                multipartImageUpload();
 
 
             }
@@ -345,197 +188,6 @@ public class AddNewPhotoActivity extends AppCompatActivity {
 
 
     }
-
-//    public void viewPhotoFunction() {
-//        encodedImages = Singleton.getInstance().getArrayImages();
-//        Log.v(TAG, "arrayImagecount" + encodedImages.size());
-////        Log.d("oncreate", "set adapter");
-//        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-//
-//        //ViewGroup.LayoutParams params = recyclerView.getLayoutParams();
-//        //params.height = 500;
-//        //recyclerView.setLayoutParams(params);
-//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-//        recyclerView.setLayoutManager(linearLayoutManager);
-//        recyclerView.setItemAnimator(new DefaultItemAnimator());
-//        recyclerView.setAdapter(m);
-//        recyclerView.addOnItemTouchListener(
-//                new RecyclerItemClickListener(this, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
-//                    @Override
-//                    public void onItemClick(View view, int position) {
-//                        // TODO Handle item click
-//                    }
-//
-//                    @Override
-//                    public void onLongClick(View view, int position) {
-//                        Log.v("CLICK", "" + encodedImages.size());
-//                        encodedImages.remove(position);
-//                        recyclerView.setAdapter(m);
-////                        Toast.makeText(getApplicationContext(), "Long press on position :" + position,
-////                                Toast.LENGTH_LONG).show();
-//                    }
-//                })
-//        );
-//
-////        picview = (ImageView) findViewById(R.id.pic);
-//
-//        Button addphoto = (Button) findViewById(R.id.addphoto);
-//        addphoto.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                showPictureDialog();
-//
-//            }
-//        });
-//
-//
-//        ImageButton close = (ImageButton) findViewById(R.id.close);
-//        close.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                finish();
-//            }
-//        });
-//
-//        Button saveButton = (Button) findViewById(R.id.addnew_photo);
-//        saveButton.setOnClickListener(new View.OnClickListener() {
-//            JSONArray jsonArray = new JSONArray();
-//            JSONArray testArray = new JSONArray();
-//
-//
-//            ///Save button onclick
-//            @Override
-//            public void onClick(View view) {
-//                int count = Singleton.getInstance().getArrayList().size();
-//                Log.v(TAG, "COUNT CLICK" + count);
-//                ArrayList<String> list = new ArrayList<String>();
-//                testArray.put(Utlity.testImageBase64);
-//                for (String encoded : Singleton.getInstance().getArrayList()) {
-//                    jsonArray.put(encoded.trim());
-//                    list.add(encoded);
-//
-//
-//                }
-//                Log.v(TAG, "B64" + list.toString());
-//
-//                try {
-//                    jsonObject.put("LeadId", LeadId);
-//                    jsonObject.put(Utlity.imageFormat, testArray);
-//                    Log.v("JSON", "" + jsonObject.toString());
-//                } catch (JSONException e) {
-//                    Log.v(TAG, "Jsonerror" + e.toString());
-//                    e.printStackTrace();
-//                }
-//                final ProgressDialog loading = ProgressDialog.show(AddNewPhotoActivity.this, "Please wait...", "Fetching data...", false, false);
-//                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, Utlity.savePropertyPhotoUrl, jsonObject,
-//                        new Response.Listener<JSONObject>() {
-//                            @Override
-//                            public void onResponse(JSONObject jsonObject) {
-//                                Log.e(TAG, "sermsg: " + jsonObject.toString());
-//                                loading.dismiss();
-//                                Toast.makeText(getApplicationContext(), "Images Uploaded Successfully", Toast.LENGTH_SHORT).show();
-//                                finish();
-//                            }
-//                        }, new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError volleyError) {
-//                        Log.e("ErrMessage from server", volleyError.toString());
-//                        Toast.makeText(getApplication(), "Error Occurred", Toast.LENGTH_SHORT).show();
-//                        loading.dismiss();
-//                    }
-//
-//
-//                }) {
-//                    /** Passing some request headers* */
-//                    @Override
-//                    public Map<String, String> getHeaders() throws AuthFailureError {
-//                        HashMap<String, String> headers = new HashMap<>();
-//                        //  headers.put("Content-Type", "application/json");
-//                        headers.put("Authorization", Utlity.testToken);
-//                        return headers;
-//                    }
-//                };
-//                jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(200 * 30000,
-//                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-//                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-//                Volley.newRequestQueue(getApplicationContext()).add(jsonObjectRequest);
-//
-//
-//            }
-//
-//        });
-//
-//
-//    }
-
-
-//    public void JSON_DATA_WEB_CALL() {
-////        userId = sharedPreferences.getInt("UserId", 0);
-////        Log.v("userId", "" + LeadId);
-//        url = "http://202.88.239.14:8169/api/Lead/GetPropertyImages/" + LeadId;
-//        JsonObjectRequest jsObjRequest = new JsonObjectRequest
-//                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-//                    @Override
-//                    public void onResponse(JSONObject response) {
-//                        Log.v("Server Response", "" + response);
-//                        // loading.dismiss();
-//                        //Displaying our grid
-//                        JSON_PARSE_DATA_AFTER_WEBCALL(response);
-//                    }
-//                }, new Response.ErrorListener() {
-//
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        // TODO Auto-generated method stub
-//                        Log.v("error", error.toString());
-//
-//                    }
-//                }) {
-//            /** Passing some request headers* */
-//            @Override
-//            public Map<String, String> getHeaders() throws AuthFailureError {
-//                HashMap<String, String> headers = new HashMap();
-//                // headers.put("Content-Type", "application/json");
-//                headers.put("Authorization", Utlity.testToken);
-//                return headers;
-//            }
-//        };
-//
-//        requestQueue = Volley.newRequestQueue(getApplicationContext());
-//
-//        requestQueue.add(jsObjRequest);
-//    }
-//
-//    public void JSON_PARSE_DATA_AFTER_WEBCALL(JSONObject jsonObject) {
-//
-//
-//        JSONArray jarray = jsonObject.optJSONArray("data");
-//
-//        for (int i = 0; i < jarray.length(); i++) {
-//            LeadListingRecyclerDataAdapter GetDataAdapter2 = new LeadListingRecyclerDataAdapter();
-//
-//            try {
-//                JSONObject abc = jarray.getJSONObject(i);
-//                String imageName = abc.getString("uploaded_DocumentName");
-//                Log.v("object", "" + imageName + "" + ImageUrl);
-//                image = ImageUrl + imageName;
-//                GetDataAdapter2.setLead_imageUrl(image);
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-//            GetDataAdapter1.add(GetDataAdapter2);
-//        }
-//        int b = GetDataAdapter1.size();
-//
-//        for (int i = 0; i < b; i++)
-//            // Singleton.getInstance().setArrayImages();
-//            Log.v("ADAPTERSIZE", "" + GetDataAdapter1.get(i).toString());
-//        int a = 0;
-//
-//        recyclerViewadapter = new RecyclerViewAdapter(GetDataAdapter1, getApplicationContext(), a);
-//        recyclerView.setAdapter(recyclerViewadapter);
-//    }
-
 
     private void showPictureDialog() {
         AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this);
@@ -608,15 +260,16 @@ public class AddNewPhotoActivity extends AppCompatActivity {
 
                     String path = saveImage(bitmap);
 
-                    Toast.makeText(getApplicationContext(), path, Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(getApplicationContext(), path, Toast.LENGTH_SHORT).show();
                     ImageItems imageitems = new ImageItems();
                     imageitems.setImage(path);
                     Singleton.getInstance().setArrayImages(imageitems);
                     arrayList.add(imageitems);
-
+                    File f=new File(path);
+                    fileList.add(f);
                     recyclerView.setAdapter(m);
 
-                    Toast.makeText(getApplicationContext(), "Image Saved!", Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(getApplicationContext(), "Image Saved! "+path, Toast.LENGTH_SHORT).show();
 
 
                 } catch (IOException e) {
@@ -633,9 +286,11 @@ public class AddNewPhotoActivity extends AppCompatActivity {
             imageitems.setImage(path);
             Singleton.getInstance().setArrayImages(imageitems);
             arrayList.add(imageitems);
+            File f=new File(path);
+            fileList.add(f);
 
             recyclerView.setAdapter(m);
-            Toast.makeText(getApplicationContext(), "Image Saved!", Toast.LENGTH_SHORT).show();
+         //   Toast.makeText(getApplicationContext(), "Image Saved!", Toast.LENGTH_SHORT).show();
 
         }
     }
@@ -728,6 +383,83 @@ public class AddNewPhotoActivity extends AppCompatActivity {
             }
         }
     }
+    private void multipartImageUpload() {
+        try {
 
+            File fileDir;
+
+
+            MultipartBody.Part[] body = new MultipartBody.Part[fileList.size()];
+            for (int i=0;i<fileList.size();i++)
+            {
+                fileDir=fileList.get(i);
+                //file=new File(fileDir, "image"+i + ".jpg");
+
+
+
+                RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), fileDir);
+                // MultipartBody.Part body= MultipartBody.Part.createFormData("file", file.getName(), reqFile);
+                body[i] = MultipartBody.Part.createFormData("file", fileDir.getName(), reqFile);
+
+            }
+
+
+
+            int lid= SharedPrefsUtils.getInstance(getApplicationContext()).getLeadId();
+          //  Toast.makeText(this, "LeadId "+lid, Toast.LENGTH_SHORT).show();
+            ApiInterface apiService =ApiClient.getClient().create(ApiInterface.class);
+
+            RequestBody name = RequestBody.create(MediaType.parse("text/plain"), "upload");
+
+            RequestBody lead_id = RequestBody.create(MediaType.parse("text/plain"), ""+lid);
+
+            Call<com.nexgensm.reswye.model.Response> req = apiService.uploadOwnerDocument(body,name,lead_id);
+            req.enqueue(new Callback<com.nexgensm.reswye.model.Response>() {
+                @Override
+                public void onResponse(Call<com.nexgensm.reswye.model.Response> call, retrofit2.Response<com.nexgensm.reswye.model.Response> response) {
+                    pd.dismiss();
+
+                    if (response.code() == 200) {
+                        if(response.body().getStatus().equals("success"))
+                        {
+                            Toast.makeText(getApplicationContext(),  "Uploaded Successfully! ", Toast.LENGTH_SHORT).show();
+                            Result result=response.body().getResult();
+                            int lead_id=result.getLead_Id();
+                           // SharedPrefsUtils.getInstance(getApplicationContext()).setLeadId(lead_id);
+                            finish();
+                        }
+                        else
+                        {
+                            Toast.makeText(getApplicationContext(),  "Failed! ", Toast.LENGTH_SHORT).show();
+                            finish();
+
+                        }
+
+                    }
+
+                  //  Toast.makeText(getApplicationContext(), response.code() + " ", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onFailure(Call<com.nexgensm.reswye.model.Response> call, Throwable t) {
+                    pd.dismiss();
+
+                    Toast.makeText(getApplicationContext(), "Request failed", Toast.LENGTH_SHORT).show();
+                    Log.e("ERROR ","11111 "+t.getMessage());
+                    t.printStackTrace();
+                }
+            });
+
+
+
+
+
+
+        } catch (Exception e) {
+            pd.dismiss();
+
+            e.printStackTrace();
+        }
+    }
 }
 
