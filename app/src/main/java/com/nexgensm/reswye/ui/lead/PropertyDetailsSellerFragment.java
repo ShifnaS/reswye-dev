@@ -67,7 +67,7 @@ public class PropertyDetailsSellerFragment extends Fragment {
     RequestQueue requestQueue;
     TextView address, pointofinterest, loggedbuyer, loggeddatetime, features, characteristics, status, salesstatus, propertyamount;
     TextView bed_count, bath_count, minSqft, maxSqft, propertydescription, propertyId, lead, phone, email, yearbuilt, availableondate, foreclosuredate, propertytype;
-    String Status_missed, mobileNo, firstName, address_location, yearBuiltStart, available_on_Date, foreclosure_Date, propertyType, pointOfInterest, propertyPhotoName;
+    String Status_missed, mobileNo, lastName,firstName, address_location, yearBuiltStart, available_on_Date, foreclosure_Date, propertyType, pointOfInterest, propertyPhotoName;
     private List<PropertySellerItems> propertySellerItemList = new ArrayList<>();
     private RecyclerView recyclerView, recyclerViewPropertyviewed;
     List<LeadListingRecyclerDataAdapter> GetDataAdapter1, GetDataAdapter2;
@@ -175,10 +175,11 @@ public class PropertyDetailsSellerFragment extends Fragment {
 
         imageUrl = "http://202.88.239.14:8169/FileUploads/";
         url = "http://192.168.0.3:3000/reswy/leadlistproperty/"+LeadId;
-        Map<String, Object> jsonParams = new ArrayMap<>();
-        jsonParams.put("Lead_ID", LeadId);
+        Log.e("11111",""+url);
+       /* Map<String, Object> jsonParams = new ArrayMap<>();
+        jsonParams.put("Lead_ID", LeadId);*/
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(jsonParams),
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
                     @RequiresApi(api = Build.VERSION_CODES.M)
                     @Override
@@ -187,13 +188,17 @@ public class PropertyDetailsSellerFragment extends Fragment {
 
                         try {
                             Status_missed = response.getString("status").toString().trim();
+                            Toast.makeText(getActivity(), "Status_missed "+Status_missed, Toast.LENGTH_SHORT).show();
+
                             JSONArray jsonArray = response.getJSONArray("result");
-                            if (jsonArray.length() != 0) {
+                            if (Status_missed.equals("success")) {
                                 JSONObject propertyDetails = jsonArray.getJSONObject(0);
-                               // mobileNo = propertyDetails.getString("mobileNo");
-                              //  emaiL = propertyDetails.getString("email");
+                                mobileNo = propertyDetails.getString("mobileno");
+                                emaiL = propertyDetails.getString("emailid");
                                 discription = propertyDetails.getString("property_description");
-                             //   firstName = propertyDetails.getString("firstName");
+                                firstName = propertyDetails.getString("firstname");
+                                lastName = propertyDetails.getString("lastname");
+
                                 beds = propertyDetails.getString("beds");
                                 baths = propertyDetails.getString("baths");
                                 address_location = propertyDetails.getString("address_location");
@@ -208,6 +213,28 @@ public class PropertyDetailsSellerFragment extends Fragment {
                                 // Log.v("shortsale", "" + shortsale);
                                 listingprice = propertyDetails.getString("listing_price");
                                 listingtype = propertyDetails.getString("listingtype");
+
+
+                                address.setText(address_location);
+                                bed_count.setText(beds);
+                                bath_count.setText(baths);
+                                minSqft.setText(squareFootage_Min);
+                                maxSqft.setText(squareFootage_Max);
+
+                                lead.setText(firstName+" "+lastName);
+                                phone.setText(mobileNo);
+                                email.setText(emaiL);
+                                yearbuilt.setText(yearBuiltStart);
+                                availableondate.setText(available_on_Date);
+                                foreclosuredate.setText(foreclosure_Date);
+                                propertytype.setText(propertyType);
+                                pointofinterest.setText(pointOfInterest);
+                                propertydescription.setText(discription);
+
+                                //   loggeddatetime.setText(viewedDatetime);
+                                characteristics.setText(additionalChara);
+                                features.setText(feature);
+
                             } else {
 
                                 mobileNo = "Not available";
@@ -230,10 +257,7 @@ public class PropertyDetailsSellerFragment extends Fragment {
                                 listingtype = "Not available";
 
                             }
-//                            GetDataAdapter2.setLead_name(shortsale);
-//                            GetDataAdapter2.setLead_address(listingprice);
-//                            GetDataAdapter2.setLead_time(listingtype);
-//                            GetDataAdapter2.setLead_imageUrl(image);
+
                             JSONArray jsonArray3 = response.getJSONArray("propertyImages");
                             JSONArray jsonArray1 = response.getJSONArray("characteristics");
                             if (jsonArray1.length() > 0) {
@@ -257,7 +281,8 @@ public class PropertyDetailsSellerFragment extends Fragment {
                                 GetDataAdapter2.setLead_time(listingtype);
                                 propertyPhotoName = abc.getString("propertyphotos");
 
-                                image = Utlity.imageUrl + propertyPhotoName;
+                             //   image = Utlity.imageUrl + propertyPhotoName;
+                                image="https://www.google.com/imgres?imgurl=https%3A%2F%2Fchrisradleyphotography.com%2Fblogposts%2Fproperty-photography-newcastle%2Fnewcastle-property-photography-4.jpg&imgrefurl=https%3A%2F%2Fwww.belvoir.co.uk%2Farticles%2Fimportance-of-great-property-photography&docid=rBFaqE0tdUnP3M&tbnid=SngqZ0qZnh21mM%3A&vet=10ahUKEwjFgs7HjtbgAhUDeysKHetpAOIQMwhjKAEwAQ..i&w=1000&h=666&bih=657&biw=1366&q=property%20photography&ved=0ahUKEwjFgs7HjtbgAhUDeysKHetpAOIQMwhjKAEwAQ&iact=mrc&uact=8#h=666&imgdii=zXb39qg4tIknMM:&vet=10ahUKEwjFgs7HjtbgAhUDeysKHetpAOIQMwhjKAEwAQ..i&w=1000";
                                 Log.v("imageURLTEST", "" + image);
                                 GetDataAdapter2.setLead_imageUrl(image);
                                 GetDataAdapter1.add(GetDataAdapter2);
@@ -299,35 +324,7 @@ public class PropertyDetailsSellerFragment extends Fragment {
                                 GetDataAdapter2.add(GetDataAdapter3);
                             }
 
-                            String str3 = "success";
-                            int response_result = Status_missed.compareTo(str3);
-                            if (response_result == 0) {
-                                address.setText(address_location);
-                                bed_count.setText(beds);
-                                bath_count.setText(baths);
-                                minSqft.setText(squareFootage_Min);
-                                maxSqft.setText(squareFootage_Max);
 
-                                lead.setText(firstName);
-                                phone.setText(mobileNo);
-                                email.setText(emaiL);
-                                yearbuilt.setText(yearBuiltStart);
-                                availableondate.setText(available_on_Date);
-                                foreclosuredate.setText(foreclosure_Date);
-                                propertytype.setText(propertyType);
-                                pointofinterest.setText(pointOfInterest);
-                                propertydescription.setText(discription);
-
-                                //   loggeddatetime.setText(viewedDatetime);
-                                characteristics.setText(additionalChara);
-                                features.setText(feature);
-                                //  Toast.makeText(getActivity().getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
-
-
-                            } else {
-                                Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
-
-                            }
 
                         } catch (JSONException e) {
                             e.printStackTrace();

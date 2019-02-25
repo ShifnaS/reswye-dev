@@ -503,7 +503,7 @@ public class LeadFragment extends Fragment {
                 lead_ID = abc.getInt("lead_id");
                 lead_CreatedDate = abc.getString("lead_createddate");
                 profileimage = abc.getString("leadprofileimage");
-                image = "http://192.168.0.3:3000/reswy/upload/file-1549540497209-SAMPLE.jpg";
+                image = "https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.biowritingservice.com%2Fwp-content%2Fthemes%2Ftuborg%2Fimages%2FExecutive%2520Bio%2520Sample%2520Photo.png&imgrefurl=https%3A%2F%2Fwww.biowritingservice.com%2Four-bio-writing-samples%2F&docid=UmOWXvavlYWmFM&tbnid=zJshq4jeDXBpnM%3A&vet=10ahUKEwi99LGSjtbgAhWBfCsKHUeiDTIQMwhAKAEwAQ..i&w=629&h=764&bih=657&biw=1366&q=sample%20images%20person&ved=0ahUKEwi99LGSjtbgAhWBfCsKHUeiDTIQMwhAKAEwAQ&iact=mrc&uact=8#h=764&imgdii=RhQaTMt0JMuy5M:&vet=10ahUKEwi99LGSjtbgAhWBfCsKHUeiDTIQMwhAKAEwAQ..i&w=629";
                 GetDataAdapter2.setLead_name(name1);
                 GetDataAdapter2.setLead_address(address);
                 GetDataAdapter2.setLead_ID(lead_ID);
