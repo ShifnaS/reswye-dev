@@ -13,6 +13,17 @@ public class ResponseList
     @SerializedName("result")
     private ArrayList<ResultData> result;
 
+    @SerializedName("res")
+    private ArrayList<ResultData> res;
+
+    public ArrayList<ResultData> getRes() {
+        return res;
+    }
+
+    public void setRes(ArrayList<ResultData> res) {
+        this.res = res;
+    }
+
     public ArrayList<ResultData> getResult() {
         return result;
     }

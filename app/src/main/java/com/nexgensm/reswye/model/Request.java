@@ -35,6 +35,62 @@ public class Request {
 
     private String city;
 
+    private int lead_id;
+    private String date;
+    private String comment;
+    private String mail;
+    private String phone;
+    private String name;
+
+
+    public int getLead_id() {
+        return lead_id;
+    }
+
+    public void setLead_id(int lead_id) {
+        this.lead_id = lead_id;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public Request(String user_type, String zip, String referralcode, String howfindabtus, String street, String state, String correspondence_add, String gender, int user_id, String city) {
         this.user_type = user_type;
         this.zip = zip;
@@ -135,6 +191,16 @@ public class Request {
     public Request(String email_id, String password) {
         this.email_id = email_id;
         this.password = password;
+
+    }
+
+    public Request(String name,String mail,String phone, String date,String comment,int lead_id) {
+        this.mail = mail;
+        this.phone = phone;
+        this.name=name;
+        this.date=date;
+        this.comment=comment;
+        this.lead_id=lead_id;
 
     }
     public String getFirst_name ()

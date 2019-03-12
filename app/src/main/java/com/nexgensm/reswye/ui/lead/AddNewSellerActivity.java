@@ -27,6 +27,7 @@ import com.nexgensm.reswye.R;
 import com.nexgensm.reswye.ui.onboarding.OnBoardingActivity;
 import com.nexgensm.reswye.ui.signinpage.SigninActivity;
 import com.nexgensm.reswye.util.KeyboardUtils;
+import com.nexgensm.reswye.util.SharedPrefsUtils;
 
 import java.util.ArrayList;
 
@@ -44,7 +45,9 @@ public class AddNewSellerActivity extends AppCompatActivity implements AddNewLea
     Drawable btn_click;
     Drawable btn_unclick;
      RelativeLayout relative_lyt_logged;
-    int flag;
+    int flag=0;
+    int lid=0;
+    Bundle bundle;
 
     @TargetApi(Build.VERSION_CODES.M)
     @Override
@@ -57,6 +60,7 @@ public class AddNewSellerActivity extends AppCompatActivity implements AddNewLea
         leadbtn = (Button) findViewById(R.id.leadbtn);
         propertybtn = (Button) findViewById(R.id.propertybtn);
         uploadbtn = (Button) findViewById(R.id.upload);
+        bundle = new Bundle();
 
         leadbtn.setBackground(btn_click);
         propertybtn.setBackground(btn_unclick);
@@ -64,11 +68,22 @@ public class AddNewSellerActivity extends AppCompatActivity implements AddNewLea
         leadbtn.setTextColor(Color.WHITE);
         propertybtn.setTextColor(getApplicationContext().getColor(R.color.darkgrey));
         uploadbtn.setTextColor(getApplicationContext().getColor(R.color.darkgrey));
+
+        Intent i=getIntent();
+        flag=i.getIntExtra("flag",0);
+        lid=i.getIntExtra("lid",0);
+        bundle.putInt("flag",flag);
+        bundle.putInt("lid",lid);//get this id from edit button click
+        SharedPrefsUtils.getInstance(getApplicationContext()).setLid(lid);
+        SharedPrefsUtils.getInstance(getApplicationContext()).setFlag(flag);
+       // addNewLeadFragment.setArguments(bundle);
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.Lead_Creation, addNewLeadFragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
+
+
 
         ImageButton backbtn = (ImageButton)findViewById(R.id.AddLead_Back);
         backbtn.setImageResource(R.drawable.status_bar_back_arrow);
@@ -88,7 +103,7 @@ public class AddNewSellerActivity extends AppCompatActivity implements AddNewLea
                 leadbtn.setTextColor(Color.WHITE);
                 propertybtn.setTextColor(getApplicationContext().getColor(R.color.darkgrey));
                 uploadbtn.setTextColor(getApplicationContext().getColor(R.color.darkgrey));
-
+//                addNewLeadFragment.setArguments(bundle);
                 FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.Lead_Creation, addNewLeadFragment);
@@ -113,6 +128,7 @@ public class AddNewSellerActivity extends AppCompatActivity implements AddNewLea
                 propertybtn.setTextColor(Color.WHITE);
                 leadbtn.setTextColor(getApplicationContext().getColor(R.color.darkgrey));
                 uploadbtn.setTextColor(getApplicationContext().getColor(R.color.darkgrey));
+             //   addNewPropertySellerFragment.setArguments(bundle);
 
                 FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -136,6 +152,7 @@ public class AddNewSellerActivity extends AppCompatActivity implements AddNewLea
                 uploadbtn.setTextColor(Color.WHITE);
                 propertybtn.setTextColor(getApplicationContext().getColor(R.color.darkgrey));
                 leadbtn.setTextColor(getApplicationContext().getColor(R.color.darkgrey));
+              //  uploadfragment.setArguments(bundle);
 
                 FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction fragmentTransactionupload = fragmentManager.beginTransaction();

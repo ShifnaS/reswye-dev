@@ -89,6 +89,7 @@
         <activity android:name=".ui.Dashboard.RecentLeadListActivity" />
         <activity android:name=".ui.Dashboard.DormantListingActivity" />
         <activity android:name=".ui.signupactivity.PaymentActivity" />
+        <activity android:name=".ui.lead.AddBuyerActivity"></activity>
     </application>
 
 </manifest>

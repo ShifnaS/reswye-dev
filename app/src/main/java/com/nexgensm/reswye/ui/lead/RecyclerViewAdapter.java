@@ -38,13 +38,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         this.context = context;
         this.a = c;
     }
-    public RecyclerViewAdapter(ArrayList<ResultData> list, Context context, int c,int m) {
 
-        super();
-        this.list = list;
-        this.context = context;
-        this.a = c;
-    }
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v;
@@ -75,6 +69,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onBindViewHolder(ViewHolder Viewholder, int position) {
 
         LeadListingRecyclerDataAdapter getDataAdapter1 = getDataAdapter.get(position);
+        Log.d("1111111", "" + getDataAdapter.size());
 
 
         if (a == 0) {

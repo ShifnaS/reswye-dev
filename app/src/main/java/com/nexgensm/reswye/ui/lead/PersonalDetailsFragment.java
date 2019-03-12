@@ -30,6 +30,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.nexgensm.reswye.R;
+import com.nexgensm.reswye.api.ApiClient;
 import com.nexgensm.reswye.ui.Dashboard.DormantItems;
 import com.nexgensm.reswye.ui.bottomtabbar.BottomTabbarActivity;
 import com.nexgensm.reswye.ui.signinpage.SigninActivity;
@@ -123,7 +124,7 @@ public class PersonalDetailsFragment extends Fragment {
         ImageUrl=sharedpreferences.getString("imageURL","");
        /// LeadId = sharedpreferences.getInt("LeadId", 1);
          LeadId = getArguments().getInt("leadId");
-
+       // Toast.makeText(getActivity(), "LeadID "+LeadId, Toast.LENGTH_SHORT).show();
 
         circleView=(CircleImageView)myFragmentView.findViewById(R.id.circleView);
         leadpersonal_name=(TextView)myFragmentView.findViewById(R.id.leadpersonal_name);
@@ -137,7 +138,7 @@ public class PersonalDetailsFragment extends Fragment {
         requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
 
 
-        imageUrl="http://202.88.239.14:8169/FileUploads/";
+        imageUrl=ApiClient.BASE_URL_IMG;
         url = "http://192.168.0.3:3000/reswy/leadlistpersonal/"+LeadId;
 
 
@@ -169,7 +170,7 @@ public class PersonalDetailsFragment extends Fragment {
                                 emailID = data.getString("emailid");
                                 //   transferedAgentName = data.getString("transfered_AgentName");
                                 String image=imageUrl+leadProfileimage;
-
+                                Log.e("33333","url "+image);
 
                                     leadpersonal_name.setText(firstName);
                                     leadpersonal_date.setText(lead_CreatedDate);
@@ -236,7 +237,10 @@ public class PersonalDetailsFragment extends Fragment {
                 sharedpreferences = getActivity().getSharedPreferences(mypreference, Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedpreferences.edit();
                 editor.putInt("flag", 1);
+                editor.putInt("lid",LeadId);
                 editor.commit();
+                buyeractivity.putExtra("flag",1);
+                buyeractivity.putExtra("lid",LeadId);
                 getActivity().startActivity(buyeractivity);
             }
         });

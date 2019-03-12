@@ -1,135 +1,149 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-<!--<ImageView-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:src="@drawable/ic_arrow_left"-->
-    <!--android:layout_centerVertical="true"-->
-    <!--/>-->
-    <TextView
-    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:id="@+id/loggedbuyertxt"
-    android:text="Buyer"
-    android:fontFamily="sans-serif"
-    android:layout_marginTop="10dp"
-    android:layout_marginLeft="20dp"/>
+    android:orientation="vertical">
 
-    <TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:id="@+id/loggedbuyer"
-    android:layout_below="@id/loggedtxt"
-    android:text="not available"
-    android:layout_toRightOf="@id/loggedbuyertxt"
-    android:fontFamily="sans-serif"
-    android:layout_marginTop="10dp"
-    android:layout_marginLeft="90dp"
-    android:textStyle="bold"
-    />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
 
-    <TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:id="@+id/loggedphonetxt"
-    android:layout_below="@id/loggedbuyer"
-    android:text="Phone"
-    android:fontFamily="sans-serif"
-    android:layout_marginTop="10dp"
-    android:layout_marginLeft="20dp"/>
+            android:layout_height="wrap_content"
+            android:id="@+id/loggedbuyertxt"
+            android:text="Buyer"
+            android:fontFamily="sans-serif"
+            android:layout_marginTop="10dp"
+          />
 
-    <TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:id="@+id/loggedphone"
-    android:layout_below="@id/loggedbuyer"
-    android:text="(212) 715 555"
-    android:layout_toRightOf="@id/loggedphonetxt"
-    android:fontFamily="sans-serif"
-    android:layout_marginTop="10dp"
-    android:layout_marginLeft="90dp"
-    android:textStyle="bold"
-    />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1.8"
+            android:layout_height="wrap_content"
+            android:id="@+id/loggedbuyer"
+            android:text="not available"
+            android:fontFamily="sans-serif"
+            android:layout_marginTop="10dp"
+            android:textStyle="bold"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp">
 
-    <TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:id="@+id/loggedmailtxt"
-    android:layout_below="@id/loggedphone"
-    android:text="Email"
-    android:fontFamily="sans-serif"
-    android:layout_marginTop="10dp"
-    android:layout_marginLeft="20dp"/>
+        <TextView
 
-    <TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:id="@+id/loggedmail"
-    android:layout_below="@id/loggedphone"
-    android:text="nithuthomas009@gmail.com"
-    android:layout_toRightOf="@id/loggedmailtxt"
-    android:fontFamily="sans-serif"
-    android:layout_marginTop="10dp"
-    android:layout_marginLeft="90dp"
-    android:textStyle="bold"
-    />
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:id="@+id/loggedphonetxt"
+            android:layout_below="@id/loggedbuyer"
+            android:text="Phone"
+            android:fontFamily="sans-serif"
+            android:layout_marginTop="10dp"
+      />
 
-    <TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:id="@+id/loggeddatetimetxt"
-    android:layout_below="@id/loggedmail"
-    android:text="Date And Time"
-    android:fontFamily="sans-serif"
-    android:layout_marginTop="10dp"
-    android:layout_marginLeft="20dp"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1.8"
+            android:layout_height="wrap_content"
+            android:id="@+id/loggedphone"
+            android:text="(212) 715 555"
+            android:fontFamily="sans-serif"
+            android:layout_marginTop="10dp"
+            android:textStyle="bold"
+            />
+    </LinearLayout>
 
-    <TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:id="@+id/loggeddatetime"
-    android:layout_below="@id/loggedmail"
-    android:text="12.08.2017 9.00 AM "
-    android:layout_toRightOf="@id/loggeddatetimetxt"
-    android:fontFamily="sans-serif"
-    android:layout_marginTop="10dp"
-    android:layout_marginLeft="35dp"
-    android:textStyle="bold" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:id="@+id/loggedmailtxt"
+            android:layout_below="@id/loggedphone"
+            android:text="Email"
+            android:fontFamily="sans-serif"
+            android:layout_marginTop="10dp"
+         />
 
-    <TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:id="@+id/loggedbuyercommentstxt"
-    android:layout_below="@id/loggeddatetime"
-    android:text="Buyer Comments"
-    android:fontFamily="sans-serif"
-    android:layout_marginTop="10dp"
-    android:layout_marginLeft="20dp"
-    />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1.8"
+            android:layout_height="wrap_content"
+            android:id="@+id/loggedmail"
+            android:text="nithuthomas009@gmail.com"
+            android:fontFamily="sans-serif"
+            android:layout_marginTop="10dp"
+            android:textStyle="bold"
+            />
 
-    <TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:id="@+id/loggedbuyercomments"
-    android:layout_below="@id/loggeddatetime"
-    android:text="A property description is made up of 2 parts: key features and property description.
+    </LinearLayout>
 
-    The key features section is your opportunity to tell potential tenants about the key selling points of your property, in a bullet point format. The property descri "
-    android:layout_toRightOf="@id/loggedbuyercommentstxt"
-    android:fontFamily="sans-serif"
-    android:layout_marginTop="10dp"
-    android:layout_marginLeft="25dp"
-    android:textStyle="bold"
-    android:layout_marginBottom="20dp"
-    />
-    <!--<ImageView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:src="@drawable/ic_arrow_right"-->
-        <!--android:layout_centerVertical="true"-->
-        <!--android:layout_alignParentEnd="true"-->
-       <!--/>-->
-</RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:id="@+id/loggeddatetimetxt"
+            android:layout_below="@id/loggedmail"
+            android:text="Date And Time"
+            android:fontFamily="sans-serif"
+            android:layout_marginTop="10dp"
+           />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1.8"
+            android:layout_height="wrap_content"
+            android:id="@+id/loggeddatetime"
+            android:text="12.08.2017 9.00 AM "
+            android:fontFamily="sans-serif"
+            android:layout_marginTop="10dp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp">
+
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:id="@+id/loggedbuyercommentstxt"
+            android:layout_below="@id/loggeddatetime"
+            android:text="Buyer Comments"
+            android:fontFamily="sans-serif"
+            android:layout_marginTop="10dp"
+            />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1.8"
+            android:layout_height="wrap_content"
+            android:id="@+id/loggedbuyercomments"
+            android:text="A property description is made up of 2 parts: key features and property description.
+The key features section is your opportunity to tell potential tenants about the key selling points of your property, in a bullet point format. The property descri "
+            android:fontFamily="sans-serif"
+            android:layout_marginTop="10dp"
+            android:textStyle="bold"
+            android:layout_marginBottom="20dp"
+            />
+    </LinearLayout>
+
+
+
+</LinearLayout>

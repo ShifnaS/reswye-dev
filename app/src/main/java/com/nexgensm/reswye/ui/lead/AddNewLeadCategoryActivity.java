@@ -45,6 +45,7 @@ public class AddNewLeadCategoryActivity extends AppCompatActivity  {
     ImageButton sellerbtn,buyerbtn;
     SharedPreferences sharedpreferences;
     public static final String mypreference = "mypref";
+    int lid=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,6 +92,8 @@ public class AddNewLeadCategoryActivity extends AppCompatActivity  {
               //  addLead.setVisibility(View.VISIBLE);
 
                 Intent buyerintent = new Intent(AddNewLeadCategoryActivity.this, AddNewSellerActivity.class);
+                buyerintent.putExtra("flag",0);
+                buyerintent.putExtra("lid",0);
                 startActivity(buyerintent);
 
             }

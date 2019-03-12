@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,6 +17,7 @@ import android.util.ArrayMap;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -27,14 +31,17 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.nexgensm.reswye.R;
+import com.nexgensm.reswye.api.ApiClient;
 import com.nexgensm.reswye.ui.Dashboard.DormantItems;
 import com.nexgensm.reswye.ui.signinpage.SigninActivity;
 import com.nexgensm.reswye.util.SharedPrefsUtils;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,12 +50,15 @@ public class OwnerInfoActivity extends AppCompatActivity {
     EditText firstname, lastname, contactnum, emailid;
     String url, Status_missed, Token,ImageUrl;
     Button saveOwnerInfo;
-    int flag, userId, leadId;
+    int  userId, leadId;
     SharedPreferences sharedpreferences;
     public static final String mypreference = "mypref";
     String FirstName, LastName, MobileNo, EmailID;
     RequestQueue requestQueue, editView, updateOwner, requestQueue2;
     ProgressDialog pd;
+    int flag=0;
+    int lid=0;
+    int ownerid=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,11 +82,11 @@ public class OwnerInfoActivity extends AppCompatActivity {
 
         sharedpreferences =getSharedPreferences(mypreference, Context.MODE_PRIVATE);
         userId=sharedpreferences.getInt("UserId",0);
-        flag = sharedpreferences.getInt("flag", 0);
         Token=sharedpreferences.getString("token","");
         ImageUrl=sharedpreferences.getString("imageURL","");
        // leadId = sharedpreferences.getInt("LeadId", 1);
         leadId=SharedPrefsUtils.getInstance(getApplicationContext()).getLeadId();
+        pd = new ProgressDialog(OwnerInfoActivity.this);
 
         requestQueue = Volley.newRequestQueue(this);
         requestQueue2 = Volley.newRequestQueue(this);
@@ -85,7 +95,12 @@ public class OwnerInfoActivity extends AppCompatActivity {
         lastname = (EditText) findViewById(R.id.lastname);
         contactnum = (EditText) findViewById(R.id.contactnum);
         emailid = (EditText) findViewById(R.id.emailid);
-
+        flag=SharedPrefsUtils.getInstance(getApplicationContext()).getFlag();
+        lid=SharedPrefsUtils.getInstance(getApplicationContext()).getLId();
+        if (flag==1)
+        {
+            viewdata();
+        }
 
         saveOwnerInfo = (Button) findViewById(R.id.saveOwnerInfo);
         saveOwnerInfo.setOnClickListener(new View.OnClickListener() {
@@ -104,9 +119,21 @@ public class OwnerInfoActivity extends AppCompatActivity {
                         Map<String, Object> jsonParams = new ArrayMap<>();
                         jsonParams.put("firstname", FnameE);
                         jsonParams.put("lastname", LnameE);
-                        jsonParams.put("lead_id", leadId);
                         jsonParams.put("phone", MobE);
                         jsonParams.put("email", MailE);
+                        jsonParams.put("flag", flag);
+                      //  jsonParams.put("lid", lid);
+                        if(flag==0)
+                        {
+                            jsonParams.put("lead_id", leadId);
+
+                        }
+                        else
+                        {
+                            jsonParams.put("lead_id", lid);
+
+                        }
+
 
                         JsonObjectRequest jsonObject2 = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(jsonParams),
                                 new Response.Listener<JSONObject>() {
@@ -116,25 +143,23 @@ public class OwnerInfoActivity extends AppCompatActivity {
 
                                         try {
 
-                                          /*  {
-                                                "status": "success",
-                                                    "result": {
-                                                "owner_id": 7,
-                                                        "lead_id": 15
-                                            }
-                                            }
 
-*/
                                             Status_missed = response.getString("status").toString().trim();
-                                            String str3 = "success";
-                                            if (Status_missed.equals(str3)) {
-
+                                            if (Status_missed.equals("success")) {
                                                 Toast.makeText(getApplicationContext(), "Successfully Added", Toast.LENGTH_SHORT).show();
-                                                finish();
-                                                firstname.setText("");
-                                                lastname.setText("");
-                                                contactnum.setText("");
-                                                emailid.setText("");
+
+                                                if(flag==0)
+                                                {
+                                                    finish();
+                                                    firstname.setText("");
+                                                    lastname.setText("");
+                                                    contactnum.setText("");
+                                                    emailid.setText("");
+                                                }
+                                                else
+                                                {
+                                                    viewdata();
+                                                }
                                             } else {
                                                 firstname.setText("");
                                                 lastname.setText("");
@@ -182,6 +207,66 @@ public class OwnerInfoActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void viewdata() {
+
+        final ArrayList<String> stringArrayList=new ArrayList<String>();
+        if(flag==1)
+        {
+           // tv_additionaldetails.setText("How did you find about us?");
+            String url = "http://192.168.0.3:3000/reswy/ownerlist/"+lid;
+
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,url, null,
+                    new com.android.volley.Response.Listener<JSONObject>()
+                    {
+                        @RequiresApi(api = Build.VERSION_CODES.M)
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+                                String status = response.getString("status").toString().trim();
+
+                                if(status.equals("success")) {
+
+                                    JSONArray jsonArray = response.getJSONArray("result");
+                                    JSONObject data = jsonArray.getJSONObject(0);
+                                    String firstName = data.getString("firstname");
+                                    String lastName = data.getString("lastname");
+                                    String lead_id = data.getString("lead_id");
+                                    String mobileNo = data.getString("mobileno");
+                                    String emailID = data.getString("emailid");
+                                    ownerid = data.getInt("owner_id");
+
+                                   firstname.setText(firstName);
+                                   lastname.setText(lastName);
+                                   contactnum.setText(mobileNo);
+                                   emailid.setText(emailID);
+
+
+                                }
+
+                            }
+                            catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }, new com.android.volley.Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    //Toast.makeText(getActivity(), "Volley Error"+error, Toast.LENGTH_SHORT).show();
+                    // do something...
+                }
+            }) {
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    final Map<String, String> headers = new HashMap<>();
+                    headers.put("Authorization",Token);
+                    return headers;
+                }
+            };
+            requestQueue.add(jsonObjectRequest);
+        }
+    }
+
     private void setback() {
         firstname.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 

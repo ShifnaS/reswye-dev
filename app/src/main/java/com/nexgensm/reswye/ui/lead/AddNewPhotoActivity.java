@@ -253,6 +253,7 @@ public class AddNewPhotoActivity extends AppCompatActivity {
         if (requestCode == GALLERY) {
             if (data != null) {
                 Uri contentURI = data.getData();
+
                 try {
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
                     //String path1 = contentURI.getPath();

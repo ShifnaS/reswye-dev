@@ -43,9 +43,12 @@ import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.github.barteksc.pdfviewer.util.FileUtils;
 import com.nexgensm.reswye.R;
+import com.nexgensm.reswye.Singleton;
 import com.nexgensm.reswye.api.ApiClient;
 import com.nexgensm.reswye.api.ApiInterface;
+import com.nexgensm.reswye.model.Pdf;
 import com.nexgensm.reswye.model.Response;
 import com.nexgensm.reswye.model.Result;
 import com.nexgensm.reswye.ui.signinpage.SigninActivity;
@@ -68,6 +71,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 
 import okhttp3.MediaType;
@@ -95,6 +99,8 @@ public class AddNewUploadDocFragment extends Fragment {
     private static final int READ_REQUEST_CODE = 42;
     String Token, Status_missed, name1, address, lead_CreatedDate;
     String url, ImageUrl, profileimage, encodedImage;
+    private int PICK_PDF_REQUEST = 1;
+
     int userId, lead_ID;
     SharedPreferences sharedpreferences;
     public static final String mypreference = "mypref";
@@ -120,6 +126,8 @@ public class AddNewUploadDocFragment extends Fragment {
     private RecyclerView recyclerView;
     Bitmap bmp;
     ProgressDialog pd;
+    int lid=0;
+    ArrayList<Pdf> pdfList= new ArrayList<Pdf>();
 
 
     /**
@@ -193,6 +201,9 @@ public class AddNewUploadDocFragment extends Fragment {
        }
         });
         setback();
+
+        flag=SharedPrefsUtils.getInstance(getActivity()).getFlag();
+        lid=SharedPrefsUtils.getInstance(getActivity()).getLId();
         return myFragmentView;
 
     }
@@ -272,8 +283,8 @@ public class AddNewUploadDocFragment extends Fragment {
             DocumentItems doc = new DocumentItems();
             doc.setDoc(path);
             docList.add(doc);
-            File f=new File(path);
-            fileList.add(f);
+         //   File f=new File(path);
+          //  fileList.add(f);
             recyclerView.setAdapter(m);
             // important!
         } catch (Exception e) {
@@ -304,19 +315,19 @@ public class AddNewUploadDocFragment extends Fragment {
         super.onActivityResult(req, result, data);
 
         if (result == RESULT_OK) {
-            //Intent intent = getIntent();
-            //String name = intent.getData().getPath();
-
-
-            //String name = data.getData().getPath();
-            //Toast.makeText(getApplicationContext(),name,Toast.LENGTH_SHORT).show();
-            Uri fileuri = data.getData();
-
 
             Toast.makeText(getActivity(), "Added successfully", Toast.LENGTH_SHORT).show();
 
             try {
-                generateImageFromPdf(fileuri, getActivity());
+
+
+                pdfUriS = data.getData();
+               // File file= (File) data.getExtras().get("data");
+                String path = FilePath.getPath(getActivity(), pdfUriS);
+
+                File f1=new File(path);
+                fileList.add(f1);
+                generateImageFromPdf(pdfUriS, getActivity());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -446,7 +457,7 @@ public class AddNewUploadDocFragment extends Fragment {
             for (int i=0;i<fileList.size();i++)
             {
                 fileDir=fileList.get(i);
-                RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), fileDir);
+                RequestBody reqFile = RequestBody.create(MediaType.parse("pdf/*"), fileDir);
                 body[i] = MultipartBody.Part.createFormData("file", fileDir.getName(), reqFile);
 
             }
@@ -538,5 +549,8 @@ public class AddNewUploadDocFragment extends Fragment {
 
 
     }
+
+
+
 
 }

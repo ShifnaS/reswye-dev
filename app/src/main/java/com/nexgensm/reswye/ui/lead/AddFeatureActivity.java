@@ -6,6 +6,7 @@ import android.databinding.ObservableArrayList;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.DragEvent;
 import android.view.View;
 import android.widget.Button;
@@ -45,6 +46,9 @@ public class AddFeatureActivity extends AppCompatActivity implements View.OnDrag
     String data="";
     ProgressDialog pd;
     int lead_id=0;
+    int flag=0;
+    int fid=0;
+    int lid=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +58,11 @@ public class AddFeatureActivity extends AppCompatActivity implements View.OnDrag
         mainActivityBinding.rcvSelectedExercise.setOnDragListener(this);
         pd = new ProgressDialog(AddFeatureActivity.this);
 
-         lead_id= SharedPrefsUtils.getInstance(getApplicationContext()).getLeadId();
+        lead_id= SharedPrefsUtils.getInstance(getApplicationContext()).getLeadId();
+        flag=SharedPrefsUtils.getInstance(getApplicationContext()).getFlag();
+        lid= SharedPrefsUtils.getInstance(getApplicationContext()).getLId();
 
+    //    Toast.makeText(this, "flag "+flag+" lid "+lid, Toast.LENGTH_SHORT).show();
         mainActivityBinding.rcvChooseExercise.setOnDragListener(new MyDragInsideRcvListener());
         int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.scale_3dp);
         mainActivityBinding.rcvChooseExercise.addItemDecoration(new SpaceItemDecoration(spacingInPixels));
@@ -66,12 +73,29 @@ public class AddFeatureActivity extends AppCompatActivity implements View.OnDrag
         pd.show();
         if(data.equals("feature"))
         {
-            getData1();
+            if(flag==0)
+            {
+                getData1();
+            }
+            else
+            {
+                getData11(lid);
+            }
+
 
         }
         else
         {
-            getData2();
+
+            if(flag==0)
+            {
+                getData2();
+            }
+            else
+            {
+                getData22(lid);
+            }
+           // getData2();
 
         }
         bt_submit=findViewById(R.id.save_chara);
@@ -98,6 +122,83 @@ public class AddFeatureActivity extends AppCompatActivity implements View.OnDrag
 
     }
 
+    private void getData11(int lid) {
+        try
+        {
+
+            ApiInterface apiService =
+                    ApiClient.getClient().create(ApiInterface.class);
+
+            Call<ResponseList> call = apiService.getList1(lid);
+            call.enqueue(new Callback<ResponseList>() {
+                @Override
+                public void onResponse(Call<ResponseList> call, retrofit2.Response<ResponseList> response) {
+                    pd.dismiss();
+
+                    ArrayList<ResultData> resultArray=new ArrayList<ResultData>();
+                    ArrayList<ResultData> resultArraySelected=new ArrayList<ResultData>();
+                    String status=response.body().getStatus();
+                    //   Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
+                    if(status.equals("success"))
+                    {
+                        resultArraySelected =response.body().getResult();
+                        resultArray =response.body().getRes();
+                        Log.e("111111111","resultArray "+resultArray);
+                        Log.e("111111111","resultArraySelected "+resultArraySelected);
+
+                        //  Toast.makeText(AddFeatureActivity.this, "size "+resultArray.size(), Toast.LENGTH_SHORT).show();
+                        for(int i=0;i<resultArray.size();i++)
+                        {
+                            ExcercisePojo exerciseToMove1=new ExcercisePojo();
+                            ResultData result=resultArray.get(i);
+                            String features=result.getFeatures_characteristics();
+                            int id=result.getId();
+                            int fid=result.getFid_cid();
+
+                            //  Toast.makeText(AddFeatureActivity.this, "feature "+features+" id "+id, Toast.LENGTH_SHORT).show();
+                            exerciseToMove1.setExerciseId(id);
+                            exerciseToMove1.setFid(fid);
+                            exerciseToMove1.setName(features);
+                            exerciseList.add(exerciseToMove1);
+
+                        }
+
+
+                        for(int i=0;i<resultArraySelected.size();i++)
+                        {
+                            ExcercisePojo exerciseToMove1=new ExcercisePojo();
+                            ResultData result=resultArraySelected.get(i);
+                            String features=result.getFeatures_characteristics();
+                            int id=result.getId();
+                            int fid=result.getFid_cid();
+
+                            //  Toast.makeText(AddFeatureActivity.this, "feature "+features+" id "+id, Toast.LENGTH_SHORT).show();
+                            exerciseToMove1.setExerciseId(id);
+                            exerciseToMove1.setFid(fid);
+                            exerciseToMove1.setName(features);
+                            exerciseSelectedList.add(exerciseToMove1);
+
+                        }
+
+
+                    }
+
+
+                }
+
+                @Override
+                public void onFailure(Call<ResponseList> call, Throwable t) {
+                    pd.dismiss();
+
+                }
+            });
+        }
+        catch (Exception e)
+        {
+            pd.dismiss();
+            e.printStackTrace();
+        }
+    }
 
 
     private void getData1() {
@@ -211,7 +312,79 @@ public class AddFeatureActivity extends AppCompatActivity implements View.OnDrag
             e.printStackTrace();
         }
     }
+    private void getData22(int lid) {
+        try
+        {
 
+            ApiInterface apiService =
+                    ApiClient.getClient().create(ApiInterface.class);
+
+            Call<ResponseList> call = apiService.getListChara1(lid);
+            call.enqueue(new Callback<ResponseList>() {
+                @Override
+                public void onResponse(Call<ResponseList> call, retrofit2.Response<ResponseList> response) {
+                    pd.dismiss();
+
+                    ArrayList<ResultData> resultArraySelected=new ArrayList<ResultData>();
+                    String status=response.body().getStatus();
+                    ArrayList<ResultData> resultArray=new ArrayList<ResultData>();
+
+                    //   Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
+                    if(status.equals("success"))
+                    {
+                        resultArray =response.body().getResult();
+                        resultArraySelected=response.body().getRes();
+
+
+                        for(int i=0;i<resultArray.size();i++)
+                        {
+                            ExcercisePojo exerciseToMove1=new ExcercisePojo();
+                            ResultData result=resultArray.get(i);
+                            String features=result.getFeatures_characteristics();
+                            int id=result.getId();
+                            int fid=result.getFid_cid();
+
+                            //  Toast.makeText(AddFeatureActivity.this, "feature "+features+" id "+id, Toast.LENGTH_SHORT).show();
+                            exerciseToMove1.setExerciseId(id);
+                            exerciseToMove1.setName(features);
+                            exerciseToMove1.setFid(fid);
+                            exerciseList.add(exerciseToMove1);
+
+                        }
+                        for(int i=0;i<resultArraySelected.size();i++)
+                        {
+                            ExcercisePojo exerciseToMove1=new ExcercisePojo();
+                            ResultData result=resultArraySelected.get(i);
+                            String features=result.getFeatures_characteristics();
+                            int id=result.getId();
+                            int fid=result.getFid_cid();
+
+                            //  Toast.makeText(AddFeatureActivity.this, "feature "+features+" id "+id, Toast.LENGTH_SHORT).show();
+                            exerciseToMove1.setExerciseId(id);
+                            exerciseToMove1.setName(features);
+                            exerciseToMove1.setFid(fid);
+                            exerciseSelectedList.add(exerciseToMove1);
+
+                        }
+
+                    }
+
+
+                }
+
+                @Override
+                public void onFailure(Call<ResponseList> call, Throwable t) {
+                    pd.dismiss();
+
+                }
+            });
+        }
+        catch (Exception e)
+        {
+            pd.dismiss();
+            e.printStackTrace();
+        }
+    }
 
     private void sendData1() {
         JsonObject jo ;
@@ -235,9 +408,12 @@ public class AddFeatureActivity extends AppCompatActivity implements View.OnDrag
                 jo.addProperty("id",pojo.exerciseId);
                 jo.addProperty("features_characteristics",pojo.name);
                 jo.addProperty("fid_cid",pojo.fid);
+                fid=pojo.fid;
                 ja.add(jo);
               //  Toast.makeText(this, "id "+pojo.exerciseId, Toast.LENGTH_SHORT).show();
             }
+            jo_outer.addProperty("flag",flag);
+            jo_outer.addProperty("fid",fid);
             jo_outer.addProperty("lead_id",lead_id);
             jo_outer.add("feature_name",ja);
 
@@ -312,10 +488,12 @@ public class AddFeatureActivity extends AppCompatActivity implements View.OnDrag
                 jo.addProperty("id",pojo.exerciseId);
                 jo.addProperty("features_characteristics",pojo.name);
                 jo.addProperty("fid_cid",pojo.fid);
-
+                fid=pojo.fid;
                 ja.add(jo);
              //   Toast.makeText(this, "id "+pojo.exerciseId, Toast.LENGTH_SHORT).show();
             }
+            jo_outer.addProperty("fid",fid);
+            jo_outer.addProperty("flag",flag);
             jo_outer.addProperty("lead_id",lead_id);
             jo_outer.add("feature_name",ja);
 

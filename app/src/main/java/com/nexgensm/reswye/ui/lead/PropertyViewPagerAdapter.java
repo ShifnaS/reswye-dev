@@ -61,7 +61,7 @@ public class PropertyViewPagerAdapter extends PagerAdapter {
         status = (TextView) itemView.findViewById(R.id.status);
         imgpropstatus = (ImageView) itemView.findViewById(R.id.property_status);
         salestatustxt = (TextView) itemView.findViewById(R.id.salestatustxt);
-        imgstarstatus = (ImageView) itemView.findViewById(R.id.star_status);
+       // imgstarstatus = (ImageView) itemView.findViewById(R.id.star_status);
         propamount = (TextView) itemView.findViewById(R.id.amount);
         propamount.setText(amount[position]);
 

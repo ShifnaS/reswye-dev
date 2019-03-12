@@ -1,6 +1,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
 
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/scrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -93,7 +94,7 @@
             <com.seatgeek.placesautocomplete.PlacesAutocompleteTextView
                 android:id="@+id/addressedittext"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="60dp"
                 android:layout_below="@+id/id_Address"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="10dp"
@@ -177,7 +178,8 @@
                 />
         </RelativeLayout>
 
-        <RelativeLayout
+        <LinearLayout
+            android:orientation="vertical"
             android:id="@+id/specialcondition"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -196,64 +198,56 @@
                 android:textColor="#000000"
                 android:textSize="18sp" />
 
-            <TextView
-                android:id="@+id/shortsaletxt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/specialconditiontxt"
-                android:layout_marginStart="20dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="10dp"
-                android:text="Short Sale"
-                android:textColor="#000000"
-                android:textSize="16sp" />
+         <LinearLayout
+             android:layout_margin="20dp"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content">
 
-            <CheckBox
-                android:id="@+id/shortsaleBox"
-                android:layout_width="25dp"
-                android:layout_height="20dp"
-                android:layout_below="@id/specialconditiontxt"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginRight="20dp"
-                android:buttonTint="@color/accent"
-                android:checked="false" />
+             <TextView
+                 android:id="@+id/shortsaletxt"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_margin="10dp"
+                 android:text="Short Sale"
+                 android:textColor="#000000"
+                 android:textSize="16sp" />
 
-            <TextView
-                android:id="@+id/foreclosuretxt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/shortsaletxt"
-                android:layout_marginStart="20dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="10dp"
-                android:text="Foreclosure"
-                android:textColor="#000000"
-                android:textSize="16sp" />
+             <CheckBox
+                 android:id="@+id/shortsaleBox"
+                 android:layout_width="25dp"
+                 android:layout_height="20dp"
+                 android:layout_alignParentEnd="true"
+                 android:layout_alignParentRight="true"
+                 android:layout_margin="10dp"
+                 android:buttonTint="@color/accent"
+                 android:checked="false" />
 
-            <CheckBox
-                android:id="@+id/foreclosureBox"
-                android:layout_width="25dp"
-                android:layout_height="20dp"
-                android:layout_below="@id/shortsaletxt"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginTop="10dp"
-                android:buttonTint="@color/accent"
+             <TextView
+                 android:id="@+id/foreclosuretxt"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_margin="10dp"
+                 android:text="Foreclosure"
+                 android:textColor="#000000"
+                 android:textSize="16sp" />
 
-                android:layout_marginEnd="20dp"
-                android:layout_marginRight="20dp"
-                android:checked="false" />
+             <CheckBox
+                 android:id="@+id/foreclosureBox"
+                 android:layout_width="25dp"
+                 android:layout_height="20dp"
+                 android:layout_alignParentEnd="true"
+                 android:layout_alignParentRight="true"
+                 android:buttonTint="@color/accent"
+                 android:layout_margin="10dp"
+                 android:checked="false" />
+
+         </LinearLayout>
 
             <TextView
                 android:id="@+id/id_date_forclosure"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/foreclosureBox"
                 android:layout_marginLeft="20dp"
-                android:layout_marginTop="20dp"
                 android:layout_marginRight="20dp"
                 android:text="Forclosure Date" />
 
@@ -262,13 +256,12 @@
                 style="@style/spinnerbox"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_below="@+id/id_date_forclosure"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginRight="20dp"
                 android:clickable="true"
-                android:drawableRight="@mipmap/calendar"
                 android:focusable="false"
+                android:drawableRight="@mipmap/calendar"
                 android:hint="Foreclosure date"
                 android:inputType="datetime"
                 android:paddingLeft="10dp"
@@ -306,114 +299,147 @@
                 android:id="@+id/linearlyt_images"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/listingprice"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginRight="20dp"
                 android:orientation="horizontal">
 
-                <ImageView
-                    android:id="@+id/bed_img"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@mipmap/bed" />
 
-                <ImageView
-                    android:id="@+id/bed_negative"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_marginLeft="30dp"
-                    android:src="@mipmap/minus" />
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:layout_height="match_parent"
+                 >
+                    <ImageView
+                        android:layout_gravity="center_horizontal|left"
+                        android:id="@+id/bed_img"
+                        android:layout_width="0dp"
+                        android:layout_weight=".8"
+                        android:layout_height="30dp"
+                        android:src="@mipmap/bed" />
 
-                <TextView
-                    android:id="@+id/bed_number"
-                    android:layout_width="wrap_content"
-                    android:layout_height="25dp"
-                    android:layout_marginLeft="15dp"
-                    android:gravity="center_vertical"
-                    android:text="3" />
+                    <ImageView
+                        android:id="@+id/bed_negative"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_marginLeft="20dp"
+                        android:layout_height="25dp"
+                        android:src="@mipmap/minus" />
 
-                <ImageView
-                    android:id="@+id/bed_positive"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_marginLeft="15dp"
-                    android:src="@mipmap/plus" />
+                    <TextView
+                        android:id="@+id/bed_number"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:textAlignment="center"
+                        android:layout_height="25dp"
+                        android:gravity="center_vertical"
+                        android:text="3" />
 
-                <ImageView
-                    android:id="@+id/bath_img"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginLeft="25dp"
-                    android:src="@mipmap/bath" />
+                    <ImageView
+                        android:id="@+id/bed_positive"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="25dp"
+                        android:src="@mipmap/plus" />
+                </LinearLayout>
 
-                <ImageView
-                    android:id="@+id/bath_negative"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_marginLeft="20dp"
-                    android:src="@mipmap/minus" />
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent">
 
-                <TextView
-                    android:id="@+id/bath_number"
-                    android:layout_width="wrap_content"
-                    android:layout_height="25dp"
-                    android:layout_marginLeft="15dp"
-                    android:gravity="center_vertical"
-                    android:text="3" />
+                    <ImageView
+                        android:id="@+id/bath_img"
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
+                        android:layout_height="30dp"
+                        android:src="@mipmap/bath" />
 
-                <ImageView
-                    android:id="@+id/bath_positive"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_marginLeft="15dp"
-                    android:src="@mipmap/plus" />
+                    <ImageView
+                        android:id="@+id/bath_negative"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="25dp"
+                        android:src="@mipmap/minus" />
+
+                    <TextView
+                        android:id="@+id/bath_number"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="25dp"
+                        android:textAlignment="center"
+                        android:gravity="center_vertical"
+                        android:text="3" />
+
+                    <ImageView
+                        android:id="@+id/bath_positive"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="25dp"
+                        android:src="@mipmap/plus" />
+                </LinearLayout>
+
+
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/linearlyt_year_min"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/linearlyt_images"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginRight="20dp"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/year_built_min"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Year Built"
-                    android:textStyle="bold" />
 
-                <ImageView
-                    android:id="@+id/year_negative_min"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_marginLeft="30dp"
-                    android:src="@mipmap/minus" />
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:id="@+id/year_built_min"
+                        android:layout_width="0dp"
+                        android:layout_weight="1.2"
+                        android:layout_height="wrap_content"
+                        android:text="Year Built"
+                        android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/year_txt_min"
-                    android:layout_width="wrap_content"
-                    android:layout_height="25dp"
-                    android:layout_marginLeft="10dp"
-                    android:text="2018" />
+                    <ImageView
+                        android:id="@+id/year_negative_min"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="25dp"
+                        android:src="@mipmap/minus" />
 
-                <ImageView
-                    android:id="@+id/year_positive_min"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_marginLeft="10dp"
-                    android:src="@mipmap/plus" />
+                    <TextView
+                        android:id="@+id/year_txt_min"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="25dp"
+                        android:textAlignment="center"
+                        android:text="2018" />
+
+                    <ImageView
+                        android:id="@+id/year_positive_min"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="25dp"
+                        android:src="@mipmap/plus" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent">
+                </LinearLayout>
+
+
             </LinearLayout>
 
             <TextView
                 android:id="@+id/id_discription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/linearlyt_year_min"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginRight="20dp"
@@ -423,7 +449,6 @@
                 android:id="@+id/propertydescription"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_below="@id/id_discription"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"
@@ -432,7 +457,57 @@
                 android:hint="Property Description"
                 android:paddingStart="10dp" />
 
-            <ImageButton
+
+            <TextView
+                android:id="@+id/id_available"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="20dp"
+                android:text="Available on date" />
+
+            <EditText
+                android:id="@+id/propertyavailable"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/spinner_focus"
+                android:drawableRight="@mipmap/calendar"
+                android:inputType="datetime"
+                android:clickable="true"
+                android:focusable="false"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:hint="Available on date"
+                android:paddingStart="10dp" />
+
+
+            <TextView
+                android:id="@+id/id_sqrft"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="20dp"
+                android:text="Square Feet" />
+
+            <EditText
+                android:id="@+id/propertysqrft"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/spinner_focus"
+                android:hint="Square Feet"
+                android:paddingStart="10dp" />
+
+          <!--  <ImageButton
                 android:id="@+id/btnSpeak"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -442,7 +517,7 @@
                 android:layout_marginBottom="12dp"
                 android:background="@null"
                 android:paddingTop="10dp"
-                android:paddingEnd="10dp" />
+                android:paddingEnd="10dp" />-->
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -522,10 +597,13 @@
                     style="@style/spinner_style"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-
                     android:layout_below="@+id/id_PointofInterest"
                     android:layout_marginLeft="20dp"
-                    android:layout_marginTop="20dp" />
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="20dp"/>
+
+
+
 
                 <RelativeLayout
                     android:id="@+id/relative_lyt_loggedSeller"
@@ -533,128 +611,20 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/spinnerpointofinterest"
                     android:visibility="gone">
-
-
                     <TextView
-                        android:id="@+id/txtViewedLogged"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="10dp"
-                        android:paddingRight="30dp"
-                        android:text="Property view history"
-                        android:textStyle="bold" />
-
-                    <ImageView
-                        android:id="@+id/AddViewed"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_toRightOf="@+id/txtViewedLogged"
-                        android:src="@mipmap/plus" />
-
-                    <EditText
-                        android:id="@+id/BuyerViewed"
-                        style="@style/spinnerbox"
-                        android:layout_width="fill_parent"
-                        android:layout_height="40dp"
-                        android:layout_below="@+id/txtViewedLogged"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginRight="20dp"
-                        android:layout_weight="0.5"
-                        android:background="@drawable/spinner_focus"
-                        android:hint="Buyer"
-                        android:inputType="textPersonName"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"
-                        android:textColorHint="#A9A9A9" />
-
-                    <EditText
-                        android:id="@+id/phoneviewed"
-                        style="@style/spinnerbox"
-                        android:layout_width="fill_parent"
-                        android:layout_height="40dp"
-                        android:layout_below="@+id/BuyerViewed"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginRight="20dp"
-                        android:layout_weight="0.5"
-                        android:background="@drawable/spinner_focus"
-                        android:hint="Phone "
-                        android:inputType="phone"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"
-                        android:textColorHint="#A9A9A9"
-
-                        />
-
-                    <EditText
-                        android:id="@+id/Mail"
-                        style="@style/spinnerbox"
-                        android:layout_width="fill_parent"
-                        android:layout_height="40dp"
-                        android:layout_below="@+id/phoneviewed"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginRight="20dp"
-                        android:layout_weight="0.5"
-                        android:background="@drawable/spinner_focus"
-                        android:hint="Mail"
-                        android:inputType="textEmailAddress"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"
-                        android:textColorHint="#A9A9A9" />
-
-                    <!--<EditText-->
-                    <!--style="@style/spinnerbox"-->
-                    <!--android:layout_width="fill_parent"-->
-                    <!--android:layout_height="40dp"-->
-                    <!--android:hint="Date and Time"-->
-                    <!--android:background="@drawable/spinner_focus"-->
-                    <!--android:textColorHint="#A9A9A9"-->
-                    <!--android:layout_weight="0.5"-->
-                    <!--android:paddingLeft="10dp"-->
-                    <!--android:paddingRight="10dp"-->
-                    <!--android:layout_marginLeft="20dp"-->
-                    <!--android:layout_below="@+id/Mail"-->
-                    <!--android:layout_marginTop="10dp"-->
-                    <!--android:layout_marginRight="20dp"-->
-                    <!--/>-->
-                    <EditText
-                        android:id="@+id/Date_Time"
-                        style="@style/spinnerbox"
+                        android:id="@+id/buyer"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
-                        android:layout_below="@+id/Mail"
                         android:layout_marginLeft="20dp"
                         android:layout_marginTop="20dp"
                         android:layout_marginRight="20dp"
-                        android:layout_weight="0.5"
-                        android:clickable="true"
-                        android:drawableRight="@mipmap/calendar"
-                        android:focusable="false"
-                        android:hint="Date"
-                        android:inputType="datetime"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"
-                        android:textColorHint="#A9A9A9"
-
-                        />
-
-                    <EditText
-                        android:id="@+id/BuyerComments"
-                        style="@style/spinnerbox"
-                        android:layout_width="fill_parent"
-                        android:layout_height="40dp"
-                        android:layout_below="@+id/Date_Time"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginRight="20dp"
-                        android:layout_weight="0.5"
                         android:background="@drawable/spinner_focus"
-                        android:hint="Buyer Comments"
+                        android:clickable="false"
+                        android:drawableRight="@mipmap/right_arrow"
+                        android:hint="Buyer Reviews"
+                        android:paddingStart="10dp"
                         android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
                         android:paddingRight="10dp"
                         android:textColorHint="#A9A9A9" />
                 </RelativeLayout>
@@ -678,7 +648,7 @@
 
             </RelativeLayout>
 
-        </RelativeLayout>
+        </LinearLayout>
 
 
     </RelativeLayout>

@@ -64,14 +64,14 @@ android:textColor="#FFFFFFFF"
         android:layout_marginLeft="10dp"
         android:layout_toRightOf="@+id/property_status"
         />
-    <ImageView
+  <!--  <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/star_status"
         android:src="@mipmap/saleicon"
         android:layout_below="@+id/status"
         android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@id/salestatustxt"/>
+        android:layout_toRightOf="@id/salestatustxt"/>-->
 
     <TextView
         android:layout_width="wrap_content"
@@ -81,7 +81,7 @@ android:textColor="#FFFFFFFF"
         android:textColor="#FFFFFFFF"
 
         android:textSize="25sp"
-        android:layout_below="@+id/star_status"
+        android:layout_below="@+id/property_status"
         android:layout_marginLeft="20dp"/>
 
 </RelativeLayout>

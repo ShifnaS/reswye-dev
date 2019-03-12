@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".ui.lead.AddBuyerActivity"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_below="@+id/spinnerpointofinterest"
+  >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/toolbar"
+        android:orientation="horizontal"
+        android:background="@color/toolbarcolor">
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/back"
+            android:background="@null"
+            android:src="@mipmap/status_bar_back_arrow"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="10dp"/>
+
+        <TextView
+            android:id="@+id/AddLead_Text"
+            style="@style/AddNewHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Add Buyer Comments"
+            android:gravity="center_horizontal"
+            android:textColor="#FFFFFF" />
+
+    </LinearLayout>
+<LinearLayout
+    android:layout_marginTop="10sp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/name"
+        style="@style/spinnerbox"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_weight="0.5"
+        android:background="@drawable/spinner_focus"
+        android:hint="Buyer Name"
+        android:inputType="textPersonName"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:textColorHint="#A9A9A9" />
+
+    <EditText
+        android:id="@+id/phone"
+        style="@style/spinnerbox"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_weight="0.5"
+        android:background="@drawable/spinner_focus"
+        android:hint="Phone "
+        android:inputType="phone"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:textColorHint="#A9A9A9"
+
+        />
+
+    <EditText
+        android:id="@+id/email"
+        style="@style/spinnerbox"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_weight="0.5"
+        android:background="@drawable/spinner_focus"
+        android:hint="Mail"
+        android:inputType="textEmailAddress"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:textColorHint="#A9A9A9" />
+
+
+    <EditText
+        android:id="@+id/date"
+        style="@style/spinnerbox"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_weight="0.5"
+        android:clickable="true"
+        android:drawableRight="@mipmap/calendar"
+        android:focusable="false"
+        android:hint="Date"
+        android:inputType="datetime"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:textColorHint="#A9A9A9"
+
+        />
+
+    <EditText
+        android:id="@+id/comment"
+        style="@style/spinnerbox"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_weight="0.5"
+        android:background="@drawable/spinner_focus"
+        android:hint="Buyer Comments"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:textColorHint="#A9A9A9" />
+
+    <Button
+        android:id="@+id/save"
+        style="@style/AppButton"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@+id/scroll2"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:text="Save"
+        android:textAllCaps="false"
+        android:textColor="@color/colorPrimary"
+        android:textSize="20sp" />
+</LinearLayout>
+
+
+    </LinearLayout>

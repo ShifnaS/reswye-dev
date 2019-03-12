@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nexgensm.reswye.R;
+import com.nexgensm.reswye.api.ApiClient;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,8 +85,8 @@ public class DocumentRecyclerViewAdapter  extends RecyclerView.Adapter<DocumentR
                 String fileName=docItems.getDoc_pic();
 
                     try {
-                       // String url = "https://www.androidtutorialpoint.com/wp-content/uploads/2016/09/Beauty.jpg";
-                          String url="http://202.88.239.14:8169/FileUploads/"+fileName;
+                        //String url = "https://www.google.com/search?q=sample+pdf+document&rlz=1C1CHBD_enIN832IN832&source=lnms&tbm=isch&sa=X&ved=0ahUKEwiB6tunotngAhVXOSsKHWX1DZ4Q_AUIDigB&biw=1366&bih=657#imgrc=KcR7eKL0IHPROM:";
+                          String url=fileName;
                         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
                         request.setDescription("Some descrition");
                         request.setTitle("Property Document");

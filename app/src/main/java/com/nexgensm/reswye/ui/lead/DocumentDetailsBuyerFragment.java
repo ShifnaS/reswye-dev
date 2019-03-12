@@ -22,7 +22,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.nexgensm.reswye.R;
+import com.nexgensm.reswye.api.ApiClient;
 import com.nexgensm.reswye.ui.Dashboard.MissedItems;
+import com.nexgensm.reswye.util.SharedPrefsUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -106,18 +108,16 @@ String ImageUrl;
         final View myFragmentView = inflater.inflate(R.layout.fragment_document_details_buyer, container, false);
         recyclerView = (RecyclerView) myFragmentView.findViewById(R.id.recycler_view);
         documentRecyclerViewAdapter = new DocumentRecyclerViewAdapter(imageArray, getActivity(), docItemsList);
-//        sharedpreferences =getActivity().getSharedPreferences(mypreference, Context.MODE_PRIVATE);
-//        userId=sharedpreferences.getInt("UserId",0);
-//        Token=sharedpreferences.getString("token","");
+
         sharedpreferences =getActivity().getSharedPreferences(mypreference, Context.MODE_PRIVATE);
-        userId=sharedpreferences.getInt("UserId",0);
+        userId=SharedPrefsUtils.getInstance(getActivity()).getUserId();
         flag = sharedpreferences.getInt("flag", 0);
         Token=sharedpreferences.getString("token","");
         ImageUrl=sharedpreferences.getString("imageURL","");
-        LeadId = sharedpreferences.getInt("LeadId", 1);
+        LeadId = SharedPrefsUtils.getInstance(getActivity()).getLeadId();
         requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
 
-        url = "http://202.88.239.14:8169/api/Lead/GetPropertyDocs/"+userId;
+        url = "http://192.168.0.3:3000/reswy/documentlist/"+LeadId;
         Map<String, Object> jsonParams = new ArrayMap<>();
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
@@ -126,16 +126,16 @@ String ImageUrl;
                     public void onResponse(JSONObject response) {
                         try {
                             Status_missed = response.getString("status").toString().trim();
-                            JSONArray jsonArray = response.getJSONArray("data");
+                            JSONArray jsonArray = response.getJSONArray("document");
                             if(jsonArray.length()>0){
                                 for (int i = 0; i < jsonArray.length(); i++) {
                                     JSONObject data = jsonArray.getJSONObject(i);
-
-                                    docName = data.getString("doc_Name");
-
-                                    DocDiscription = data.getString("doc_Description");
+                                //    imageArray.add(""+ApiClient.BASE_URL_IMG+docName);
+                                    docName = data.getString("doc_name");
+                                    Toast.makeText(getActivity(), "docNAme "+docName, Toast.LENGTH_SHORT).show();
+                                    DocDiscription = data.getString("doc_description");
                                     // String image=imageUrl+profileimage;
-                                    String str3 = "Success";
+                                    String str3 = "success";
                                     int response_result = Status_missed.compareTo(str3);
                                     if (response_result == 0) {
 
@@ -143,10 +143,10 @@ String ImageUrl;
                                         recyclerView.setLayoutManager(mLayoutManager);
                                         recyclerView.setItemAnimator(new DefaultItemAnimator());
                                         recyclerView.setAdapter(documentRecyclerViewAdapter);
-                                        //   Document_List_items docItems = new Document_List_items();
 
-                                        Document_List_items  docItems = new Document_List_items(docName,DocDiscription, "20 jan 2017 12.30 PM ");
+                                        Document_List_items  docItems = new Document_List_items(ApiClient.BASE_URL_IMG+docName,DocDiscription, data.getString("doc_uploadeddate"));
                                         docItemsList.add(docItems);
+                                        prepareData();
 
                                     } else {
                                         Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
@@ -213,16 +213,6 @@ String ImageUrl;
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);

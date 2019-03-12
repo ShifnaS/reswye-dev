@@ -36,7 +36,9 @@ public interface ApiInterface {
                                   @Part("gender") RequestBody gender1,
                                   @Part("howfindabtus") RequestBody additional1,
                                   @Part("lead_prospect") RequestBody lead_prospect,
-                                  @Part("user_id") RequestBody uid);
+                                  @Part("user_id") RequestBody uid,
+                                  @Part("flag") RequestBody flags,
+                                  @Part("lead_id") RequestBody lead_id);
 
 
     @Multipart
@@ -64,7 +66,20 @@ public interface ApiInterface {
     @GET("freaturelist")
     Call<ResponseList> getList();
 
+    @GET("featurelistedit/{input}")
+    Call<ResponseList> getList1(
+            @Path("input") int input
+    );
+
+    @GET("charalistedit/{input}")
+    Call<ResponseList> getListChara1(
+            @Path("input") int input
+    );
+
 
     @GET("charalist")
     Call<ResponseList> getListChara();
+    @POST("buyerinfo")
+    Call<Response> addBuyerComment(@Body Request body);
+
 }

@@ -47,6 +47,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.nexgensm.reswye.R;
 import com.nexgensm.reswye.api.ApiClient;
 import com.nexgensm.reswye.api.ApiInterface;
@@ -55,6 +61,11 @@ import com.nexgensm.reswye.model.Result;
 import com.nexgensm.reswye.ui.signinpage.SigninActivity;
 import com.nexgensm.reswye.util.KeyboardUtils;
 import com.nexgensm.reswye.util.SharedPrefsUtils;
+import com.squareup.picasso.Picasso;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -63,7 +74,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -94,14 +108,16 @@ public class AddNewLeadFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private OnFragmentInteractionListener mListener;
-    private int  userId,  encodedImage_flag = 0, LeadId,flag;
+    private int  userId,  encodedImage_flag = 0;
+    int lid=0;
+    int flag=0;
     Drawable btn_click;
     Drawable btn_unclick;
     Context context;
     Spinner spinneradditionaldetails;
     String[] additionaldetails;
     ImageView circleView;
-    TextView lead_status;
+    TextView lead_status,tv_additionaldetails;
     SwitchCompat selectgender_selection;
     LinearLayout leadstauslayout;
     Button warmbtn, coldbtn, neutral, addnewleadbtn,success;
@@ -111,7 +127,9 @@ public class AddNewLeadFragment extends Fragment {
     EditText firstnameedittext,AddressSelleredittext,lastnameedittext,mobilenumberedittext,emailedittext;
     ProgressDialog pd;
     ScrollView ScrollView01;
-
+    RequestQueue requestQueue;
+    String Token;
+    int uid=0;
     private static final int REQUEST_GALLERY_CODE = 200;
     private static final int READ_REQUEST_CODE = 300;
     private static final String SERVER_PATH = "Path_to_your_server";
@@ -157,6 +175,8 @@ public class AddNewLeadFragment extends Fragment {
         emailedittext = (EditText) myFragmentView.findViewById(R.id.email);
         selectgender_selection = (SwitchCompat) myFragmentView.findViewById(R.id.selectgender_selection);
         lead_status = (TextView) myFragmentView.findViewById(R.id.lead_status);
+        tv_additionaldetails = (TextView) myFragmentView.findViewById(R.id.additionaldetails);
+
         leadstauslayout = (LinearLayout) myFragmentView.findViewById(R.id.leadstauslayout);
         warmbtn = (Button) myFragmentView.findViewById(R.id.warmbtn);
         coldbtn = (Button) myFragmentView.findViewById(R.id.coldbtn);
@@ -172,24 +192,29 @@ public class AddNewLeadFragment extends Fragment {
             userId=SharedPrefsUtils.getInstance(getContext()).getUserId();
 
         }
+        requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
 
         setback();
 
         KeyboardUtils.hideKeyboard(getActivity());
-
-
-
-
 
         final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, additionaldetails);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         additional_details.setAdapter(adapter);
 
 
-
+     //  flag = getArguments().getInt("flag");
+      // lid = getArguments().getInt("lid");
+        flag=SharedPrefsUtils.getInstance(getActivity()).getFlag();
+        lid=SharedPrefsUtils.getInstance(getActivity()).getLId();
+      //  Toast.makeText(getActivity(), "flag "+flag+" "+lid, Toast.LENGTH_SHORT).show();
 
 
         if (flag == 1) {
+
+            viewData();
+        }
+   /*     if (flag == 1) {
 
             lead_status.setVisibility(View.VISIBLE);
             leadstauslayout.setVisibility(View.VISIBLE);
@@ -197,7 +222,7 @@ public class AddNewLeadFragment extends Fragment {
 
             lead_status.setVisibility(View.GONE);
             leadstauslayout.setVisibility(View.GONE);
-        }
+        }*/
 
         warmbtn.setBackground(btn_click);
         coldbtn.setBackground(btn_unclick);
@@ -305,6 +330,139 @@ public class AddNewLeadFragment extends Fragment {
         });
 
         return myFragmentView;
+    }
+
+    private void viewData() {
+        final ArrayList<String> stringArrayList=new ArrayList<String>();
+        if(flag==1)
+        {
+            tv_additionaldetails.setText("How did you find about us?");
+            String url = "http://192.168.0.3:3000/reswy/leadlistpersonal/"+lid;
+
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,url, null,
+                    new com.android.volley.Response.Listener<JSONObject>()
+                    {
+                        @RequiresApi(api = Build.VERSION_CODES.M)
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+                                String status = response.getString("status").toString().trim();
+
+                                if(status.equals("success"))
+                                {
+
+                                    JSONArray jsonArray=response.getJSONArray("result");
+
+                                    JSONObject data = jsonArray.getJSONObject(0);
+
+                                    String firstName = data.getString("firstname");
+                                    String lastName = data.getString("lastname");
+                                    String lead_Status = data.getString("lead_statusid");
+                                    String lead_prospect = data.getString("lead_warmth");
+                                    String address = data.getString("address");
+                                    String leadProfileimage = data.getString("leadprofileimage");
+                                    String lead_Category = data.getString("lead_category");
+                                    String transferedStatus = data.getString("transfered_status");
+                                    String mobileNo = data.getString("mobileno");
+                                    String hwfindabtusTxt = data.getString("hwfindabtus");
+                                    String emailID = data.getString("emailid");
+                                    //   transferedAgentName = data.getString("transfered_AgentName");
+                                    String image=ApiClient.BASE_URL+leadProfileimage;
+                                    String gender = data.getString("gender");
+
+                                    if(gender.equalsIgnoreCase("Female"))
+                                    {
+                                        //selectgender_selection.setOnCheckedChangeListener (null);
+                                        selectgender_selection.setChecked(true);
+                                       // selectgender_selection.setOnCheckedChangeListener (getActivity());
+                                    }
+                                    else
+                                    {
+                                        selectgender_selection.setChecked(false);
+                                    }
+                                    if(lead_prospect.equalsIgnoreCase("warmth"))
+                                    {
+                                        warmbtn.setBackground(btn_click);
+                                        coldbtn.setBackground(btn_unclick);
+                                        neutral.setBackground(btn_unclick);
+
+                                        warmbtn.setTextColor(getActivity().getColor(R.color.dark));
+                                        coldbtn.setTextColor(Color.BLACK);
+                                        neutral.setTextColor(Color.BLACK);
+                                        leadwarmth = "Warm";
+                                    }
+                                    else  if(lead_prospect.equalsIgnoreCase("Cold"))
+                                    {
+                                        coldbtn.setBackground(btn_click);
+                                        warmbtn.setBackground(btn_unclick);
+                                        neutral.setBackground(btn_unclick);
+
+                                        coldbtn.setTextColor(getContext().getColor(R.color.dark));
+                                        warmbtn.setTextColor(Color.BLACK);
+                                        neutral.setTextColor(Color.BLACK);
+                                    }
+                                    else  if(lead_prospect.equalsIgnoreCase("Neutral"))
+                                    {
+                                        neutral.setBackground(btn_click);
+                                        coldbtn.setBackground(btn_unclick);
+                                        warmbtn.setBackground(btn_unclick);
+
+                                        neutral.setTextColor(getContext().getColor(R.color.dark));
+                                        coldbtn.setTextColor(Color.BLACK);
+                                        warmbtn.setTextColor(Color.BLACK);
+                                        leadwarmth = "Neutral";
+                                    }
+                                    stringArrayList.add(hwfindabtusTxt);
+                                    firstnameedittext.setText(firstName);
+                                    lastnameedittext.setText(lastName);
+                                    AddressSelleredittext.setText(address);
+                                    mobilenumberedittext.setText(mobileNo);
+                                    emailedittext.setText(emailID);
+                                    for(int i=1;i<additionaldetails.length;i++)
+                                    {
+                                        if(!additionaldetails[i].equalsIgnoreCase(hwfindabtusTxt))
+                                        {
+                                            stringArrayList.add(additionaldetails[i]);
+                                        }
+                                    }
+
+
+                                    final ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, stringArrayList);
+                                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    additional_details.setAdapter(adapter);
+
+
+                                    Picasso.with(getActivity()).load(image).into(circleView);
+
+                                }
+                                else
+                                {
+                                    Toast.makeText(getActivity(), "No data", Toast.LENGTH_SHORT).show();
+                                }
+
+
+                            }
+                            catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }, new com.android.volley.Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    //Toast.makeText(getActivity(), "Volley Error"+error, Toast.LENGTH_SHORT).show();
+                    // do something...
+                }
+            }) {
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    final Map<String, String> headers = new HashMap<>();
+                    headers.put("Authorization",Token);
+                    return headers;
+                }
+            };
+            requestQueue.add(jsonObjectRequest);
+        }
+
     }
 
 
@@ -553,13 +711,9 @@ public class AddNewLeadFragment extends Fragment {
                 fos.flush();
                 fos.close();
 
-                int uid= SharedPrefsUtils.getInstance(getActivity()).getUserId();
+                uid= SharedPrefsUtils.getInstance(getActivity()).getUserId();
+               // lid=SharedPrefsUtils.getInstance(getActivity()).getLeadId();
 
-
-           /* RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
-            MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), reqFile);
-            RequestBody name = RequestBody.create(MediaType.parse("text/plain"), "upload");
-            RequestBody lname = RequestBody.create(MediaType.parse("text/plain"), "Shifna");*/
 
 
                 ApiInterface apiService =ApiClient.getClient().create(ApiInterface.class);
@@ -577,11 +731,13 @@ public class AddNewLeadFragment extends Fragment {
                 RequestBody mobile1 = RequestBody.create(MediaType.parse("text/plain"), mobile);
                 RequestBody gender1 = RequestBody.create(MediaType.parse("text/plain"), gender);
                 RequestBody user_id = RequestBody.create(MediaType.parse("text/plain"), ""+uid);
+                RequestBody flags = RequestBody.create(MediaType.parse("text/plain"), ""+flag);
+                RequestBody lead_id = RequestBody.create(MediaType.parse("text/plain"), ""+lid);
                 Log.e("11111","DATA "+leadwarmth+" "+additional);
                 Log.e("11111","DATA "+uid+" "+address);
 
 
-                Call<Response> req = apiService.uploadLeadData(body,name,fname,address1,lname1,email1,mobile1,gender1,additional1,leadwarmth1,user_id);
+                Call<Response> req = apiService.uploadLeadData(body,name,fname,address1,lname1,email1,mobile1,gender1,additional1,leadwarmth1,user_id,flags,lead_id);
                 req.enqueue(new Callback<Response>() {
                     @Override
                     public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
@@ -590,22 +746,35 @@ public class AddNewLeadFragment extends Fragment {
                         if (response.code() == 200) {
                             //  textView.setText("Uploaded Successfully!");
                             // textView.setTextColor(Color.BLUE);
+                            Toast.makeText(context, "response "+response.body().getStatus(), Toast.LENGTH_SHORT).show();
                             if(response.body().getStatus().equals("success"))
                             {
                                 Toast.makeText(getActivity(),  "Uploaded Successfully! ", Toast.LENGTH_SHORT).show();
                                 Result result=response.body().getResult();
                                 int lead_id=result.getLead_Id();
-                              //  Toast.makeText(context, "Lead "+lead_id, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, "Lead "+lead_id, Toast.LENGTH_SHORT).show();
                                 SharedPrefsUtils.getInstance(getActivity()).setLeadId(lead_id);
+                                if(flag==0)
+                                {
+                                    //    additional_details.getSelectedItem().toString();
+                                    firstnameedittext.setText("");
+                                    AddressSelleredittext.setText("");
+                                    lastnameedittext .setText("");
+                                    mobilenumberedittext.setText("");
+                                    emailedittext .setText("");
+                                    // gender=selectgender_selection .getText().toString();
+                                    lead_status .setText("");
+                                    circleView.setImageResource(R.mipmap.man);
+                                    final ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, additionaldetails);
+                                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    additional_details.setAdapter(adapter);
 
-                            //    additional_details.getSelectedItem().toString();
-                                firstnameedittext.setText("");
-                                AddressSelleredittext.setText("");
-                                lastnameedittext .setText("");
-                                mobilenumberedittext.setText("");
-                                emailedittext .setText("");
-                                // gender=selectgender_selection .getText().toString();
-                                lead_status .setText("");
+                                }
+                                else
+                                {
+                                    viewData();
+                                }
+
 
 
                             }
@@ -615,13 +784,7 @@ public class AddNewLeadFragment extends Fragment {
 
                             }
 
-                       /* {
-                            "status": "success",
-                                "result": {
-                            "user_id": "15",
-                                    "lead_id": "2"
-                        }
-                        }*/
+
 
                         }
 

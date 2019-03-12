@@ -26,6 +26,8 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.nexgensm.reswye.R;
 import com.nexgensm.reswye.Utlity;
+import com.nexgensm.reswye.api.ApiClient;
+import com.nexgensm.reswye.util.SharedPrefsUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -53,7 +55,7 @@ public class ViewExistingPhotoActivity extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     public static final String mypreference = "mypref";
     int flag, userId;
-    int LeadId;
+    int LeadId,lid;
     String url, ImageUrl, image;
     List<LeadListingRecyclerDataAdapter> GetDataAdapter1;
     RequestQueue requestQueue;
@@ -67,22 +69,23 @@ public class ViewExistingPhotoActivity extends AppCompatActivity {
         jsonObject = new JSONObject();
         GetDataAdapter1 = new ArrayList<>();
         sharedPreferences = getApplication().getSharedPreferences(mypreference, Context.MODE_PRIVATE);
-        flag = sharedPreferences.getInt("flag", 0);
-        ImageUrl = sharedPreferences.getString("imageURL", "");
-        LeadId = sharedPreferences.getInt("LeadId", 0);
-        Intent mIntent = getIntent();
-        int intValue = mIntent.getIntExtra("LeadId", 0);
-        Log.v(TAG, "leadidintent" + intValue);
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view_exisiting);
+        ImageUrl = ApiClient.BASE_URL;
 
-        //ViewGroup.LayoutParams params = recyclerView.getLayoutParams();
-        //params.height = 500;
-        //recyclerView.setLayoutParams(params);
+        flag =SharedPrefsUtils.getInstance(getApplicationContext()).getFlag();
+        if(flag==0)
+        {
+            LeadId =SharedPrefsUtils.getInstance(getApplicationContext()).getLeadId();
+        }
+        else
+        {
+            LeadId =SharedPrefsUtils.getInstance(getApplicationContext()).getLId();
+
+        }
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view_exisiting);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
         Log.v(TAG, "FLAg" + flag);
-//        if (flag == 1)
-            JSON_DATA_WEB_CALL();
+        JSON_DATA_WEB_CALL();
         Button addphoto = (Button) findViewById(R.id.addphotonew);
         addphoto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,7 +105,7 @@ public class ViewExistingPhotoActivity extends AppCompatActivity {
 
     public void JSON_DATA_WEB_CALL() {
 
-        url = "http://202.88.239.14:8169/api/Lead/GetPropertyImages/" + LeadId;
+        url = "http://192.168.0.3:3000/reswy/propertylist/" + LeadId;
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                     @Override
@@ -138,14 +141,14 @@ public class ViewExistingPhotoActivity extends AppCompatActivity {
 
     public void JSON_PARSE_DATA_AFTER_WEBCALL(JSONObject jsonObject) {
 
-        JSONArray jarray = jsonObject.optJSONArray("data");
+        JSONArray jarray = jsonObject.optJSONArray("document");
 
         for (int i = 0; i < jarray.length(); i++) {
             LeadListingRecyclerDataAdapter GetDataAdapter2 = new LeadListingRecyclerDataAdapter();
 
             try {
-                JSONObject abc = jarray.getJSONObject(i);
-                String imageName = abc.getString("uploaded_DocumentName");
+                JSONObject jo = jarray.getJSONObject(i);
+                String imageName = jo.getString("Uploaded_DocumentName");
                 Log.v(TAG, "" + imageName + "" + ImageUrl);
                 image = ImageUrl + imageName;
                 GetDataAdapter2.setLead_imagename(imageName);
@@ -169,32 +172,6 @@ public class ViewExistingPhotoActivity extends AppCompatActivity {
                     @Override
                     public void onItemClick(View view, int position) {
                         // TODO Handle item click
-
-//                        String imagename =GetDataAdapter1.get(position).getLead_imagename();
-//
-//                        AlertDialog.Builder builder = new AlertDialog.Builder(ViewExistingPhotoActivity.this);
-//                        builder.setTitle("Confirm dialog demo !");
-//                        builder.setMessage("You are about to delete all records of database. Do you really want to proceed ?");
-//                        builder.setCancelable(false);
-//                        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                Toast.makeText(getApplicationContext(), "You've choosen to delete all records", Toast.LENGTH_SHORT).show();
-//                            }
-//                        });
-//
-//                        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                Toast.makeText(getApplicationContext(), "You've changed your mind to delete all records", Toast.LENGTH_SHORT).show();
-//                            }
-//                        });
-//
-//                        builder.show();
-////                        recyclerView.setAdapter(m);
-//                        Toast.makeText(getApplicationContext(), "Name :" + imagename,
-//                                Toast.LENGTH_LONG).show();
-
                     }
 
                     @Override
@@ -264,26 +241,6 @@ public class ViewExistingPhotoActivity extends AppCompatActivity {
                         }
 
 
-//                    try {
-//                        Log.v("ADDNEW",""+response);
-//
-//
-//                        String str3 = "Success";
-//                        int response_result = Status_missed.compareTo(str3);
-//                        if (response_result == 0) {
-//                            loading.dismiss();
-//                            Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-//
-//                        } else {
-//                            loading.dismiss();
-//                            Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-//                        }
-//
-//                    } catch (JSONException e) {
-//                        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-//                        loading.dismiss();
-//                        e.printStackTrace();
-//                    }
                     }
                 }, new Response.ErrorListener() {
             @Override

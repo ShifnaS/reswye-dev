@@ -11,6 +11,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.ArrayMap;
@@ -30,6 +31,8 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.nexgensm.reswye.R;
 import com.nexgensm.reswye.Utlity;
+import com.nexgensm.reswye.api.ApiClient;
+import com.nexgensm.reswye.util.SharedPrefsUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -62,7 +65,7 @@ public class PropertyDetailsSellerFragment extends Fragment {
     SharedPreferences sharedpreferences;
     public static final String mypreference = "mypref";
     int LeadId;
-    String Token, url, imageUrl, beds, feature, baths, squareFootage_Min, squareFootage_Max, discription, emaiL, additionalChara, shortsale, listingprice, listingtype, image;
+    String Token, url, imageUrl, beds, feature="", baths, squareFootage_Min, squareFootage_Max, discription, emaiL, additionalChara, shortsale, listingprice, listingtype, image;
     String viewedDatetime, emailbuyer, buyername, mobilebuyer, commentbuyer;
     RequestQueue requestQueue;
     TextView address, pointofinterest, loggedbuyer, loggeddatetime, features, characteristics, status, salesstatus, propertyamount;
@@ -136,6 +139,9 @@ public class PropertyDetailsSellerFragment extends Fragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         RecyclerView.LayoutManager mLayoutManager1 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
 
+
+    //    recyclerViewPropertyviewed.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.HORIZONTAL));
+
         recyclerViewPropertyviewed.setLayoutManager(mLayoutManager1);
         recyclerViewPropertyviewed.setItemAnimator(new DefaultItemAnimator());
 
@@ -143,7 +149,7 @@ public class PropertyDetailsSellerFragment extends Fragment {
         logged_adapter = new PropertyViewloggedAdapter_seller(getActivity(), amount2);
 
         sharedpreferences = getActivity().getSharedPreferences(mypreference, Context.MODE_PRIVATE);
-        LeadId = getArguments().getInt("leadId");
+        LeadId = SharedPrefsUtils.getInstance(getActivity()).getLeadId();
 
         Token = sharedpreferences.getString("token", "");
 
@@ -173,7 +179,6 @@ public class PropertyDetailsSellerFragment extends Fragment {
         requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
 
 
-        imageUrl = "http://202.88.239.14:8169/FileUploads/";
         url = "http://192.168.0.3:3000/reswy/leadlistproperty/"+LeadId;
         Log.e("11111",""+url);
        /* Map<String, Object> jsonParams = new ArrayMap<>();
@@ -190,8 +195,8 @@ public class PropertyDetailsSellerFragment extends Fragment {
                             Status_missed = response.getString("status").toString().trim();
                             Toast.makeText(getActivity(), "Status_missed "+Status_missed, Toast.LENGTH_SHORT).show();
 
-                            JSONArray jsonArray = response.getJSONArray("result");
                             if (Status_missed.equals("success")) {
+                                JSONArray jsonArray = response.getJSONArray("result");
                                 JSONObject propertyDetails = jsonArray.getJSONObject(0);
                                 mobileNo = propertyDetails.getString("mobileno");
                                 emaiL = propertyDetails.getString("emailid");
@@ -213,12 +218,12 @@ public class PropertyDetailsSellerFragment extends Fragment {
                                 // Log.v("shortsale", "" + shortsale);
                                 listingprice = propertyDetails.getString("listing_price");
                                 listingtype = propertyDetails.getString("listingtype");
-
+                                Toast.makeText(getActivity(), "sqrft "+squareFootage_Max, Toast.LENGTH_SHORT).show();
 
                                 address.setText(address_location);
                                 bed_count.setText(beds);
                                 bath_count.setText(baths);
-                                minSqft.setText(squareFootage_Min);
+                                //minSqft.setText(squareFootage_Min);
                                 maxSqft.setText(squareFootage_Max);
 
                                 lead.setText(firstName+" "+lastName);
@@ -231,9 +236,76 @@ public class PropertyDetailsSellerFragment extends Fragment {
                                 pointofinterest.setText(pointOfInterest);
                                 propertydescription.setText(discription);
 
-                                //   loggeddatetime.setText(viewedDatetime);
+                                viewedDatetime = "12-04-2018";
+                                buyername = "Shifna S";
+                                emailbuyer = "shifnashahida60@gmail.com";
+                                mobilebuyer = "5676564567";
+                                commentbuyer ="nice rooms and hall";
+
+
+                                JSONArray jsonArrayChara = response.getJSONArray("chara");
+                                Log.e("0000000000000","111111111111 "+jsonArrayChara.toString());
+                                //Toast.makeText(getContext(), "chara "+jsonArrayChara.length(), Toast.LENGTH_SHORT).show();
+                                for(int j=0;j<jsonArrayChara.length();j++)
+                                {
+                                  //  Toast.makeText(getActivity(), "hii "+j, Toast.LENGTH_SHORT).show();
+                                    Log.e("0000000000000","111111111111 "+jsonArrayChara.getJSONObject(j).toString());
+                                    JSONObject featuresObject = jsonArrayChara.getJSONObject(j);
+                                    //   loggeddatetime.setText(viewedDatetime);
+                                    if(featuresObject.getInt("fid_cid")==1)
+                                    {
+                                        if(feature.equalsIgnoreCase(""))
+                                        {
+                                            feature=featuresObject.getString("features_characteristics");
+                                        }
+                                        else
+                                        {
+                                            feature=feature+","+featuresObject.getString("features_characteristics");
+
+                                        }
+                                    }
+                                    else
+                                    {
+                                        additionalChara=additionalChara+","+featuresObject.getString("features_characteristics");
+
+                                    }
+
+                                }
                                 characteristics.setText(additionalChara);
                                 features.setText(feature);
+
+                                JSONArray jsonArrayBuyer = response.getJSONArray("viewdetails");
+                                Log.e("0000000000000","111111111111 "+jsonArrayBuyer.toString());
+                                for(int i=0;i<jsonArrayBuyer.length();i++)
+                                {
+                                    JSONObject featuresObject = jsonArrayBuyer.getJSONObject(i);
+                                    LeadListingRecyclerDataAdapter GetDataAdapter3 = new LeadListingRecyclerDataAdapter();
+                                    GetDataAdapter3.setBuyername(featuresObject.getString("BuyerName"));
+                                    GetDataAdapter3.setViewedDate(featuresObject.getString("ViewedDatetime"));
+                                    GetDataAdapter3.setBuyeremail(featuresObject.getString("ViewedDatetime"));
+                                    GetDataAdapter3.setBuyermobile(featuresObject.getString("Mobile"));
+                                    GetDataAdapter3.setBuyerComments(featuresObject.getString("Comments"));
+                                    GetDataAdapter2.add(GetDataAdapter3);
+
+                                }
+
+                                JSONArray jsonArray3 = response.getJSONArray("photos");
+                                Log.e("0000000000000","111111111111 "+jsonArrayBuyer.toString());
+                                for (int i = 0; i < jsonArray3.length(); i++) {
+                                    JSONObject abc = jsonArray3.getJSONObject(i);
+                                   LeadListingRecyclerDataAdapter GetDataAdapter2 = new LeadListingRecyclerDataAdapter();
+                                   // GetDataAdapter2.setLead_name(shortsale);
+                                   // GetDataAdapter2.setLead_address(listingprice);
+                                   // GetDataAdapter2.setLead_time(listingtype);
+                                    propertyPhotoName = abc.getString("Uploaded_DocumentName");
+
+                                    image = ApiClient.BASE_URL_IMG + propertyPhotoName;
+                                    Log.v("imageURLTEST", "" + image);
+                                    GetDataAdapter2.setLead_imageUrl(image);
+                                    GetDataAdapter1.add(GetDataAdapter2);
+
+                                }
+
 
                             } else {
 
@@ -256,86 +328,31 @@ public class PropertyDetailsSellerFragment extends Fragment {
                                 listingprice = "Not available";
                                 listingtype = "Not available";
 
-                            }
+                                additionalChara="Not available";
+                                feature="Not available";
 
-                            JSONArray jsonArray3 = response.getJSONArray("propertyImages");
-                            JSONArray jsonArray1 = response.getJSONArray("characteristics");
-                            if (jsonArray1.length() > 0) {
-                                additionalChara = jsonArray1.getString(0);
-                            }
-                            else{
-                                additionalChara= "Not Available";
-                            }
-                            JSONArray jsonArray2 = response.getJSONArray("features");
-                            if (jsonArray2.length() > 0) {
-                                feature = jsonArray2.getString(0);
-                            }
-                            else {
-                                feature= "Not Available";
-                            }
-                            for (int i = 0; i < jsonArray3.length(); i++) {
-                                JSONObject abc = jsonArray3.getJSONObject(i);
-                                LeadListingRecyclerDataAdapter GetDataAdapter2 = new LeadListingRecyclerDataAdapter();
-                                GetDataAdapter2.setLead_name(shortsale);
-                                GetDataAdapter2.setLead_address(listingprice);
-                                GetDataAdapter2.setLead_time(listingtype);
-                                propertyPhotoName = abc.getString("propertyphotos");
 
-                             //   image = Utlity.imageUrl + propertyPhotoName;
-                                image="https://www.google.com/imgres?imgurl=https%3A%2F%2Fchrisradleyphotography.com%2Fblogposts%2Fproperty-photography-newcastle%2Fnewcastle-property-photography-4.jpg&imgrefurl=https%3A%2F%2Fwww.belvoir.co.uk%2Farticles%2Fimportance-of-great-property-photography&docid=rBFaqE0tdUnP3M&tbnid=SngqZ0qZnh21mM%3A&vet=10ahUKEwjFgs7HjtbgAhUDeysKHetpAOIQMwhjKAEwAQ..i&w=1000&h=666&bih=657&biw=1366&q=property%20photography&ved=0ahUKEwjFgs7HjtbgAhUDeysKHetpAOIQMwhjKAEwAQ&iact=mrc&uact=8#h=666&imgdii=zXb39qg4tIknMM:&vet=10ahUKEwjFgs7HjtbgAhUDeysKHetpAOIQMwhjKAEwAQ..i&w=1000";
-                                Log.v("imageURLTEST", "" + image);
-                                GetDataAdapter2.setLead_imageUrl(image);
-                                GetDataAdapter1.add(GetDataAdapter2);
+                                viewedDatetime = "Not available";
+                                buyername = "Not available";
+                                emailbuyer = "Not available";
+                                mobilebuyer = "Not available";
+                                commentbuyer ="Not available";
 
                             }
 
 
-//                            JSONArray jsonArray1 = response.getJSONArray("characteristics");
-//                            additionalChara = jsonArray1.getString(0);
-//                            JSONArray jsonArray2 = response.getJSONArray("features");
-//                            feature = jsonArray2.getString(0);
-
-                            JSONArray jsonArray4 = response.getJSONArray("viewpropdetails");
-
-                            if (jsonArray4.length() != 0) {
-                                JSONObject viewpropdetails = jsonArray4.getJSONObject(0);
-                                viewedDatetime = viewpropdetails.getString("viewedDatetime");
-                                buyername = viewpropdetails.getString("buyerName");
-                                emailbuyer = viewpropdetails.getString("email");
-                                mobilebuyer = viewpropdetails.getString("mobile");
-                                commentbuyer = viewpropdetails.getString("comments");
-                                LeadListingRecyclerDataAdapter GetDataAdapter3 = new LeadListingRecyclerDataAdapter();
-                                GetDataAdapter3.setBuyername(buyername);
-                                GetDataAdapter3.setViewedDate(viewedDatetime);
-                                GetDataAdapter3.setBuyeremail(emailbuyer);
-                                GetDataAdapter3.setBuyermobile(mobilebuyer);
-                                GetDataAdapter3.setBuyerComments(commentbuyer);
-                                GetDataAdapter2.add(GetDataAdapter3);
-
-                                Log.v("viewprop", "" + buyername);
-
-                            } else {
-                                LeadListingRecyclerDataAdapter GetDataAdapter3 = new LeadListingRecyclerDataAdapter();
-                                GetDataAdapter3.setBuyername("Not available");
-                                GetDataAdapter3.setViewedDate("Not available");
-                                GetDataAdapter3.setBuyeremail("Not available");
-                                GetDataAdapter3.setBuyermobile("Not available");
-                                GetDataAdapter3.setBuyerComments("Not available");
-                                GetDataAdapter2.add(GetDataAdapter3);
-                            }
+                            recyclerViewadapter = new RecyclerViewAdapter(GetDataAdapter1, getContext(), 1);
+                            recyclerView.setAdapter(recyclerViewadapter);
 
 
+
+                            recyclerViewAdapter2 = new RecyclerViewAdapter(GetDataAdapter2, getContext(), 2);
+                            recyclerViewPropertyviewed.setAdapter(recyclerViewAdapter2);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        int b = 1;
 
-                        recyclerViewadapter = new RecyclerViewAdapter(GetDataAdapter1, getContext(), b);
-                        recyclerViewAdapter2 = new RecyclerViewAdapter(GetDataAdapter2, getContext(), 2);
-
-                        recyclerView.setAdapter(recyclerViewadapter);
-                        recyclerViewPropertyviewed.setAdapter(recyclerViewAdapter2);
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -353,13 +370,7 @@ public class PropertyDetailsSellerFragment extends Fragment {
         };
 
         requestQueue.add(jsonObjectRequest);
-//        recyclerViewadapter = new RecyclerViewAdapter(GetDataAdapter1, getActivity().getApplication(), b);
-//        recyclerView.setAdapter(recyclerViewadapter);
 
-
-        //viewloggedPager.setAdapter(logged_adapter);
-//        sharedpreferences =getActivity().getSharedPreferences(mypreference, Context.MODE_PRIVATE);
-//        LeadId=sharedpreferences.getInt("LeadId",0);
         return myFragmentView;
 
     }

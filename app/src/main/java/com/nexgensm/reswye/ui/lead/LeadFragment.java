@@ -181,13 +181,10 @@ public class LeadFragment extends Fragment {
         AddNewBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Intent addNew = new Intent(getActivity(), AddNewSellerActivity.class);
-                // getActivity().startActivity(addNew);
-                //Bundle b = new Bundle();
-                //b.putParcelable("com.example.trafficlight", leadItems);
 
                 Intent addNewLeadCategory = new Intent(getActivity(), AddNewLeadCategoryActivity.class);
                 addNewLeadCategory.putExtra("myobject", leadItems);
+                addNewLeadCategory.putExtra("lid", 0);
                 //addNewLeadCategory.putExtras(b);
                 getActivity().startActivityForResult(addNewLeadCategory, 1);
 
@@ -309,7 +306,8 @@ public class LeadFragment extends Fragment {
                                         lead_categoryBS = abc.getString("leadCategory");
                                         lead_CreatedDate = abc.getString("lead_CreatedDate");
                                         profileimage = abc.getString("leadProfileimage");
-                                        image = ImageUrl + profileimage;
+                                        image = ApiClient.BASE_URL_IMG + profileimage;
+                                        Log.e("222222222222222222","photo "+image);
                                         GetDataAdapter2.setLead_name(name1);
                                         GetDataAdapter2.setLead_address(address);
                                         GetDataAdapter2.setLead_ID(lead_ID);
@@ -503,12 +501,12 @@ public class LeadFragment extends Fragment {
                 lead_ID = abc.getInt("lead_id");
                 lead_CreatedDate = abc.getString("lead_createddate");
                 profileimage = abc.getString("leadprofileimage");
-                image = "https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.biowritingservice.com%2Fwp-content%2Fthemes%2Ftuborg%2Fimages%2FExecutive%2520Bio%2520Sample%2520Photo.png&imgrefurl=https%3A%2F%2Fwww.biowritingservice.com%2Four-bio-writing-samples%2F&docid=UmOWXvavlYWmFM&tbnid=zJshq4jeDXBpnM%3A&vet=10ahUKEwi99LGSjtbgAhWBfCsKHUeiDTIQMwhAKAEwAQ..i&w=629&h=764&bih=657&biw=1366&q=sample%20images%20person&ved=0ahUKEwi99LGSjtbgAhWBfCsKHUeiDTIQMwhAKAEwAQ&iact=mrc&uact=8#h=764&imgdii=RhQaTMt0JMuy5M:&vet=10ahUKEwi99LGSjtbgAhWBfCsKHUeiDTIQMwhAKAEwAQ..i&w=629";
+             //   image = "https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.biowritingservice.com%2Fwp-content%2Fthemes%2Ftuborg%2Fimages%2FExecutive%2520Bio%2520Sample%2520Photo.png&imgrefurl=https%3A%2F%2Fwww.biowritingservice.com%2Four-bio-writing-samples%2F&docid=UmOWXvavlYWmFM&tbnid=zJshq4jeDXBpnM%3A&vet=10ahUKEwi99LGSjtbgAhWBfCsKHUeiDTIQMwhAKAEwAQ..i&w=629&h=764&bih=657&biw=1366&q=sample%20images%20person&ved=0ahUKEwi99LGSjtbgAhWBfCsKHUeiDTIQMwhAKAEwAQ&iact=mrc&uact=8#h=764&imgdii=RhQaTMt0JMuy5M:&vet=10ahUKEwi99LGSjtbgAhWBfCsKHUeiDTIQMwhAKAEwAQ..i&w=629";
                 GetDataAdapter2.setLead_name(name1);
                 GetDataAdapter2.setLead_address(address);
                 GetDataAdapter2.setLead_ID(lead_ID);
                 GetDataAdapter2.setLead_time(lead_CreatedDate);
-                GetDataAdapter2.setLead_imageUrl(image);
+                GetDataAdapter2.setLead_imageUrl(ApiClient.BASE_URL_IMG+profileimage);
 
             } catch (JSONException e) {
                 e.printStackTrace();
