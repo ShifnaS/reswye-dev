@@ -58,11 +58,6 @@ public class RecentLeadListActivity extends AppCompatActivity {
         recyclerRecentLead = (RecyclerView)findViewById(R.id.recycler_recent_leads);
         recentRecycleViewAdapter = new RecentLeadRecyclerViewAdapter(RecentItemsList,getApplicationContext());
 
-//        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-//        recyclerRecentLead.setLayoutManager(mLayoutManager);
-//        recyclerRecentLead.setItemAnimator(new DefaultItemAnimator());
-//        recyclerRecentLead.setAdapter(recentRecycleViewAdapter);
-//        recentItems = new RecentItems();
         sharedpreferences =getSharedPreferences(mypreference, Context.MODE_PRIVATE);
         userId=sharedpreferences.getInt("UserId",0);
         Token=sharedpreferences.getString("token","");

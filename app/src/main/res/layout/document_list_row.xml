@@ -22,7 +22,7 @@
 
     <TextView
         android:id="@+id/doc_name"
-        android:layout_width="match_parent"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/doc_pic"
         android:maxLines="1"

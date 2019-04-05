@@ -1,12 +1,13 @@
 package com.nexgensm.reswye;
 
+import com.nexgensm.reswye.api.ApiClient;
+
 public class Utlity {
     public static final String leadID = "lead_Id";
     public static final String savePropertyPhotoUrl="http://202.88.239.14:8169/api/Lead/savepropertyPhotos";
     public static  final String testToken ="bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1haGVzaGNtODBAZ21haWwuY29tIiwianRpIjoiM2NlZDk2OTYtMzNlNy00ZGUyLWIzZjQtZDNiZjhkYmY1MGM2IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWdlbnQiLCJuYmYiOjE1MjUwOTMyMjIsImV4cCI6MTUzMDI3NzIyMiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo2MzkzOS8iLCJhdWQiOiIxMjM0NTYifQ.P6cP64r7WWoEPA_PxCZHOD1iIQZybwWrI7Xu_s3leD8";
     public static final String imageFormat="Base64Image";
     public static final String getPropertyPhotoUrl="http://202.88.239.14:8169/api/Lead/GetPropertyImages/leadid";
-    public static final String leadListingUrl = "http://202.88.239.14:8169/api/Lead/GetAllLeads";
     public static final String imageUrl ="http://202.88.239.14:8169/FileUploads/";
     public static final String savesortingCriteriaUrl ="http://202.88.239.14:8169/api/Lead/saveSortingCriteria";
     public static final String sortingUrl="http://202.88.239.14:8169/api/Lead/GetleadsortedList";

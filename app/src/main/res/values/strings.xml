@@ -10,6 +10,11 @@
     <string name="signup">Sign Up</string>
     <string name="signin">Sign In</string>
 
+    <string-array name="lead_status">
+        <item>Opened</item>
+        <item>Closed</item>
+        <item>Failed</item>
+    </string-array>
 
     <!--Bottom Tab bar-->
     <string name="title_activity_bottom_tab_bar">BottomTabBarActivity</string>

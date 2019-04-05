@@ -65,6 +65,7 @@ public class AlarmSnoozeActivity extends AppCompatActivity {
                     Intent in = new Intent(getApplicationContext(), AlarmReceiver.class);
                     PendingIntent pendingIn = PendingIntent.getBroadcast(getBaseContext(), RQS_1, in, 0);
                     AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+
                     alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()+ SnoozeValue * 60 * 1000, pendingIn);
 
                 }

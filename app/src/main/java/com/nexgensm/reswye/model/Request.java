@@ -32,7 +32,7 @@ public class Request {
     private String gender;
 
     private int user_id;
-
+    private int agent_id;
     private String city;
 
     private int lead_id;
@@ -42,6 +42,41 @@ public class Request {
     private String phone;
     private String name;
 
+    private String property_id;
+    private String date_time;
+    private String comments;
+
+    public int getAgent_id() {
+        return agent_id;
+    }
+
+    public void setAgent_id(int agent_id) {
+        this.agent_id = agent_id;
+    }
+
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
+
+    public String getProperty_id() {
+        return property_id;
+    }
+
+    public void setProperty_id(String property_id) {
+        this.property_id = property_id;
+    }
+
+    public String getDate_time() {
+        return date_time;
+    }
+
+    public void setDate_time(String date_time) {
+        this.date_time = date_time;
+    }
 
     public int getLead_id() {
         return lead_id;
@@ -90,6 +125,13 @@ public class Request {
     public void setName(String name) {
         this.name = name;
     }
+
+    public Request(int agent_id,String first_name)
+    {
+        this.agent_id=agent_id;
+        this.first_name=first_name;
+    }
+
 
     public Request(String user_type, String zip, String referralcode, String howfindabtus, String street, String state, String correspondence_add, String gender, int user_id, String city) {
         this.user_type = user_type;
@@ -203,6 +245,17 @@ public class Request {
         this.lead_id=lead_id;
 
     }
+
+
+    public Request(String property_id,String date_time,String comments,int lead_id) {
+
+        this.property_id=property_id;
+        this.date_time=date_time;
+        this.comments=comments;
+        this.lead_id=lead_id;
+
+    }
+
     public String getFirst_name ()
     {
         return first_name;

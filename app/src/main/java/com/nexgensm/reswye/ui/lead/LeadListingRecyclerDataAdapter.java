@@ -10,7 +10,24 @@ public class LeadListingRecyclerDataAdapter {
     public String lead_number;
     public String ImageTitleName;
     public String ID;
+    private int photoId;
+    private String lead_type;
 
+    public String getLead_type() {
+        return lead_type;
+    }
+
+    public void setLead_type(String lead_type) {
+        this.lead_type = lead_type;
+    }
+
+    public int getPhotoId() {
+        return photoId;
+    }
+
+    public void setPhotoId(int photoId) {
+        this.photoId = photoId;
+    }
 
     public String getLead_name() {
         return lead_name;

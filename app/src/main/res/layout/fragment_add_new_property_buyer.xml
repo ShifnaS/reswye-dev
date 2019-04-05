@@ -5,6 +5,7 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.nexgensm.reswye.ui.lead.AddNewPropertyBuyerFragment">
@@ -30,7 +31,7 @@
         android:layout_marginLeft="20dp">
 
         <android.support.v7.widget.SwitchCompat
-            android:id="@+id/signup_selection"
+            android:id="@+id/listing_type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="false"
@@ -47,8 +48,7 @@
             android:textStyle="bold" />
     </LinearLayout>
 
-    <EditText
-        android:id="@+id/Preffered_location"
+<!--    <EditText
         style="@style/spinnerbox"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
@@ -61,7 +61,33 @@
         android:hint="Type Preferred Location"
         android:paddingRight="10dp"
         android:paddingLeft="10dp"
-        android:textColorHint="#A9A9A9" />
+        android:textColorHint="#A9A9A9" />-->
+
+
+    <com.seatgeek.placesautocomplete.PlacesAutocompleteTextView
+        android:id="@+id/Preffered_location"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@+id/linearlytSwitch"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/spinner_focus"
+        android:hint="Address"
+        android:paddingStart="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:textColorHint="#A9A9A9"
+        app:pacv_adapterClass="com.nexgensm.reswye.adapter.TestPlacesAutocompleteAdapter"
+        app:pacv_clearEnabled="true"
+        app:pacv_googleMapsApiKey="@string/google_maps_api_key"
+        app:pacv_languageCode="en"
+        app:pacv_resultType="no_type" />
+
+
+
+
+
     <EditText
         android:id="@+id/datepic"
         style="@style/spinnerbox"
@@ -265,13 +291,13 @@
         android:src="@mipmap/minus"
         android:layout_marginLeft="30dp"
         android:id="@+id/year_negative_min"/>
+
     <TextView
+        android:id="@+id/year_txt_min"
         android:layout_width="wrap_content"
         android:layout_height="25dp"
-        android:text="2018"
         android:layout_marginLeft="10dp"
-        android:id="@+id/year_txt_min"
-        />
+        android:text="2018" />
     <ImageView
         android:layout_width="25dp"
         android:layout_height="25dp"
@@ -315,11 +341,23 @@
             android:layout_marginLeft="10dp"
             android:id="@+id/year_positive_max"/>
     </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Property Type"
+        android:textStyle="bold"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:id="@+id/property_type"
+        android:layout_below="@id/linearlyt_year_max"
+        />
     <Spinner
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:id="@+id/spinnerpropertytype"
-        android:layout_below="@id/linearlyt_year_max"
+        android:layout_below="@id/property_type"
         android:layout_marginTop="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginStart="20dp"
@@ -367,76 +405,24 @@
         android:id="@+id/relative_lyt_logged"
         android:layout_below="@+id/additionalpropertychartxt"
         android:visibility="gone">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Viewed Propertices"
-        android:textStyle="bold"
-        android:paddingRight="30dp"
-        android:layout_marginTop="10dp"
-        android:id="@+id/txtViewedPropertice"
-        android:layout_marginLeft="20dp"
-     />
-    <ImageView
-        android:id="@+id/AddViewed"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@mipmap/plus"
-        android:layout_marginTop="10dp"
-
-        android:layout_toRightOf="@+id/txtViewedPropertice"/>
-    <EditText
-        android:id="@+id/DateViewed"
-        style="@style/spinnerbox"
-        android:layout_width="fill_parent"
-        android:layout_height="40dp"
-        android:hint="Date and Time "
-        android:background="@drawable/spinner_focus"
-        android:textColorHint="#A9A9A9"
-        android:layout_weight="0.5"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:layout_below="@+id/txtViewedPropertice"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="20dp"
-
-        android:layout_marginRight="20dp"
-        />
-    <EditText
-        android:id="@+id/PropertyId"
-        style="@style/spinnerbox"
-        android:layout_width="fill_parent"
-        android:layout_height="40dp"
-        android:hint="Property Id "
-        android:background="@drawable/spinner_focus"
-        android:textColorHint="#A9A9A9"
-        android:layout_weight="0.5"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:layout_below="@+id/DateViewed"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="20dp"
-
-        />
-    <EditText
-        android:id="@+id/LeadComments"
-        style="@style/spinnerbox"
-        android:layout_width="fill_parent"
-        android:layout_height="40dp"
-        android:hint="Lead Comments"
-        android:background="@drawable/spinner_focus"
-        android:textColorHint="#A9A9A9"
-        android:layout_weight="0.5"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:layout_marginLeft="20dp"
-        android:layout_below="@+id/PropertyId"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="20dp"
+        <TextView
+            android:id="@+id/buyer"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/spinner_focus"
+            android:clickable="false"
+            android:drawableRight="@mipmap/right_arrow"
+            android:hint="Buyer Reviews"
+            android:paddingStart="10dp"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:paddingRight="10dp"
+            android:textColorHint="#A9A9A9" />
 
 
-        />
     </RelativeLayout>
 
     <Button
@@ -451,7 +437,7 @@
         android:layout_below="@+id/relative_lyt_logged"
         android:text="@string/save_and_proceed"
         android:textColor="@color/colorPrimary"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:textAllCaps="false"/>
 
 

@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -33,7 +34,10 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.nexgensm.reswye.R;
 import com.nexgensm.reswye.Utlity;
+import com.nexgensm.reswye.api.ApiClient;
+import com.nexgensm.reswye.model.Result;
 import com.nexgensm.reswye.ui.Dashboard.DormantItems;
+import com.nexgensm.reswye.util.SharedPrefsUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -52,123 +56,73 @@ public DialogInterface dialog;
     String getAgentStatus,url,Token,Selected_Agent,transferStatus;
     SharedPreferences sharedpreferences;
     String[] agentNameArray;
-    Spinner SelectAgentTxt;
+    AutoCompleteTextView SelectAgentTxt;
     int LeadId;
+    int position;
+    com.nexgensm.reswye.model.Request request;
     TextView Agent_btnTxt,transferBtn;
     public static final String mypreference = "mypref";
+    int agent_id,user_id;
+    String transferred_to_agentid="";
+    ArrayList<com.nexgensm.reswye.model.Request> arrayList=new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personal_detail_transfer);
         ImageButton back= (ImageButton)findViewById(R.id.Personal_Lead_Back);
-      //  Agent_btnTxt=(TextView)findViewById(R.id.Agent_btn);
-//        sharedpreferences = getApplicationContext().getSharedPreferences(mypreference, Context.MODE_PRIVATE);
-//        Token = sharedpreferences.getString("token", "");
-//        LeadId = sharedpreferences.getInt("LeadId", 1);
         sharedpreferences =getSharedPreferences(mypreference, Context.MODE_PRIVATE);
-       // userId=sharedpreferences.getInt("UserId",0);
-      //  flag = sharedpreferences.getInt("flag", 0);
         Token=sharedpreferences.getString("token","");
-      //  ImageUrl=sharedpreferences.getString("imageURL","");
-        LeadId = sharedpreferences.getInt("LeadId", 1);
+        LeadId = SharedPrefsUtils.getInstance(getApplicationContext()).getLId();
 
-        SelectAgentTxt=(Spinner) findViewById(R.id.SelectAgent);
+        SelectAgentTxt=findViewById(R.id.SelectAgent);
         transferBtn=(TextView)findViewById(R.id.transferTXT);
-//     /*   final ListView lv = (ListView) findViewById(R.id.lv);
-//        final TextView tv = (TextView) findViewById(R.id.tv);
-//        String[] fruits = new String[] {
-//                "Japanese Persimmon",
-//                "Kakadu lime",
-//                "Illawarra Plum",
-//                "Malay Apple ",
-//                "Mamoncillo",
-//                "Persian lime"
-//        };
-//
-//        // Create a List from String Array elements
-//        List<String> fruits_list = new ArrayList<String>(Arrays.asList(fruits));
-//
-//        // Create a ArrayAdapter from List
-//       final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>
-//                (getApplicationContext(), android.R.layout.activity_list_item, fruits_list);
-//        lv.setAdapter(arrayAdapter);
-//        back.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                finish();
-//            }
-//        });
-//        Button clickButton = (Button) findViewById(R.id.Agent_btn);
-//        clickButton.setOnClickListener( new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-////                final Dialog dialog = new Dialog(PersonalDetailTransferActivity.this);
-////                dialog.setContentView(R.layout.custom_dialog);
-////                dialog.setTitle("Title...");
-////                ListView myNames = (ListView) dialog.findViewById(R.id.List);
-////                myNames.setOnItemClickListener(new AdapterView.OnItemClickListener());
-////                dialog.show();
-////                dialog.setCancelable(true);
-////
-////              //  dialog.dismiss();
-//                // Initializing a new String Array
-//
-//
-//                // Populate ListView with items from ArrayAdapter
-//
-//
-//                // Set an item click listener for ListView
-////                lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-////                    @Override
-////                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-////                        // Get the selected item text from ListView
-////                        String selectedItem = (String) parent.getItemAtPosition(position);
-////
-////                        // Display the selected item text on TextView
-////                        tv.setText("Your favorite : " + selectedItem);
-////                    }
-////                });
-//            }
-//
-//        });*/
+
      ///////////Get All Agents///////////
         requestQueue = Volley.newRequestQueue(this);
         ///////////// Agent Name list///////////////////
-        url = "http://192.168.0.4:88/api/UserRegistration/GetAllUsers";
+        user_id=SharedPrefsUtils.getInstance(getApplicationContext()).getAgentId();
+        agent_id=SharedPrefsUtils.getInstance(getApplicationContext()).getUserId();
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+        url = ApiClient.BASE_URL+"agentlist";
+        Map<String, Object> jsonParams = new ArrayMap<>();
+        jsonParams.put("agent_id", agent_id);
+        jsonParams.put("user_id", user_id);
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url,  new JSONObject(jsonParams),
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
+                        Log.v("111111111","Response "+response);
+
                         try {
                             getAgentStatus = response.getString("status").toString().trim();
-                            JSONArray jsonArray=response.getJSONArray("data");
+                            JSONArray jsonArray=response.getJSONArray("result");
                             Log.v("Json Array",""+jsonArray);
                                 String SpinnerTxt="Select Agent";
-                                String str3 = "Success";
-                                int response_result = getAgentStatus.compareTo(str3);
-                                if (response_result == 0)
+                                if (getAgentStatus.equals("success"))
                                 {
-                                     agentNameArray=new String[jsonArray.length()];
-                                     agentNameArray[0]=SpinnerTxt;
-                                    for (int i = 1; i < jsonArray.length(); i++) {
-                                      //  String dataobj = jsonArray.getJSONObject(i).toString();
-                                       // Log.v("Json object",""+dataobj);
+                                  //  Toast.makeText(PersonalDetailTransferActivity.this, "Result "+jsonArray.length(), Toast.LENGTH_SHORT).show();
+                                    agentNameArray=new String[jsonArray.length()];
+                                  //  agentNameArray[0]=SpinnerTxt;
 
-                                          String name=jsonArray.optString(i);
-                                          Log.v("Agentname",""+name);
-                                          agentNameArray[i]=name;
+                                    for (int i = 0; i < jsonArray.length(); i++) {
+                                        JSONObject jo=jsonArray.getJSONObject(i);
+                                        String name=jo.getString("first_name");
+                                        int id=jo.getInt("agentid");
+                                      //  Toast.makeText(PersonalDetailTransferActivity.this, "Result "+name, Toast.LENGTH_SHORT).show();
+
+                                        Log.v("Agentname",""+name);
+
+                                        agentNameArray[i]=name;
+                                        request=new com.nexgensm.reswye.model.Request(id,name) ;
+                                        arrayList.add(request);
+
 
                                     }
-                                  //  Log.v("Jsonarray",""+agentNameArray);
+                                    ArrayAdapter adapter = new
+                                            ArrayAdapter(getApplicationContext(),android.R.layout.simple_list_item_1,agentNameArray);
 
-                                  //  Agent_btnTxt.setText("");
-                                   // SelectAgentTxt.setPrompt("Select Agent");
-                                    SelectAgentTxt.setSelection(0, true);
-                                    final ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item,agentNameArray);
-                                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                     SelectAgentTxt.setAdapter(adapter);
+                                    SelectAgentTxt.setThreshold(1);
                                 }
                                 else
                                     {
@@ -197,36 +151,52 @@ public DialogInterface dialog;
         };
         requestQueue.add(jsonObjectRequest);
 
+
+
+
+
+
+
         //////////////TRANSFER AGENT API////////////////
         transferAgentQueue = Volley.newRequestQueue(this);
 
         transferBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 Selected_Agent=SelectAgentTxt.getSelectedItem().toString();
-                 String agent=Selected_Agent.toString();
-                url = "http://202.88.239.14:8169/api/Lead/Transferlead";
+                Selected_Agent=SelectAgentTxt.getText().toString().trim();
+                Toast.makeText(PersonalDetailTransferActivity.this, ""+Selected_Agent, Toast.LENGTH_SHORT).show();
+               for (int i=0;i<agentNameArray.length;i++)
+               {
+                   if(agentNameArray[i].equals(Selected_Agent))
+                   {
+                       position=i;
+
+                   }
+
+               }
+
+
+                url = ApiClient.BASE_URL+"transferlead";
+                int t_agent_id=arrayList.get(position).getAgent_id();
 
                 Map<String, Object> jsonParams = new ArrayMap<>();
-                jsonParams.put("Lead_ID",LeadId);
-                jsonParams.put("Transfered_AgentName",agent);
-
-                JsonObjectRequest jsonObjectRequest1 = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(jsonParams),
+                jsonParams.put("lead_id",LeadId);
+                jsonParams.put("transferred_to_agentname",Selected_Agent);
+                jsonParams.put("transferred_from_agentid",agent_id);
+                jsonParams.put("transferred_to_agentid",t_agent_id);
+               JsonObjectRequest jsonObjectRequest1 = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(jsonParams),
                         new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject response) {
                                 try {
                                     transferStatus = response.getString("status").toString().trim();
-
-                                        String str3 ="Success";
-                                        int response_result = transferStatus.compareTo(str3);
-                                        if (response_result == 0) {
+                                        if (transferStatus.equals("success")) {
 
                                             Toast.makeText(getApplicationContext(), "Successfully transfer the Agent", Toast.LENGTH_SHORT).show();
-finish();
+                                            finish();
                                         } else {
                                             Toast.makeText(getApplicationContext(), "Agent Transfer Failed", Toast.LENGTH_SHORT).show();
-finish();
+                                            finish();
                                         }
                                 }
                                 catch (JSONException e) {
@@ -252,16 +222,7 @@ finish();
             }
         });
 
-//      agent_pop_up = (TextView) findViewById(R.id.Agent_btn);
-//        agent_pop_up.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                PopupMenu popup = new PopupMenu(PersonalDetailTransferActivity.this, v);
-//                popup.setOnMenuItemClickListener(PersonalDetailTransferActivity.this);
-//                popup.inflate(R.menu.popup_menu);
-//                popup.show();
-//            }
-//        });
+
     }
     @Override
     public boolean onMenuItemClick(MenuItem item) {

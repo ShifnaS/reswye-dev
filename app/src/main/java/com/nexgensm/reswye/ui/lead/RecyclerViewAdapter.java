@@ -6,6 +6,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
@@ -21,11 +24,13 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
+public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> implements Filterable {
 
     Context context;
 
     List<LeadListingRecyclerDataAdapter> getDataAdapter;
+    List<LeadListingRecyclerDataAdapter> filterGetDataAdapter;
+    private DataAdapterListener listener;
     ArrayList<ResultData> list;
 
     ImageLoader imageLoader1;
@@ -35,7 +40,17 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         super();
         this.getDataAdapter = getDataAdapter;
+        this.filterGetDataAdapter=getDataAdapter;
         this.context = context;
+        this.a = c;
+    }
+    public RecyclerViewAdapter(List<LeadListingRecyclerDataAdapter> getDataAdapter, Context context, int c,DataAdapterListener listener) {
+
+        super();
+        this.getDataAdapter = getDataAdapter;
+        this.filterGetDataAdapter=getDataAdapter;
+        this.context = context;
+        this.listener=listener;
         this.a = c;
     }
 
@@ -73,6 +88,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
 
         if (a == 0) {
+            getDataAdapter1 = filterGetDataAdapter.get(position);
+            String lead_type=getDataAdapter1.getLead_type();
+            if(lead_type.equals("Buyer"))
+            {
+                Viewholder.lead_type.setImageResource(R.drawable.buyer_label);
+            }
+
             imageLoader1 = ServerImageParseAdapter.getInstance(context).getImageLoader();
             Log.v("LOADER", "" + getDataAdapter1.getLead_imageUrl());
             imageLoader1.get(getDataAdapter1.getLead_imageUrl(),
@@ -156,7 +178,57 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public int getItemCount() {
 
-        return getDataAdapter.size();
+        if(a==0)
+        {
+            return  filterGetDataAdapter.size();
+        }
+        else {
+            return getDataAdapter.size();
+        }
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                String charString = charSequence.toString();
+                if (charString.isEmpty()) {
+                    filterGetDataAdapter = getDataAdapter;
+                }
+                else
+                {
+                    List<LeadListingRecyclerDataAdapter> filteredList = new ArrayList<>();
+                    for (LeadListingRecyclerDataAdapter row : getDataAdapter) {
+
+                        // name match condition. this might differ depending on your requirement
+                        // here we are looking for name or phone number match
+                        if (row.getLead_name().toLowerCase().contains(charString.toLowerCase()) ) {
+                            filteredList.add(row);
+                        }
+                }
+
+            }
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = filterResults;
+                return filterResults;
+
+        }
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                try
+                {
+                    filterGetDataAdapter = (List<LeadListingRecyclerDataAdapter>) filterResults.values;
+                    notifyDataSetChanged();
+                }
+                catch (Exception e)
+                {
+                    Log.e("Exception ","11111 "+e.getMessage());
+                }
+
+            }
+        };
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -165,6 +237,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         public TextView loggedbuyertxt,loggedbuyer,loggedphonetxt,loggedphone,loggedmailtxt,loggedmail,loggeddatetimetxt,loggeddatetime,loggedbuyercommentstxt,loggedbuyercomments;
         public NetworkImageView leadPictureView;
         public CircleImageView leadPictureView1;
+        ImageView lead_type;
+     //   public ContactsAdapter(Context context, List<Contact> contactList, ContactsAdapterListener listener) {
 
         public ViewHolder(View itemView) {
 
@@ -174,6 +248,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 leadTimeView = (TextView) itemView.findViewById(R.id.lead_time);
                 leadAddressView = (TextView) itemView.findViewById(R.id.lead_address);
                 leadPictureView = (NetworkImageView) itemView.findViewById(R.id.lead_pic);
+                lead_type = (ImageView) itemView.findViewById(R.id.lead_type);
+
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        // send selected contact in callback
+                        listener.onContactSelected(filterGetDataAdapter.get(getAdapterPosition()));
+                    }
+                });
             }
             else if (a==1){
 
@@ -210,6 +293,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         }
     }
-
+    public interface DataAdapterListener {
+        void onContactSelected(LeadListingRecyclerDataAdapter contact);
+    }
 
 }

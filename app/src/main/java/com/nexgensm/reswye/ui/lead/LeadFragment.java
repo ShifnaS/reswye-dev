@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.app.Fragment;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,16 +25,20 @@ import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.util.ArrayMap;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -52,8 +57,12 @@ import com.nexgensm.reswye.model.ResponseList;
 import com.nexgensm.reswye.model.Result;
 import com.nexgensm.reswye.ui.navigationdrawer.ProfileSettingsActivity;
 import com.nexgensm.reswye.ui.signinpage.SigninActivity;
+import com.nexgensm.reswye.util.Message;
 import com.nexgensm.reswye.util.SharedPrefsUtils;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -72,13 +81,13 @@ import java.util.Map;
  * Use the {@link LeadFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class LeadFragment extends Fragment {
+public class LeadFragment extends Fragment implements RecyclerViewAdapter.DataAdapterListener {
     RequestQueue requestQueue1, requestQueue2, requestQueue;
     private String TAG = "LeadFragment";
     //    String result,image;
     String Token, Status_missed, name1, address, lead_CreatedDate, oldpasstxt, confrmpasstxt, newpasstxt;
     String url, ImageUrl, profileimage, image, leadurl, lead_categoryBS;
-    int userId, lead_ID, sortsave, filterCheck;
+    int userId, lead_ID, sortsave=0, filterCheck;
     SharedPreferences sharedpreferences;
     EditText oldpass, newpass, confrmpass;
     public static final String mypreference = "mypref";
@@ -99,9 +108,13 @@ public class LeadFragment extends Fragment {
     int flagcontact;
     NavigationView nvDrawer;
     private DrawerLayout mDrawer;
-
+    int sorttype=0;
     LeadItems leadItems;
+    String[] arr;
     private OnFragmentInteractionListener mListener;
+    SearchView   tv_search;
+    ArrayAdapter<String> adapter ;
+    ArrayList<String> arrayList=new ArrayList<String>();
 
     public LeadFragment() {
         // Required empty public constructor
@@ -136,6 +149,7 @@ public class LeadFragment extends Fragment {
         GetDataAdapter1 = new ArrayList<>();
         userId = SharedPrefsUtils.getInstance(getActivity()).getUserId();
         Window window = getActivity().getWindow();
+        Singleton.getInstance().setFilterFlag(0);
 
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -148,6 +162,8 @@ public class LeadFragment extends Fragment {
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+        tv_search=myFragmentView.findViewById(R.id.lead_search);
+
 
 
        // JSON_DATA_WEB_CALL();
@@ -156,17 +172,33 @@ public class LeadFragment extends Fragment {
                 new LeadRecyclerItemClickListener(getActivity().getApplicationContext(), new LeadRecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        String name = GetDataAdapter1.get(position).getLead_name();
-                        String image = GetDataAdapter1.get(position).getLead_imageUrl();
+                        String lead_type = GetDataAdapter1.get(position).getLead_type();
                         Integer id = GetDataAdapter1.get(position).getLead_ID();
+                        String name = GetDataAdapter1.get(position).getLead_name();
+
+                        SharedPrefsUtils.getInstance(getActivity()).setLid(id);
+                        SharedPrefsUtils.getInstance(getActivity()).setFlag(1);
+
                         Log.v("LeadFragment ID", "" + id);
                         int a = 0;
                         recyclerViewadapter = new RecyclerViewAdapter(GetDataAdapter1, getActivity().getApplication(), a);
                         recyclerView.swapAdapter(recyclerViewadapter, true);
-                        Intent addnewsellerdetailsactivity = new Intent(getActivity().getApplicationContext(), SellerDetailsActivity.class);
-                        addnewsellerdetailsactivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        addnewsellerdetailsactivity.putExtra("LeadId", id);
-                        getActivity().startActivity(addnewsellerdetailsactivity);
+                        recyclerViewadapter.notifyDataSetChanged();
+                        if(lead_type.equals("Seller"))
+                        {
+                            Intent addnewsellerdetailsactivity = new Intent(getActivity().getApplicationContext(), SellerDetailsActivity.class);
+                            addnewsellerdetailsactivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            addnewsellerdetailsactivity.putExtra("lead_name", name);
+                            getActivity().startActivity(addnewsellerdetailsactivity);
+                        }
+                        else
+                        {
+                            Intent addnewsellerdetailsactivity = new Intent(getActivity().getApplicationContext(), BuyerDetailsActivity.class);
+                            addnewsellerdetailsactivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            addnewsellerdetailsactivity.putExtra("lead_name", name);
+                            getActivity().startActivity(addnewsellerdetailsactivity);
+                        }
+
                         recyclerView.getRecycledViewPool().clear();
 
                         //   transact();
@@ -224,142 +256,21 @@ public class LeadFragment extends Fragment {
             }
         });
 
-         JSON_DATA_WEB_CALL();
+
         return myFragmentView;
     }
 
     public void JSON_DATA_WEB_CALL() {
         Log.v(TAG, "JSON CALL");
-        filterCheck = Singleton.getInstance().getFilterFlag();
 
-        ////check if previous filter value has been set , value 1 means previous filter value is set. Retreive the value from singleton class
-
-        if (filterCheck == 1) {
-            Log.v(TAG, "Filter ONE");
-            String agentname = Singleton.getInstance().getFilterAgent();
-            String firstname = Singleton.getInstance().getFilterFirstName();
-            String lastname = Singleton.getInstance().getFilterLastName();
-            int propID = Singleton.getInstance().getPropID();
-            String propIDD = Singleton.getInstance().getPropIDD();
-//           int  test =Integer.valueOf(propIDD);
-            String leadStatus = Singleton.getInstance().getFilterLeadStatus();
-            String loc = Singleton.getInstance().getFilterLoc();
-            String date = Singleton.getInstance().getFilterDate();
-
-            String mob = Singleton.getInstance().getFilterMob();
-            String email = Singleton.getInstance().getFilterEmail();
-            String minvalue = Singleton.getInstance().getMinvalue();
-            String maxvalue = Singleton.getInstance().getMaxvalue();
-            String propStatus = Singleton.getInstance().getPropStatus();
-            Boolean filterTransferStatus = Singleton.getInstance().getFilterStatus();
-            int leadCategoryBS = Singleton.getInstance().getLeadCategory();
-            int filterFlag = Singleton.getInstance().getFilterFlag();
-            int isfilterchecked = Singleton.getInstance().getIsfilterDefaultt();
-
-
-///////API CALL to send and get filter parameters///////
-            jsonObject = new JSONObject();
-            GetDataAdapter1 = new ArrayList<>();
-            try {
-                //  jsonObject.put("LeadStatus", leadStatus);
-                jsonObject.put("Location", loc);
-                jsonObject.put("Created_Date", date);
-                jsonObject.put("Min:Price", minvalue);
-                jsonObject.put("maxPrice", maxvalue);
-                // jsonObject.put("LeadWarmth", propStatus);
-                // jsonObject.put("LeadCategory", leadStatus);
-                // jsonObject.put("TransferStatus", filterTransferStatus);
-                jsonObject.put("AgentName", agentname);
-                jsonObject.put("LeadFirstName", firstname);
-                jsonObject.put("LeadLastName", lastname);
-                jsonObject.put("Mobile", mob);
-                jsonObject.put("Email", email);
-                jsonObject.put("PropertyID", propID);
-                //  jsonObject.put("YearBuiltStart", "");
-                //  jsonObject.put("YearBuiltEnd", "");
-                jsonObject.put("isdefault", 0);
-            } catch (JSONException e) {
-                Log.v(TAG, e.toString());
-            }
-
-            @SuppressLint({"NewApi", "LocalSuppress"}) final ProgressDialog loading = ProgressDialog.show(getContext(), "Please wait...", "Fetching data...", false, false);
-            JsonObjectRequest jsObjRequest;
-            jsObjRequest = new JsonObjectRequest
-                    (Request.Method.POST, Utlity.leadFilterUrl, jsonObject, new Response.Listener<JSONObject>() {
-
-                        @Override
-                        public void onResponse(JSONObject response) {
-
-                            loading.dismiss();
-
-                            JSONArray jarray = response.optJSONArray("data");
-                            if (jarray.length() > 0) {
-                                for (int i = 0; i < jarray.length(); i++) {
-                                    LeadListingRecyclerDataAdapter GetDataAdapter2 = new LeadListingRecyclerDataAdapter();
-                                    try {
-                                        JSONObject abc = jarray.getJSONObject(i);
-
-                                        name1 = abc.getString("firstName");
-                                        address = abc.getString("address");
-                                        lead_ID = abc.getInt("lead_ID");
-
-                                        lead_categoryBS = abc.getString("leadCategory");
-                                        lead_CreatedDate = abc.getString("lead_CreatedDate");
-                                        profileimage = abc.getString("leadProfileimage");
-                                        image = ApiClient.BASE_URL_IMG + profileimage;
-                                        Log.e("222222222222222222","photo "+image);
-                                        GetDataAdapter2.setLead_name(name1);
-                                        GetDataAdapter2.setLead_address(address);
-                                        GetDataAdapter2.setLead_ID(lead_ID);
-                                        GetDataAdapter2.setLead_time(lead_CreatedDate);
-                                        GetDataAdapter2.setLead_imageUrl(image);
-
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-
-                                    GetDataAdapter1.add(GetDataAdapter2);
-                                }
-                            } else {
-                                Toast.makeText(getActivity(), "No Data Found", Toast.LENGTH_SHORT).show();
-                            }
-//                            int a = 0;
-//                            recyclerViewadapter = new RecyclerViewAdapter(GetDataAdapter1, getActivity().getApplication(), a);
-//                            recyclerView.swapAdapter(recyclerViewadapter, true);
-                        }
-                    }, new Response.ErrorListener() {
-
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            Log.v("Error", "" + error.toString());
-                            Toast.makeText(getActivity(), error.toString(), Toast.LENGTH_SHORT).show();
-
-                        }
-                    }) {
-
-                @Override
-                public Map<String, String> getHeaders() throws AuthFailureError {
-
-                    HashMap<String, String> headers = new HashMap<String, String>();
-                    headers.put("Authorization", Token);
-
-                    return headers;
-                }
-            };
-            requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
-            requestQueue.add(jsObjRequest);
-
-
-        } else {
             requestQueue1 = Volley.newRequestQueue(getActivity().getApplicationContext());
             Log.v(TAG, "NO Filter");
-//            JsonObjectRequest jsObjRequest;
-//            sortsave = Singleton.getInstance().getSortSaveFlag();
             if (sortsave == 0) {
                 Log.v(TAG, "SORT zero");
 
                 @SuppressLint({"NewApi", "LocalSuppress"}) final ProgressDialog loading = ProgressDialog.show(getContext(), "Please wait...", "Fetching data...", false, false);
-                url = "http://192.168.0.3:3000/reswy/listleads/"+userId;
+               url = ApiClient.BASE_URL+"listleads/"+userId;
+
                 JsonObjectRequest jsObjRequest1;
                 sortsave = Singleton.getInstance().getSortSaveFlag();
                 jsObjRequest1 = new JsonObjectRequest
@@ -380,6 +291,10 @@ public class LeadFragment extends Fragment {
                                 recyclerViewadapter = new RecyclerViewAdapter(GetDataAdapter1, getActivity().getApplication(), a);
                                 recyclerView.swapAdapter(recyclerViewadapter, true);
                                 recyclerView.removeAllViewsInLayout();
+                                recyclerViewadapter.notifyDataSetChanged();
+
+
+
                             }
                         }, new Response.ErrorListener() {
 
@@ -399,64 +314,33 @@ public class LeadFragment extends Fragment {
                 recyclerView.getRecycledViewPool().clear();
                 requestQueue1.add(jsObjRequest1);
                 int a = 0;
-                // recyclerViewadapter = new RecyclerViewAdapter(GetDataAdapter1, getActivity().getApplication(), a);
                 recyclerView.swapAdapter(recyclerViewadapter, true);
                 recyclerView.removeAllViewsInLayout();
-            } else {
-                Log.v(TAG, "SORT one");
-                JsonObjectRequest jsObjRequest2;
-                sortsave = Singleton.getInstance().getSortSaveFlag();
-                jsonObject = new JSONObject();
-                GetDataAdapter1 = new ArrayList<>();
-                final String fieldname = Singleton.getInstance().getSortFiledname();
-                final String ordertype = Singleton.getInstance().getSortOrdertype();
-                try {
-                    jsonObject.put("UserId", userId);
-                    jsonObject.put("SortfieldName", fieldname);
-                    jsonObject.put("Sorttype", ordertype);
-                } catch (JSONException e) {
-                }
-                requestQueue2 = Volley.newRequestQueue(getActivity().getApplicationContext());
+            }
+            else {
+
+                String url = ApiClient.BASE_URL+ "sortdetails";
+                Map<String, Object> jsonParams = new ArrayMap<>();
+
+                jsonParams.put("user_id", userId);
+                jsonParams.put("sts", sortsave);
+
 
                 @SuppressLint({"NewApi", "LocalSuppress"}) final ProgressDialog loading = ProgressDialog.show(getContext(), "Please wait...", "Fetching data...", false, false);
 
-                jsObjRequest2 = new JsonObjectRequest
-                        (Request.Method.POST, Utlity.sortingUrl, jsonObject, new Response.Listener<JSONObject>() {
+                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(jsonParams),
+                        new Response.Listener<JSONObject>() {
 
                             @Override
                             public void onResponse(JSONObject response) {
                                 loading.dismiss();
-
-                                JSONArray jarray = response.optJSONArray("sortedData");
-
-                                for (int i = 0; i < jarray.length(); i++) {
-                                    LeadListingRecyclerDataAdapter GetDataAdapter2 = new LeadListingRecyclerDataAdapter();
-                                    try {
-                                        JSONObject abc = jarray.getJSONObject(i);
-
-                                        name1 = abc.getString("firstName");
-                                        address = abc.getString("address");
-                                        lead_ID = abc.getInt("lead_ID");
-                                        lead_CreatedDate = "NOt available";
-                                        //lead_CreatedDate = abc.getString("lead_CreatedDate");
-                                        profileimage = abc.getString("leadProfileimage");
-                                        image = ImageUrl + profileimage;
-                                        GetDataAdapter2.setLead_name(name1);
-                                        GetDataAdapter2.setLead_address(address);
-                                        GetDataAdapter2.setLead_ID(lead_ID);
-                                        GetDataAdapter2.setLead_time(lead_CreatedDate);
-                                        GetDataAdapter2.setLead_imageUrl(image);
-
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                    GetDataAdapter1.add(GetDataAdapter2);
-                                }
+                                JSON_PARSE_DATA_AFTER_WEBCALL(response);
 
                                 int a = 0;
                                 recyclerViewadapter = new RecyclerViewAdapter(GetDataAdapter1, getActivity().getApplication(), a);
                                 recyclerView.swapAdapter(recyclerViewadapter, true);
-
+                                recyclerView.removeAllViewsInLayout();
+                                recyclerViewadapter.notifyDataSetChanged();
                             }
                         }, new Response.ErrorListener() {
                             @Override
@@ -472,23 +356,29 @@ public class LeadFragment extends Fragment {
                         return headers;
                     }
                 };
-                requestQueue2.add(jsObjRequest2);
+                recyclerView.getRecycledViewPool().clear();
+                requestQueue1.add(jsonObjectRequest);
+                int a = 0;
+                recyclerView.swapAdapter(recyclerViewadapter, true);
+                recyclerView.removeAllViewsInLayout();
             }
 
-        }
+
 
 
     }
 
 
     public void JSON_PARSE_DATA_AFTER_WEBCALL(JSONObject jsonObject) {
+
+
         Log.v(TAG, "json parse");
         sharedpreferences = getActivity().getSharedPreferences(mypreference, Context.MODE_PRIVATE);
         Token = sharedpreferences.getString("token", "");
         ImageUrl = sharedpreferences.getString("imageURL", "");
         JSONArray jarray = jsonObject.optJSONArray("result");
-//
-//        Log.v("test", "" + jarray.length());
+       arr = new String[jarray.length()];
+        //        Log.v("test", "" + jarray.length());
 //        Log.v("json", "" + jarray.toString());
         for (int i = 0; i < jarray.length(); i++) {
             LeadListingRecyclerDataAdapter GetDataAdapter2 = new LeadListingRecyclerDataAdapter();
@@ -501,7 +391,13 @@ public class LeadFragment extends Fragment {
                 lead_ID = abc.getInt("lead_id");
                 lead_CreatedDate = abc.getString("lead_createddate");
                 profileimage = abc.getString("leadprofileimage");
+                String leadType=abc.getString("lead_category");
+
+                arr[i]=name1;
+                arrayList.add(name1);
+
              //   image = "https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.biowritingservice.com%2Fwp-content%2Fthemes%2Ftuborg%2Fimages%2FExecutive%2520Bio%2520Sample%2520Photo.png&imgrefurl=https%3A%2F%2Fwww.biowritingservice.com%2Four-bio-writing-samples%2F&docid=UmOWXvavlYWmFM&tbnid=zJshq4jeDXBpnM%3A&vet=10ahUKEwi99LGSjtbgAhWBfCsKHUeiDTIQMwhAKAEwAQ..i&w=629&h=764&bih=657&biw=1366&q=sample%20images%20person&ved=0ahUKEwi99LGSjtbgAhWBfCsKHUeiDTIQMwhAKAEwAQ&iact=mrc&uact=8#h=764&imgdii=RhQaTMt0JMuy5M:&vet=10ahUKEwi99LGSjtbgAhWBfCsKHUeiDTIQMwhAKAEwAQ..i&w=629";
+                GetDataAdapter2.setLead_type(leadType);
                 GetDataAdapter2.setLead_name(name1);
                 GetDataAdapter2.setLead_address(address);
                 GetDataAdapter2.setLead_ID(lead_ID);
@@ -515,12 +411,19 @@ public class LeadFragment extends Fragment {
 
         }
 
+      //  adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1, arr);
+
+
         int a = 0;
 
         recyclerViewadapter = new RecyclerViewAdapter(GetDataAdapter1, getActivity().getApplication(), a);
         Log.v(TAG, "RECYCLER");
         recyclerView.swapAdapter(recyclerViewadapter, true);
         recyclerView.removeAllViewsInLayout();
+        recyclerViewadapter.notifyDataSetChanged();
+       /// SearchView searchView = (SearchView) MenuItemCompat.getActionView(tv_search);
+
+
 
 
     }
@@ -559,12 +462,6 @@ public class LeadFragment extends Fragment {
                 //startActivity(b);
                 break;
 
-//            case R.id.shareapp:
-//                //fragmentClass = ThirdFragment.class;
-//                //Intent d=new Intent(CustomerListingMyFavoritesActivity.this,OpenHouseActivity.class);
-//                //startActivity(d);
-//
-//                break;
             case R.id.logout:
                 Intent intent_logout = new Intent(getActivity(), SigninActivity.class);
                 intent_logout.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -713,6 +610,7 @@ public class LeadFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+
         mListener = null;
     }
 
@@ -720,7 +618,69 @@ public class LeadFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
+        int flag=Singleton.getInstance().getFilterFlag();
+        Toast.makeText(getActivity(), "Filter Flag "+flag, Toast.LENGTH_SHORT).show();
         Log.v(TAG, "TEST");
+        JSON_DATA_WEB_CALL();
+
+        tv_search.setMaxWidth(Integer.MAX_VALUE);
+        tv_search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String name) {
+
+              //  recyclerViewadapter.getFilter().filter(s);
+             //   Toast.makeText(getActivity(), "String 1 "+s, Toast.LENGTH_SHORT).show();
+                GetDataAdapter1.clear();
+                // recyclerViewadapter.notifyDataSetChanged();
+                recyclerView.getRecycledViewPool().clear();
+                recyclerView.swapAdapter(recyclerViewadapter, true);
+                recyclerView.removeAllViewsInLayout();
+                JSON_DATA_WEB_CALL1(name);
+
+
+
+
+
+                return false;
+
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+              //  Toast.makeText(getActivity(), "String 2 "+s, Toast.LENGTH_SHORT).show();
+
+                // recyclerViewadapter.getFilter().filter(s);
+                if(s.equals(""))
+                {
+                    GetDataAdapter1.clear();
+                    // recyclerViewadapter.notifyDataSetChanged();
+                    recyclerView.getRecycledViewPool().clear();
+                    recyclerView.swapAdapter(recyclerViewadapter, true);
+                    recyclerView.removeAllViewsInLayout();
+                    JSON_DATA_WEB_CALL();
+                }
+                return false;
+            }
+        });
+
+    }
+
+    @Override
+    public void onPause() {
+
+        Singleton.getInstance().setFilterFlag(1);
+
+        GetDataAdapter1.clear();
+       // recyclerViewadapter.notifyDataSetChanged();
+        recyclerView.getRecycledViewPool().clear();
+        recyclerView.swapAdapter(recyclerViewadapter, true);
+        recyclerView.removeAllViewsInLayout();
+        super.onPause();
+    }
+
+    @Override
+    public void onContactSelected(LeadListingRecyclerDataAdapter contact) {
+        Toast.makeText(getActivity(), "Selected: " + contact.getLead_name(), Toast.LENGTH_LONG).show();
 
     }
 
@@ -735,7 +695,268 @@ public class LeadFragment extends Fragment {
 
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+    public void onMessage(Message event){
+        //Toast.makeText(getActivity(), ""+event.getFlag(), Toast.LENGTH_SHORT).show();
+        sortsave=event.getFlag();
+    //    EventBus.getDefault().removeStickyEvent(sti); // don't forget to remove the sticky event if youre done with it
+
+    }
+
+
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+
+
+    public void JSON_DATA_WEB_CALL1(String name) {
+        Log.v(TAG, "JSON CALL");
+        url = ApiClient.BASE_URL+"searchbyname";
+
+        requestQueue1 = Volley.newRequestQueue(getActivity().getApplicationContext());
+        Log.v(TAG, "NO Filter");
+        if (sortsave == 0) {
+            Log.v(TAG, "SORT zero");
+
+            @SuppressLint({"NewApi", "LocalSuppress"}) final ProgressDialog loading = ProgressDialog.show(getContext(), "Please wait...", "Fetching data...", false, false);
+            Map<String, Object> jsonParams = new ArrayMap<>();
+
+            jsonParams.put("agent_id", userId);
+            jsonParams.put("name", name);
+            JsonObjectRequest jsObjRequest1;
+            sortsave = Singleton.getInstance().getSortSaveFlag();
+            jsObjRequest1 = new JsonObjectRequest
+                    (Request.Method.POST, url, new JSONObject(jsonParams), new Response.Listener<JSONObject>() {
+
+                        @Override
+                        public void onResponse(JSONObject response) {
+
+                            loading.dismiss();
+                            Log.v(TAG, "SOT ZERO DATA PARSE");
+                            sharedpreferences = getActivity().getSharedPreferences(mypreference, Context.MODE_PRIVATE);
+                            refresh = sharedpreferences.getInt("refresh", 0);
+                            if (refresh == 1) {
+
+                            }
+                            Log.e("111111111",""+response);
+                            JSON_PARSE_DATA_AFTER_WEBCALL(response);
+                            int a = 0;
+                            recyclerViewadapter = new RecyclerViewAdapter(GetDataAdapter1, getActivity().getApplication(), a);
+                            recyclerView.swapAdapter(recyclerViewadapter, true);
+                            recyclerView.removeAllViewsInLayout();
+                            recyclerViewadapter.notifyDataSetChanged();
+
+
+
+                        }
+                    }, new Response.ErrorListener() {
+
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+
+                        }
+                    }) {
+
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    HashMap<String, String> headers = new HashMap<String, String>();
+                    headers.put("Authorization", Token);
+                    return headers;
+                }
+            };
+            recyclerView.getRecycledViewPool().clear();
+            requestQueue1.add(jsObjRequest1);
+            int a = 0;
+            recyclerView.swapAdapter(recyclerViewadapter, true);
+            recyclerView.removeAllViewsInLayout();
+        }
+        else {
+            Toast.makeText(getActivity(), "inside else", Toast.LENGTH_SHORT).show();
+
+            String url = ApiClient.BASE_URL+ "sortdetails";
+            Map<String, Object> jsonParams = new ArrayMap<>();
+
+            jsonParams.put("user_id", userId);
+            jsonParams.put("sts", sortsave);
+
+
+            @SuppressLint({"NewApi", "LocalSuppress"}) final ProgressDialog loading = ProgressDialog.show(getContext(), "Please wait...", "Fetching data...", false, false);
+
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(jsonParams),
+                    new Response.Listener<JSONObject>() {
+
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            loading.dismiss();
+                            JSON_PARSE_DATA_AFTER_WEBCALL(response);
+
+                            int a = 0;
+                            recyclerViewadapter = new RecyclerViewAdapter(GetDataAdapter1, getActivity().getApplication(), a);
+                            recyclerView.swapAdapter(recyclerViewadapter, true);
+                            recyclerView.removeAllViewsInLayout();
+                            recyclerViewadapter.notifyDataSetChanged();
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.v("Error", "" + error.toString());
+                }
+            }) {
+
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    HashMap<String, String> headers = new HashMap<String, String>();
+                    headers.put("Authorization", Token);
+                    return headers;
+                }
+            };
+            recyclerView.getRecycledViewPool().clear();
+            requestQueue1.add(jsonObjectRequest);
+            int a = 0;
+            recyclerView.swapAdapter(recyclerViewadapter, true);
+            recyclerView.removeAllViewsInLayout();
+        }
+
+
+
+
+    }
+
+
+    public void JSON_DATA_WEB_CALL_Filter() {
+        Log.v(TAG, "JSON CALL");
+        url = ApiClient.BASE_URL+"filterlead";
+
+        requestQueue1 = Volley.newRequestQueue(getActivity().getApplicationContext());
+        Log.v(TAG, "NO Filter");
+        Toast.makeText(getActivity(), "Sort "+sortsave, Toast.LENGTH_SHORT).show();
+        if (sortsave == 0) {
+            Log.v(TAG, "SORT zero");
+
+            @SuppressLint({"NewApi", "LocalSuppress"}) final ProgressDialog loading = ProgressDialog.show(getContext(), "Please wait...", "Fetching data...", false, false);
+            Map<String, Object> jsonParams = new ArrayMap<>();
+
+            jsonParams.put("agent _id", userId);
+            jsonParams.put("name", "");
+            JsonObjectRequest jsObjRequest1;
+            sortsave = Singleton.getInstance().getSortSaveFlag();
+            jsObjRequest1 = new JsonObjectRequest
+                    (Request.Method.POST, url, new JSONObject(jsonParams), new Response.Listener<JSONObject>() {
+
+                        @Override
+                        public void onResponse(JSONObject response) {
+
+                            loading.dismiss();
+                            Log.v(TAG, "SOT ZERO DATA PARSE");
+                            sharedpreferences = getActivity().getSharedPreferences(mypreference, Context.MODE_PRIVATE);
+                            refresh = sharedpreferences.getInt("refresh", 0);
+                            if (refresh == 1) {
+
+                            }
+                            Log.e("111111111",""+response);
+                            JSON_PARSE_DATA_AFTER_WEBCALL(response);
+                            int a = 0;
+                            recyclerViewadapter = new RecyclerViewAdapter(GetDataAdapter1, getActivity().getApplication(), a);
+                            recyclerView.swapAdapter(recyclerViewadapter, true);
+                            recyclerView.removeAllViewsInLayout();
+                            recyclerViewadapter.notifyDataSetChanged();
+
+
+
+                        }
+                    }, new Response.ErrorListener() {
+
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+
+                        }
+                    }) {
+
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    HashMap<String, String> headers = new HashMap<String, String>();
+                    headers.put("Authorization", Token);
+                    return headers;
+                }
+            };
+            recyclerView.getRecycledViewPool().clear();
+            requestQueue1.add(jsObjRequest1);
+            int a = 0;
+            recyclerView.swapAdapter(recyclerViewadapter, true);
+            recyclerView.removeAllViewsInLayout();
+        }
+        else {
+            Toast.makeText(getActivity(), "inside else", Toast.LENGTH_SHORT).show();
+
+            String url = ApiClient.BASE_URL+ "sortdetails";
+            Map<String, Object> jsonParams = new ArrayMap<>();
+
+            jsonParams.put("user_id", userId);
+            jsonParams.put("sts", sortsave);
+
+
+            @SuppressLint({"NewApi", "LocalSuppress"}) final ProgressDialog loading = ProgressDialog.show(getContext(), "Please wait...", "Fetching data...", false, false);
+
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(jsonParams),
+                    new Response.Listener<JSONObject>() {
+
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            loading.dismiss();
+                            JSON_PARSE_DATA_AFTER_WEBCALL(response);
+
+                            int a = 0;
+                            recyclerViewadapter = new RecyclerViewAdapter(GetDataAdapter1, getActivity().getApplication(), a);
+                            recyclerView.swapAdapter(recyclerViewadapter, true);
+                            recyclerView.removeAllViewsInLayout();
+                            recyclerViewadapter.notifyDataSetChanged();
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.v("Error", "" + error.toString());
+                }
+            }) {
+
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    HashMap<String, String> headers = new HashMap<String, String>();
+                    headers.put("Authorization", Token);
+                    return headers;
+                }
+            };
+            recyclerView.getRecycledViewPool().clear();
+            requestQueue1.add(jsonObjectRequest);
+            int a = 0;
+            recyclerView.swapAdapter(recyclerViewadapter, true);
+            recyclerView.removeAllViewsInLayout();
+        }
+
+
+
+
+    }
+
+
+
 
 }
+
+
+
+
+
 
 

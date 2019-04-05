@@ -1,54 +1,30 @@
 package com.nexgensm.reswye.ui.lead;
 
-import android.Manifest;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.Context;
-import android.content.Intent;
+
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.graphics.pdf.PdfDocument;
-import android.media.MediaScannerConnection;
 import android.net.Uri;
-import android.os.Build;
-import android.os.Environment;
-import android.os.ParcelFileDescriptor;
-import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
+
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
-import android.support.v4.app.Fragment;
 import com.nexgensm.reswye.R;
+import com.nexgensm.reswye.util.SharedPrefsUtils;
 
-import com.shockwave.pdfium.PdfiumCore;
-
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.Calendar;
 
 public class AddNewBuyerActivity extends AppCompatActivity implements AddNewLeadFragment.OnFragmentInteractionListener,AddNewPropertyBuyerFragment.OnFragmentInteractionListener,AddNewUploadDocFragment.OnFragmentInteractionListener {
 
-    AddNewLeadFragment addNewLeadFragment = new AddNewLeadFragment();
+    AddNewBuyerFragment addNewLeadFragment = new AddNewBuyerFragment();
     FragmentManager fragmentManager = getFragmentManager();
 
     AddNewPropertyBuyerFragment propertyfragment=new AddNewPropertyBuyerFragment();

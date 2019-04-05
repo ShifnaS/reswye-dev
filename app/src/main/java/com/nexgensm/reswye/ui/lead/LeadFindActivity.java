@@ -40,6 +40,13 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import com.seatgeek.placesautocomplete.DetailsCallback;
+import com.seatgeek.placesautocomplete.OnPlaceSelectedListener;
+import com.seatgeek.placesautocomplete.PlacesAutocompleteTextView;
+import com.seatgeek.placesautocomplete.model.AddressComponent;
+import com.seatgeek.placesautocomplete.model.AddressComponentType;
+import com.seatgeek.placesautocomplete.model.Place;
+import com.seatgeek.placesautocomplete.model.PlaceDetails;
 import com.yahoo.mobile.client.android.util.rangeseekbar.RangeSeekBar;
 
 import org.json.JSONException;
@@ -60,7 +67,7 @@ public class LeadFindActivity extends AppCompatActivity {
     EditText editDate, agentName, firstName, lastName;
     Calendar myCalendar = Calendar.getInstance();
 //    String dateFormat = "dd.MM.yyyy";
-String dateFormat = "yyyy.MM.dd";
+String dateFormat = "yyyy/MM/dd";
     DatePickerDialog.OnDateSetListener date;
     SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.GERMAN);
     public String locationtxt, dateTxt, propertyIdTxt, firstnameTxt, lastnameTxt, mobileNoTxt, agentnameTxt, emailIdTxt, emailedittext;
@@ -91,7 +98,7 @@ String dateFormat = "yyyy.MM.dd";
         final Button neutraldbtn = (Button) findViewById(R.id.neutralbtn);
         final Button coldbtn = (Button) findViewById(R.id.coldbtn);
 
-        final EditText location = (EditText) findViewById(R.id.location);
+        final PlacesAutocompleteTextView location = (PlacesAutocompleteTextView) findViewById(R.id.location);
         final EditText dateEdittxt = (EditText) findViewById(R.id.datepic);
         final EditText agentName = (EditText) findViewById(R.id.Agent_name);
         final EditText firstName = (EditText) findViewById(R.id.first_name);
@@ -149,27 +156,57 @@ String dateFormat = "yyyy.MM.dd";
                 transferStatus.setChecked(false);
         }
 
+        location.setOnPlaceSelectedListener(new OnPlaceSelectedListener() {
+            @Override
+            public void onPlaceSelected(final Place place) {
+                location.getDetailsFor(place, new DetailsCallback() {
+                    @Override
+                    public void onSuccess(final PlaceDetails details) {
+                        Log.d("test", "details " + details);
+                        //  mStreet.setText(details.name);
+                        for (AddressComponent component : details.address_components) {
+                            for (AddressComponentType type : component.types) {
+                                switch (type) {
+                                    case STREET_NUMBER:
+                                        break;
+                                    case ROUTE:
+                                        break;
+                                    case NEIGHBORHOOD:
+                                        break;
+                                    case SUBLOCALITY_LEVEL_1:
+                                        break;
+                                    case SUBLOCALITY:
+                                        break;
+                                    case LOCALITY:
+                                        // mCity.setText(component.long_name);
+                                        break;
+                                    case ADMINISTRATIVE_AREA_LEVEL_1:
+                                        // mState.setText(component.short_name);
+                                        break;
+                                    case ADMINISTRATIVE_AREA_LEVEL_2:
+                                        break;
+                                    case COUNTRY:
+                                        break;
+                                    case POSTAL_CODE:
+                                        //  mZip.setText(component.long_name);
+                                        break;
+                                    case POLITICAL:
+                                        break;
+                                }
+                            }
+                        }
+                    }
 
-//        seekminText = (TextView) findViewById(R.id.minText);
-//        seekmaxText = (TextView) findViewById(R.id.maxText);
-//
-//        RangeSeekBar rangeSeekbar = (RangeSeekBar) findViewById(R.id.seekbar);
-//        //final RangeSeekBar<Integer> seekBar = new RangeSeekBar<Integer>(this);
-//        rangeSeekbar.setRangeValues(0, 100);
-//
-//        rangeSeekbar.setOnRangeSeekBarChangeListener(new RangeSeekBar.OnRangeSeekBarChangeListener<Integer>() {
-//            @Override
-//            public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar, Integer minValue, Integer maxValue) {
-//                seekMax = Integer.toString(maxValue);
-//                seekMin = Integer.toString(minValue);
-//                seekminText.setText(seekMin);
-//                seekmaxText.setText(seekMax);
-//                Log.v(TAG, "min-" + seekMin + "-Max - " + seekMax);
-//
-//            }
-//        });
-//
-//        rangeSeekbar.setNotifyWhileDragging(true);
+                    @Override
+                    public void onFailure(final Throwable failure) {
+                        Log.d("test", "failure " + failure);
+                    }
+                });
+            }
+        });
+
+
+
 
 
 
@@ -231,25 +268,7 @@ String dateFormat = "yyyy.MM.dd";
                 }
                 propertyMinimum = propertyMinVal.getText().toString();
                 propertymaximum = propertyMaxVal.getText().toString();
-                //  Log.v(TAG, "agent" + agentnameTxt);
-                //Log.v(TAG, "first" + firstnameTxt);
-                //  Log.v(TAG, "last" + lastnameTxt);
-//                Log.v(TAG, "LeadStat" + leadStatus);
-//                Log.v(TAG, "loc" + locationtxt);
-//                Log.v(TAG, "date" + dateTxt);
-//                Log.v(TAG, "min" + propertyMinimum);
-//                Log.v(TAG, "max" + propertymaximum);
-//                Log.v(TAG, "LeadWarmth" + prospectStatus);
-//                Log.v(TAG, "leadCat" + leadCategory);
-//                Log.v(TAG, "transStat" + String.valueOf(transferStatusFlag));
-//                Log.v(TAG, "agn" + agentnameTxt);
-//                Log.v(TAG, "fN" + firstnameTxt);
-//                Log.v(TAG, "LN" + lastnameTxt);
-//                Log.v(TAG, "mob" + mobileNoTxt);
-//                Log.v(TAG, "email" + emailIdTxt);
-//                Log.v(TAG, "ID" + propID);
 
-                // Log.v(TAG, "propID" + propertyIdTxt);
 
                 final String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
                 emailedittext = emailId.getText().toString().trim();
@@ -290,21 +309,7 @@ String dateFormat = "yyyy.MM.dd";
                     Singleton.getInstance().setIsfilterDefaultt(0);
                     Singleton.getInstance().setFilterFlag(1);
                     finish();
-//
-//                    if (emailedittext.length() > 0) {
-//
-//                        if (emailedittext.matches(emailPattern)) {
-//
-//                            Singleton.getInstance().setSortSaveFlag(3);
-//
-//
-////                            Intent in = new Intent(LeadFindActivity.this, BottomTabbarActivity.class);
-////                            startActivity(in);
-//
-//                        } else {
-//                            Toast.makeText(getApplicationContext(), "Invalid email address", Toast.LENGTH_SHORT).show();
-//                        }
-//                    }
+
                 }
             }
 
@@ -401,12 +406,7 @@ String dateFormat = "yyyy.MM.dd";
         });
         editDate = (EditText) findViewById(R.id.datepic);
 
-// init - set date to current date
-//        long currentdate = System.currentTimeMillis();
-//        String dateString = sdf.format(currentdate);
-//        editDate.setText(dateString);
 
-// set calendar date and update editDate
         date = new DatePickerDialog.OnDateSetListener() {
 
             @Override
@@ -454,75 +454,7 @@ String dateFormat = "yyyy.MM.dd";
         finish();
     }
 
-//    public void JSON_CALL(){
-//
-//        Map<String, Object> jsonParams = new ArrayMap<>();
-//        jsonParams.put("LeadStatus ", leadStatus);
-//        jsonParams.put("Location ", locationtxt);
-//        jsonParams.put(" Created_Date", dateTxt);
-//        jsonParams.put("MinPrice ", propertyMinimum);
-//        jsonParams.put("maxPrice ", propertymaximum);
-//        jsonParams.put("LeadWarmth ", prospectStatus);
-//        jsonParams.put("LeadCategory ", leadCategory);
-//        jsonParams.put("TransferStatus ", transferStatusFlag);
-//        jsonParams.put("AgentName ", listingpriceValue);
-//        jsonParams.put("LeadFirstName ", foreclosure);
-//        jsonParams.put("LeadLastName ", discriptionValue);
-//        jsonParams.put("Mobile ", mobileNoTxt);
-//        jsonParams.put("Email ", emailIdTxt);
-//        jsonParams.put("PropertyID ", propID);
-//        jsonParams.put("YearBuiltStart ", "");
-//        jsonParams.put("YearBuiltEnd ", "");
-//        jsonParams.put("isdefault ",isdefault);
-//
-//
-//        url = "http://202.88.239.14:8169/api/Lead/UpdatePropertyDetails";
-//
-//        JsonObjectRequest jsonObjectRequest1 = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(jsonParams),
-//                new Response.Listener<JSONObject>() {
-//                    @Override
-//                    public void onResponse(JSONObject response) {
-//                        Log.v("ADDPROPFRAG",response.toString());
-//                        try {
-//                            updateStatus = response.getString("status").toString().trim();
-//
-//
-//                            String str3 = "Success";
-//                            int response_result = updateStatus.compareTo(str3);
-//                            if (response_result == 0) {
-//                                loading.dismiss();
-//                                Toast.makeText(getActivity(), "Property details Updated", Toast.LENGTH_SHORT).show();
-//
-//                            } else {
-//                                loading.dismiss();
-//                                Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
-//
-//                            }
-//
-//                        } catch (JSONException e) {
-//                            loading.dismiss();
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                loading.dismiss();
-//                Toast.makeText(getActivity(), "Volley Error" + error, Toast.LENGTH_SHORT).show();
-//                // do something...
-//            }
-//        }) {
-//            @Override
-//            public Map<String, String> getHeaders() throws AuthFailureError {
-//
-//                final Map<String, String> headers = new HashMap<>();
-//                headers.put("Authorization", Token);
-//                return headers;
-//            }
-//        };
-//
-//
-//    }
+
 
 
 }

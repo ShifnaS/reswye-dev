@@ -13,23 +13,27 @@ import android.widget.TextView;
 
 import com.nexgensm.reswye.R;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Created by Nexmin on 03-04-2018.
  */
 
 public class PropertyViewloggedAdapter_buyer extends PagerAdapter {
     Context context;
-    String[] amount3;
+    JSONArray jsonObject;
     LayoutInflater inflater;
 
-    public PropertyViewloggedAdapter_buyer( Context context, String[] amount3) {
+    public PropertyViewloggedAdapter_buyer( Context context,JSONArray amount3) {
         this.context = context;
-        this.amount3 = amount3;
+        this.jsonObject = amount3;
     }
 
     @Override
     public int getCount() {
-        return amount3.length;
+        return jsonObject.length();
     }
     @Override
     public boolean isViewFromObject(View view, Object object) {
@@ -45,14 +49,30 @@ public class PropertyViewloggedAdapter_buyer extends PagerAdapter {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View itemView2 = inflater.inflate(R.layout.viewedpager_item_buyer, container, false);
 
-        DateAndTime = (TextView) itemView2.findViewById(R.id.DateAndTime);
         DateAndTimeValue = (TextView) itemView2.findViewById(R.id.DateAndTimeValue);
-        Property_id = (TextView) itemView2.findViewById(R.id.Property_id);
         Property_ldValue = (TextView) itemView2.findViewById(R.id.Property_ldValue);
-        leadComments = (TextView) itemView2.findViewById(R.id.leadComments);
         leadCommentsValue = (TextView) itemView2.findViewById(R.id.leadCommentsValue);
 
+        try
+        {
+                JSONObject obj = jsonObject.getJSONObject(position);
+                DateAndTimeValue.setText(obj.getString("ViewedDatetime"));
+                Property_ldValue.setText(obj.getString("propertyId"));
+                leadCommentsValue.setText(obj.getString("Comments"));
+
+
+        }
+        catch (JSONException e)
+        {
+            e.printStackTrace();
+        }
+
+
+        // Property_ldValue.setText(amount3[position]);
         ((ViewPager) container).addView(itemView2);
+
+
+
 
         return itemView2;
     }

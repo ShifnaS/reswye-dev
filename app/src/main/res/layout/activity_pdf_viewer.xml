@@ -39,5 +39,10 @@
         android:layout_marginTop="10dp"
         android:layout_marginBottom="20dp"/>
 
-
+    <ProgressBar
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:id="@+id/progressbar"
+        android:layout_centerInParent="true"
+        android:layout_height="wrap_content" />
 </RelativeLayout>

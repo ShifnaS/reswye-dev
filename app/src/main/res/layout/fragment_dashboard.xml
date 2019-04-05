@@ -203,56 +203,6 @@
                     android:layout_marginTop="0dp" />
 
 
-                <!--<Spinner-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:id="@+id/dashboard_spinner"-->
-                <!--android:layout_below="@+id/piechart"-->
-                <!--android:layout_centerHorizontal="true"-->
-                <!--android:layout_marginTop="20dp"-->
-                <!--&gt;</Spinner>-->
-                <!---->
-                <!--<TextView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:id="@+id/missedfollowupscount"-->
-                <!--android:text=""-->
-                <!--android:layout_below="@id/dashboard_spinner"-->
-                <!--android:textSize="70dp"-->
-                <!--android:layout_marginLeft="40dp"-->
-                <!--android:drawableRight="@drawable/up"-->
-                <!--/>-->
-                <!--<TextView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:id="@+id/upcoming"-->
-                <!--android:text=""-->
-                <!--android:layout_below="@id/dashboard_spinner"-->
-                <!--android:textSize="70dp"-->
-                <!--android:layout_alignParentEnd="true"-->
-                <!--android:layout_marginEnd="40dp"-->
-                <!--android:drawableRight="@mipmap/dashboard_down"-->
-                <!--/>-->
-                <!--<TextView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:id="@+id/missedfollowupstxt"-->
-                <!--android:text="Missed Followups"-->
-                <!--android:layout_below="@id/missedfollowupscount"-->
-
-                <!--android:layout_marginLeft="20dp"-->
-
-                <!--/>-->
-                <!--<TextView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:id="@+id/upcomingtxt"-->
-                <!--android:text="Upcoming Followups"-->
-                <!--android:layout_below="@id/upcoming"-->
-
-                <!--android:layout_alignParentEnd="true"-->
-                <!--android:layout_marginEnd="20dp"-->
-                <!--/>-->
 
 
             </RelativeLayout>

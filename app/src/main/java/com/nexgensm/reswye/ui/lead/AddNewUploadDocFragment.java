@@ -188,7 +188,6 @@ public class AddNewUploadDocFragment extends Fragment {
         sharedpreferences = getActivity().getSharedPreferences(mypreference, Context.MODE_PRIVATE);
         userId = sharedpreferences.getInt("UserId", 0);
         Token = sharedpreferences.getString("token", "");
-        leadId = sharedpreferences.getInt("LeadId", 0);
         requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
         fileName = (TextView) myFragmentView.findViewById(R.id.fileName);
         fileDescription = (TextView) myFragmentView.findViewById(R.id.fileDescription);
@@ -203,7 +202,16 @@ public class AddNewUploadDocFragment extends Fragment {
         setback();
 
         flag=SharedPrefsUtils.getInstance(getActivity()).getFlag();
-        lid=SharedPrefsUtils.getInstance(getActivity()).getLId();
+        if(flag==0)
+        {
+            lid=SharedPrefsUtils.getInstance(getActivity()).getLeadId();
+
+        }
+        else
+        {
+            lid=SharedPrefsUtils.getInstance(getActivity()).getLId();
+
+        }
         return myFragmentView;
 
     }
@@ -464,8 +472,7 @@ public class AddNewUploadDocFragment extends Fragment {
 
             String fname=fileName.getText().toString();
             String fndis=fileDescription.getText().toString();
-            int lid= SharedPrefsUtils.getInstance(getActivity()).getLeadId();
-           // Toast.makeText(getActivity(), "LeadId "+lid, Toast.LENGTH_SHORT).show();
+
 
             ApiInterface apiService =ApiClient.getClient().create(ApiInterface.class);
             RequestBody name = RequestBody.create(MediaType.parse("text/plain"), "upload");

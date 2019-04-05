@@ -19,6 +19,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,6 +43,7 @@ public class PdfViewerActivity extends AppCompatActivity implements OnPageChange
     Integer pageNumber = 0;
     String pdfFileName;
     Context context;
+    ProgressBar progressbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,30 +54,7 @@ public class PdfViewerActivity extends AppCompatActivity implements OnPageChange
         newString= i.getStringExtra("doc_name");
         dbname=i.getStringExtra("dbdoc_name");
         pdfView= (WebView)findViewById(R.id.pdfView);
-        Toast.makeText(getApplicationContext(), ""+dbname, Toast.LENGTH_SHORT).show();
-        Log.e("5555555555",""+dbname);
-
-try{
-
-    String dbname1="http://www.africau.edu/images/default/sample.pdf";
-    pdfView.getSettings().setJavaScriptEnabled(true);
-    pdfView.getSettings().setPluginState(WebSettings.PluginState.ON);
-   // pdfView.loadUrl(dbname);
-    pdfView.loadUrl("https://docs.google.com/gview?embedded=true&url=" + dbname1);
-
-    pdfView.setWebViewClient(new WebViewClient() {
-        public void onPageFinished(WebView view, String url) {
-        }
-    });
-  //  Uri path=Uri.parse(dbname);
-   // displayFromUri(path);
-}
-catch(Exception e){
-    e.printStackTrace();
-}
-
-
-
+        progressbar = (ProgressBar) findViewById(R.id.progressbar);
         TextView property_Name=(TextView)findViewById(R.id.PropertyName_Text);
         property_Name.setText(newString);
 
@@ -86,44 +65,31 @@ catch(Exception e){
                 finish();
             }
         });
-    }
+       // Log.e("5555555555",""+dbname);
 
+try{
 
+    String dbname1="http://www.africau.edu/images/default/sample.pdf";
+    String url="https://docs.google.com/gview?embedded=true&url=" + dbname;
+    pdfView.getSettings().setJavaScriptEnabled(true);
+    pdfView.getSettings().setPluginState(WebSettings.PluginState.ON);
+   // pdfView.loadUrl(dbname);
+    pdfView.getSettings().setLoadWithOverviewMode(true);
+    pdfView.getSettings().setUseWideViewPort(true);
 
-   /* private void displayFromUri(Uri uri) {
-        pdfFileName = getFileName(uri);
-
-        pdfView.fromUri(uri)
-                .defaultPage(pageNumber)
-                .onPageChange(this)
-                .enableAnnotationRendering(true)
-                .onLoad(this)
-                .scrollHandle(new DefaultScrollHandle(this))
-                .spacing(10) // in dp
-                .onPageError(this)
-                .load();
-    }*/
-
-
-
-    public String getFileName(Uri uri) {
-        String result = null;
-        if (uri.getScheme().equals("content")) {
-            Cursor cursor = getContentResolver().query(uri, null, null, null, null);
-            try {
-                if (cursor != null && cursor.moveToFirst()) {
-                    result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
-                }
-            } finally {
-                if (cursor != null) {
-                    cursor.close();
-                }
-            }
+    pdfView.setWebViewClient(new WebViewClient() {
+        public void onPageFinished(WebView view, String url) {
+            progressbar.setVisibility(View.GONE);
         }
-        if (result == null) {
-            result = uri.getLastPathSegment();
-        }
-        return result;
+    });
+
+    pdfView.loadUrl( url);
+    Log.e("5555555555",url);
+}
+catch(Exception e){
+    e.printStackTrace();
+}
+
     }
 
 
@@ -134,22 +100,8 @@ catch(Exception e){
     }
 
 
-
-    public void printBookmarksTree(List<PdfDocument.Bookmark> tree, String sep) {
-        for (PdfDocument.Bookmark b : tree) {
-
-            Log.e(TAG, String.format("%s %s, p %d", sep, b.getTitle(), b.getPageIdx()));
-
-            if (b.hasChildren()) {
-                printBookmarksTree(b.getChildren(), sep + "-");
-            }
-        }
-    }
-
     @Override
     public void loadComplete(int nbPages) {
-       // PdfDocument.Meta meta = pdfView.getDocumentMeta();
-       // printBookmarksTree(pdfView.getTableOfContents(), "-");
     }
 
     @Override

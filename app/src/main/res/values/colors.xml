@@ -13,7 +13,9 @@
     <color name="grey">#D3D3D3	</color>
     <color name="dark">#AB1E55	</color>
     <color name="darkgrey">#5d5e60	</color>
-
+    <color name="failed">#5d5e60	</color>
+    <color name="opened">#5d5e60	</color>
+    <color name="closed">#5d5e60	</color>
 
 
 </resources>

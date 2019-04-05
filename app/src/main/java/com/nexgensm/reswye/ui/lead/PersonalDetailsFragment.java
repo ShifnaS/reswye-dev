@@ -34,6 +34,7 @@ import com.nexgensm.reswye.api.ApiClient;
 import com.nexgensm.reswye.ui.Dashboard.DormantItems;
 import com.nexgensm.reswye.ui.bottomtabbar.BottomTabbarActivity;
 import com.nexgensm.reswye.ui.signinpage.SigninActivity;
+import com.nexgensm.reswye.util.SharedPrefsUtils;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -71,6 +72,7 @@ public class PersonalDetailsFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     ImageView circleView;
+    String type="";
 
     ImageView deletebin,edit_icon,transfer_icon;
     RequestQueue requestQueue;
@@ -115,7 +117,7 @@ public class PersonalDetailsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        final View myFragmentView=inflater.inflate(R.layout.fragment_personal_details_buyer, container, false);
+        final View myFragmentView=inflater.inflate(R.layout.fragment_personal_details_seller, container, false);
 
         sharedpreferences =getActivity().getSharedPreferences(mypreference, Context.MODE_PRIVATE);
         userId=sharedpreferences.getInt("UserId",0);
@@ -123,8 +125,10 @@ public class PersonalDetailsFragment extends Fragment {
         Token=sharedpreferences.getString("token","");
         ImageUrl=sharedpreferences.getString("imageURL","");
        /// LeadId = sharedpreferences.getInt("LeadId", 1);
-         LeadId = getArguments().getInt("leadId");
-       // Toast.makeText(getActivity(), "LeadID "+LeadId, Toast.LENGTH_SHORT).show();
+         LeadId =  SharedPrefsUtils.getInstance(getActivity()).getLId();
+         type = getArguments().getString("type");
+        Toast.makeText(getActivity(), "type "+type, Toast.LENGTH_SHORT).show();
+        // Toast.makeText(getActivity(), "LeadID "+LeadId, Toast.LENGTH_SHORT).show();
 
         circleView=(CircleImageView)myFragmentView.findViewById(R.id.circleView);
         leadpersonal_name=(TextView)myFragmentView.findViewById(R.id.leadpersonal_name);
@@ -233,21 +237,17 @@ public class PersonalDetailsFragment extends Fragment {
         edit_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent buyeractivity = new Intent(getActivity(), AddNewSellerActivity.class);
-                sharedpreferences = getActivity().getSharedPreferences(mypreference, Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedpreferences.edit();
-                editor.putInt("flag", 1);
-                editor.putInt("lid",LeadId);
-                editor.commit();
-                buyeractivity.putExtra("flag",1);
-                buyeractivity.putExtra("lid",LeadId);
-                getActivity().startActivity(buyeractivity);
+
+                    SharedPrefsUtils.getInstance(getActivity()).setFlag(1);
+                    Intent buyeractivity = new Intent(getActivity(), AddNewSellerActivity.class);
+                    getActivity().startActivity(buyeractivity);
+
             }
         });
 
         return myFragmentView;
 
-        //return inflater.inflate(R.layout.fragment_personal_details, container, false);
+        //return inflater.inflate(R.layout.fragment_personal_details_seller, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event

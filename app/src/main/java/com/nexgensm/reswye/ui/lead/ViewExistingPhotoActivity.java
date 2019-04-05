@@ -69,7 +69,7 @@ public class ViewExistingPhotoActivity extends AppCompatActivity {
         jsonObject = new JSONObject();
         GetDataAdapter1 = new ArrayList<>();
         sharedPreferences = getApplication().getSharedPreferences(mypreference, Context.MODE_PRIVATE);
-        ImageUrl = ApiClient.BASE_URL;
+        ImageUrl = ApiClient.BASE_URL_IMG;
 
         flag =SharedPrefsUtils.getInstance(getApplicationContext()).getFlag();
         if(flag==0)
@@ -153,6 +153,7 @@ public class ViewExistingPhotoActivity extends AppCompatActivity {
                 image = ImageUrl + imageName;
                 GetDataAdapter2.setLead_imagename(imageName);
                 GetDataAdapter2.setLead_imageUrl(image);
+                GetDataAdapter2.setPhotoId(jo.getInt("photoId"));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -177,7 +178,7 @@ public class ViewExistingPhotoActivity extends AppCompatActivity {
                     @Override
                     public void onLongClick(View view, int position) {
                         final String imagename = GetDataAdapter1.get(position).getLead_imagename();
-
+                        final int photoid = GetDataAdapter1.get(position).getPhotoId();
                         AlertDialog.Builder builder = new AlertDialog.Builder(ViewExistingPhotoActivity.this);
                         builder.setTitle("Confirm delete !");
                         builder.setMessage("Delete Image . Do you really want to proceed ?");
@@ -185,8 +186,8 @@ public class ViewExistingPhotoActivity extends AppCompatActivity {
                         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                deletephoto(imagename);
-                                Toast.makeText(getApplicationContext(), "Deleted", Toast.LENGTH_SHORT).show();
+                                deletephoto(imagename,photoid);
+                              //  Toast.makeText(getApplicationContext(), "Deleted", Toast.LENGTH_SHORT).show();
                             }
                         });
 
@@ -206,11 +207,13 @@ public class ViewExistingPhotoActivity extends AppCompatActivity {
 
     }
 
-    public void deletephoto(String imagenames) {
-        String deleteurl = "http://202.88.239.14:8169/api/Lead/deletepropertyphotos";
+    public void deletephoto(String imagenames,int photoId) {
+        String deleteurl = ApiClient.BASE_URL+"deleteproperty";
         Map<String, Object> jsonParams = new ArrayMap<>();
         jsonParams.put("lead_Id", LeadId);
-        jsonParams.put("propphotoName", imagenames);
+        jsonParams.put("Uploaded_DocumentName", imagenames);
+        jsonParams.put("photoId", photoId);
+
 
 
         //   loading = ProgressDialog.show(getContext(), "Please wait...", "Fetching data...", false, false);
@@ -221,11 +224,11 @@ public class ViewExistingPhotoActivity extends AppCompatActivity {
                     public void onResponse(JSONObject response) {
                         try {
 
-                            Log.v("ADDNEW", "" + response);
-                            String message = response.getString("message").toString().trim();
+                            Log.e("ADDNEW", "" + response);
+                            String message = response.getString("status").toString().trim();
 
-                            if (message.compareTo("Successfully deleted the PropertyPhotos") == 0) {
-                                Toast.makeText(ViewExistingPhotoActivity.this, "Delete Done", Toast.LENGTH_SHORT);
+                            if (message.equals("success")) {
+                                Toast.makeText(ViewExistingPhotoActivity.this, "Delete Done", Toast.LENGTH_SHORT).show();
                                 Intent intent = getIntent();
                                 finish();
                                 startActivity(intent);
@@ -233,7 +236,7 @@ public class ViewExistingPhotoActivity extends AppCompatActivity {
 
                             } else {
 
-                                Toast.makeText(ViewExistingPhotoActivity.this, "Deletion failed, try again ", Toast.LENGTH_SHORT);
+                                Toast.makeText(ViewExistingPhotoActivity.this, "Deletion failed, try again ", Toast.LENGTH_SHORT).show();
                             }
 
                         } catch (JSONException e) {
@@ -245,9 +248,7 @@ public class ViewExistingPhotoActivity extends AppCompatActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-//            loading.dismiss();
-//            Toast.makeText(getActivity(), "Volley Error" + error, Toast.LENGTH_SHORT).show();
-                // do something...
+
             }
         }) {
             @Override

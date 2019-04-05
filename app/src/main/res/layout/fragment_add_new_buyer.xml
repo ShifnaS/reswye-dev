@@ -1,0 +1,412 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="match_parent"
+>
+
+
+        <ImageView
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            android:layout_marginTop="20dp"
+            android:layout_centerHorizontal="true"
+            android:src="@mipmap/man"
+            android:id="@+id/circleView"
+            />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:id="@+id/firstname"
+            android:inputType="textPersonName"
+            android:layout_marginTop="10dp"
+            android:drawableRight="@mipmap/mandadatory_star"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:hint="First Name"
+            android:background="@drawable/spinner_focus"
+            android:paddingLeft="10dp"
+            android:textColorHint="#A9A9A9"
+            android:paddingRight="10dp"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:id="@+id/lastname"
+            android:layout_marginTop="10dp"
+            android:drawableRight="@mipmap/mandadatory_star"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:hint="Last Name"
+            android:background="@drawable/spinner_focus"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"/>
+
+        <!-- <EditText
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:minHeight="40dp"
+             android:inputType="textPersonName"
+             android:id="@+id/AddressSeller"
+             android:layout_marginTop="10dp"
+             android:layout_marginLeft="20dp"
+             android:layout_marginRight="20dp"
+             android:hint="Address"
+             android:background="@drawable/spinner_focus"
+             android:paddingLeft="10dp"/>-->
+
+        <ScrollView
+            android:id="@+id/ScrollView01"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            style="@style/spinnerbox"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:paddingTop="10dp"
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp"
+            android:layout_marginTop="10dp"
+
+            >
+            <EditText
+                android:id="@+id/AddressSeller"
+                android:background="@android:color/transparent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:drawableRight="@mipmap/mandadatory_star"
+                android:hint="Address"
+                android:textColorHint="#A9A9A9" />
+
+        </ScrollView>
+
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:id="@+id/mobilenum"
+            android:layout_marginTop="10dp"
+            android:drawableRight="@mipmap/mandadatory_star"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:hint="Mobile Number"
+            android:inputType="phone"
+            android:background="@drawable/spinner_focus"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"/>
+
+
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:id="@+id/email"
+            android:layout_marginTop="10dp"
+            android:drawableRight="@mipmap/mandadatory_star"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
+            android:background="@drawable/spinner_focus"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:id="@+id/selectgender"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:text="Select Gender"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@id/selectgender"
+            android:id="@+id/genderlayout">
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/selectgender_selection"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:checked="false"
+                android:text="Male"
+                android:layout_marginLeft="20dp"
+                android:theme="@style/SCBSwitch"
+                tools:text="MALE " />
+
+            <TextView
+                android:id="@+id/femaletxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="FEMALE"
+                android:textStyle="bold"
+                android:layout_marginTop="20dp"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:id="@+id/additionaldetails"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:text="Additional Details"
+            android:textColor="@color/dark"
+            />
+        <Spinner
+            android:id="@+id/spinner_additional_details"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/spinner_bg"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            />
+
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:id="@+id/leadstatustxt"
+            android:layout_below="@+id/spinner_additional_details"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:text="Lead Status"
+            android:visibility="gone"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/leadstatuslayout"
+            android:layout_below="@id/leadstatustxt"
+            android:orientation="horizontal"
+            android:visibility="gone"
+
+            >
+
+            <Button
+                android:layout_width="80dp"
+                android:layout_height="30dp"
+                android:id="@+id/newbtn"
+                style="@style/AddNewButtonStyle"
+                android:text="New"
+                android:layout_marginStart="20dp"
+
+
+                android:layout_marginTop="10dp"
+                android:textAllCaps="false"
+                />
+
+
+            <Button
+                android:id="@+id/incontract"
+                style="@style/AddNewButtonStyle"
+                android:layout_width="80dp"
+                android:layout_height="30dp"
+
+                android:layout_marginStart="5dp"
+
+                android:text="In Contract"
+
+                android:layout_marginTop="10dp"
+                android:textAllCaps="false"/>
+
+            <Button
+                android:layout_width="80dp"
+                android:layout_height="30dp"
+                android:id="@+id/success"
+                style="@style/AddNewButtonStyle"
+                android:text="Success"
+                android:layout_marginStart="5dp"
+
+                android:layout_marginTop="10dp"
+                android:textAllCaps="false"
+                />
+            <Button
+                android:layout_width="80dp"
+                android:layout_height="30dp"
+                android:id="@+id/failure"
+                style="@style/AddNewButtonStyle"
+                android:text="Failure"
+                android:layout_marginStart="5dp"
+
+                android:layout_marginTop="10dp"
+                android:textAllCaps="false"
+                />
+
+
+
+
+
+        </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:id="@+id/leadwarmthtxt"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:text="Lead Prospect"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/leadwarmthlayout"
+            android:orientation="horizontal"
+            android:weightSum="1"
+            android:layout_marginBottom="5dp"
+
+            >
+
+            <Button
+                android:layout_width="80dp"
+                android:layout_height="30dp"
+                android:id="@+id/warmbtn"
+                style="@style/AddNewButtonStyle"
+                android:text="Warm"
+                android:layout_marginStart="20dp"
+                android:layout_alignParentLeft="true"
+                android:layout_margin="10dp"
+                android:textAllCaps="false"
+                android:layout_weight="0.33"
+                />
+
+
+            <Button
+                android:id="@+id/coldbtn"
+                style="@style/AddNewButtonStyle"
+                android:layout_width="80dp"
+                android:layout_height="30dp"
+
+                android:layout_marginStart="5dp"
+
+                android:text="Cold"
+                android:layout_centerInParent="true"
+
+                android:layout_margin="10dp"
+                android:textAllCaps="false"
+                android:layout_weight="0.33"
+                />
+            <Button
+                android:id="@+id/neutral"
+                style="@style/AddNewButtonStyle"
+                android:layout_width="80dp"
+                android:layout_height="30dp"
+
+                android:layout_marginStart="5dp"
+
+                android:text="Neutral"
+                android:layout_centerInParent="true"
+
+                android:layout_margin="10dp"
+                android:textAllCaps="false"
+                android:layout_weight="0.33"
+                />
+
+
+        </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:id="@+id/lead_status"
+            android:layout_below="@+id/leadwarmthlayout"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:text="Lead Status"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:visibility="gone"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/leadstauslayout"
+            android:layout_below="@id/lead_status"
+            android:orientation="horizontal"
+            android:weightSum="1"
+            android:visibility="gone"
+            >
+
+            <Button
+                android:layout_width="80dp"
+                android:layout_height="30dp"
+                android:id="@+id/newStatus"
+                style="@style/AddNewButtonStyle"
+                android:text="New"
+                android:layout_marginStart="20dp"
+                android:layout_alignParentLeft="true"
+                android:layout_margin="10dp"
+                android:textAllCaps="false"
+                android:layout_weight="0.33"
+                />
+
+
+            <Button
+                android:id="@+id/convertedStatus"
+                style="@style/AddNewButtonStyle"
+                android:layout_width="80dp"
+                android:layout_height="30dp"
+
+                android:layout_marginStart="5dp"
+                android:layout_weight="0.33"
+
+                android:text="Conveted"
+                android:layout_centerInParent="true"
+
+                android:layout_margin="10dp"
+                android:textAllCaps="false"/>
+
+            <Button
+                android:layout_width="80dp"
+                android:layout_height="30dp"
+                android:id="@+id/inactiveStatus"
+                style="@style/AddNewButtonStyle"
+                android:text="Inactive"
+                android:layout_marginStart="5dp"
+                android:layout_alignParentRight="true"
+                android:layout_weight="0.33"
+
+                android:layout_margin="10dp"
+                android:textAllCaps="false"
+                android:layout_marginEnd="20dp"
+                />
+
+        </LinearLayout>
+        <Button
+            android:id="@+id/adddetails_lead_save"
+            android:background="@drawable/pink_round_button"
+            android:layout_margin="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            android:text="Save"
+            android:textAllCaps="false"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20sp"
+            />
+
+    </LinearLayout>
+</ScrollView>

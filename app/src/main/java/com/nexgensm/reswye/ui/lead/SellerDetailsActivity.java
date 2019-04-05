@@ -25,10 +25,6 @@ import com.nexgensm.reswye.util.SharedPrefsUtils;
 
 public class SellerDetailsActivity extends AppCompatActivity implements PersonalDetailsFragment.OnFragmentInteractionListener, PropertyDetailsSellerFragment.OnFragmentInteractionListener, DocumentDetailsBuyerFragment.OnFragmentInteractionListener {
 
-
-    //PersonalDetailsFragment personalDetailsFragment = new PersonalDetailsFragment();
-    //  PropertyDetailsSellerFragment propertyDetailsSellerFragment = new PropertyDetailsSellerFragment();
-//    DocumentDetailsBuyerFragment documentDetailsSellerFragment = new DocumentDetailsBuyerFragment();
     Button personalbtn;
     Button propertybtn;
     Button docbtn;
@@ -70,21 +66,12 @@ public class SellerDetailsActivity extends AppCompatActivity implements Personal
         TextView toolbartxt = (TextView) findViewById(R.id.leadSellerDetailsToolbartxt);
 
         Bundle extras = getIntent().getExtras();
-        newId = extras.getInt("LeadId", 0);
-        SharedPrefsUtils.getInstance(getApplicationContext()).setLeadId(newId);
-        //  Toast.makeText(getApplicationContext(), newId, Toast.LENGTH_SHORT).show();
-        //      toolbartxt.setText(newId);
-       // sharedpreferences = getSharedPreferences(mypreference, Context.MODE_PRIVATE);
-
-       /* SharedPreferences.Editor editor = sharedpreferences.edit();
-        editor.putInt("LeadId", newId);*/
-        Log.v(TAG,"id"+newId);
-      //  editor.commit();
 
 
         PersonalDetailsFragment personalDetailsFragment = new PersonalDetailsFragment();
         Bundle bundle = new Bundle();
-        bundle.putInt("leadId", newId);
+        bundle.putString("type", "seller");
+
         personalDetailsFragment.setArguments(bundle);
         changeFragment(personalDetailsFragment, Person,newId);
 
@@ -107,7 +94,8 @@ public class SellerDetailsActivity extends AppCompatActivity implements Personal
                 PersonalDetailsFragment personalDetailsFragment = new PersonalDetailsFragment();
 
                 Bundle bundle = new Bundle();
-                bundle.putInt("leadId", newId);
+                bundle.putString("type", "seller");
+
                 personalDetailsFragment.setArguments(bundle);
                 changeFragment(personalDetailsFragment, Person,newId);
 
@@ -138,7 +126,8 @@ public class SellerDetailsActivity extends AppCompatActivity implements Personal
 
                 PropertyDetailsSellerFragment propertyDetailsSellerFragment = new PropertyDetailsSellerFragment();
                 Bundle bundle = new Bundle();
-                bundle.putInt("leadId", newId);
+                bundle.putString("type", "seller");
+
                 propertyDetailsSellerFragment.setArguments(bundle);
                 changeFragment(propertyDetailsSellerFragment, Property,newId);
 
@@ -166,7 +155,8 @@ public class SellerDetailsActivity extends AppCompatActivity implements Personal
 
                 DocumentDetailsBuyerFragment documentDetailsSellerFragment = new DocumentDetailsBuyerFragment();
                 Bundle bundle = new Bundle();
-                bundle.putInt("leadId", newId);
+                bundle.putString("type", "seller");
+
                 documentDetailsSellerFragment.setArguments(bundle);
                 changeFragment(documentDetailsSellerFragment, Document,newId);
 

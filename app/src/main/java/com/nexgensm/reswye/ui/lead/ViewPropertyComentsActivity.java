@@ -2,7 +2,6 @@ package com.nexgensm.reswye.ui.lead;
 
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,8 +17,6 @@ import com.nexgensm.reswye.api.ApiClient;
 import com.nexgensm.reswye.api.ApiInterface;
 import com.nexgensm.reswye.model.Request;
 import com.nexgensm.reswye.model.Response;
-import com.nexgensm.reswye.model.Result;
-import com.nexgensm.reswye.ui.signinpage.SigninActivity;
 import com.nexgensm.reswye.util.SharedPrefsUtils;
 
 import java.text.SimpleDateFormat;
@@ -29,32 +26,29 @@ import java.util.Locale;
 import retrofit2.Call;
 import retrofit2.Callback;
 
-public class AddBuyerActivity extends AppCompatActivity {
-
-    EditText et_name,et_phone,et_email,et_date,et_comment;
+public class ViewPropertyComentsActivity extends AppCompatActivity {
+    EditText et_name, et_date, et_comment;
     Button bt_save;
     ImageButton img_back;
-    String nameString,emailString,phoneString,dateString,commentString;
+    String nameString, dateString, commentString;
     ProgressDialog pd;
-    int lid; Calendar myCalendar = Calendar.getInstance();
+    int lid;
+    Calendar myCalendar = Calendar.getInstance();
     DatePickerDialog.OnDateSetListener date;
     String dateFormat = "yyyy/MM/dd";
     SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.GERMAN);
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_buyer);
-        et_name=findViewById(R.id.name);
-        et_phone=findViewById(R.id.phone);
-        et_email=findViewById(R.id.email);
-        et_date=findViewById(R.id.date);
-        et_comment=findViewById(R.id.comment);
-        bt_save=findViewById(R.id.save);
-        img_back=findViewById(R.id.back);
-        pd = new ProgressDialog(AddBuyerActivity.this);
-        lid=SharedPrefsUtils.getInstance(getApplicationContext()).getLId();
+        setContentView(R.layout.activity_view_property_coments);
+        et_name = findViewById(R.id.name);
+        et_date = findViewById(R.id.date);
+        et_comment = findViewById(R.id.comment);
+        bt_save = findViewById(R.id.save);
+        img_back = findViewById(R.id.back);
+        pd = new ProgressDialog(ViewPropertyComentsActivity.this);
+        lid = SharedPrefsUtils.getInstance(getApplicationContext()).getLId();
         img_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -66,14 +60,13 @@ public class AddBuyerActivity extends AppCompatActivity {
             public void onClick(View view) {
                 getLoginText();
                 //Toast.makeText(SigninActivity.this, ""+checkLoginValidation(), Toast.LENGTH_SHORT).show();
-                if(checkLoginValidation())
-                {
+                if (checkLoginValidation()) {
 
                     postData();
                 }
-
             }
         });
+
 
 
         date = new DatePickerDialog.OnDateSetListener() {
@@ -96,13 +89,12 @@ public class AddBuyerActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
-                new DatePickerDialog(AddBuyerActivity.this, R.style.DialogTheme,date, myCalendar
+                new DatePickerDialog(ViewPropertyComentsActivity.this, R.style.DialogTheme,date, myCalendar
                         .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
                         myCalendar.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
     }
-
     private void updateDate() {
         et_date.setText(sdf.format(myCalendar.getTime()));
         dateString=et_date.getText().toString();
@@ -112,28 +104,17 @@ public class AddBuyerActivity extends AppCompatActivity {
     public void getLoginText() {
 
         nameString=et_name.getText().toString();
-        phoneString=et_phone.getText().toString();
         dateString=et_date.getText().toString();
-        emailString = et_email.getText().toString();
         commentString = et_comment.getText().toString();
     }
     private boolean checkLoginValidation()
     {
         if(nameString.equals(""))
         {
-            et_name.setError("Please enter Buyer Name");
-            return false;
-        } else if(phoneString.equals(""))
-        {
-            et_phone.setError("Please enter Buyer Phone number");
+            et_name.setError("Please enter Property Id");
             return false;
         }
 
-        else if(emailString.equals(""))
-        {
-            et_email.setError("Please enter Buyer Email id");
-            return false;
-        }
         else if(dateString.equals(""))
         {
             et_date.setError("Please enter a date");
@@ -160,7 +141,7 @@ public class AddBuyerActivity extends AppCompatActivity {
             ApiInterface apiService =
                     ApiClient.getClient().create(ApiInterface.class);
 
-            Call<Response> call = apiService.addBuyerComment(new Request(nameString,emailString,phoneString,dateString,commentString,lid));
+            Call<Response> call = apiService.addBuyerComment2(new Request(nameString,dateString,commentString,lid));
             call.enqueue(new Callback<Response>() {
                 @Override
                 public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
@@ -197,3 +178,5 @@ public class AddBuyerActivity extends AppCompatActivity {
 
     }
 }
+
+

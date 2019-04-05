@@ -15,6 +15,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.ArrayMap;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -42,10 +43,14 @@ import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.nexgensm.reswye.R;
+import com.nexgensm.reswye.api.ApiClient;
+import com.nexgensm.reswye.ui.lead.BuyerDetailsActivity;
 import com.nexgensm.reswye.ui.lead.LeadListingRecyclerDataAdapter;
 import com.nexgensm.reswye.ui.lead.RecyclerViewAdapter;
+import com.nexgensm.reswye.ui.lead.SellerDetailsActivity;
 import com.nexgensm.reswye.ui.navigationdrawer.ProfileSettingsActivity;
 import com.nexgensm.reswye.ui.signinpage.SigninActivity;
+import com.nexgensm.reswye.util.SharedPrefsUtils;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -113,13 +118,15 @@ public class DashboardFragment extends Fragment {
     public static final String mypreference = "mypref";
     private static final Integer[] lead_images = {R.drawable.profile_2, R.drawable.profile_3, R.drawable.profile_4, R.drawable.profile_5, R.drawable.profile_6, R.drawable.profile_6, R.drawable.profile_6, R.drawable.profile_2, R.drawable.profile_2, R.drawable.profile_2, R.drawable.profile_2};
     RequestQueue requestChangePassword;
-
+    Integer id=0;
     LeadImageItem leadImageItem;
     private ArrayList<Integer> ImageArray = new ArrayList<Integer>();
     List<LeadListingRecyclerDataAdapter> GetDataAdapterLead;
     RecyclerViewAdapter recyclerViewadapter;
     String[] missedCountArray, upComingArray, dormantArray;
-
+    String lead_type="";
+    String name="";
+    int pos=0;
     public DashboardFragment() {
         // Required empty public constructor
     }
@@ -181,7 +188,7 @@ public class DashboardFragment extends Fragment {
         upcoming_followups = new String[]{"11", "14", "46"};
 
         sharedpreferences =getActivity().getSharedPreferences(mypreference, Context.MODE_PRIVATE);
-        userId=sharedpreferences.getInt("UserId",0);
+        userId=SharedPrefsUtils.getInstance(getActivity()).getUserId();
         Token=sharedpreferences.getString("token","");
         ImageUrl=sharedpreferences.getString("imageURL","");
         SharedPreferences.Editor editor = sharedpreferences.edit();
@@ -205,8 +212,34 @@ public class DashboardFragment extends Fragment {
         currentLeadLyt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent RecentLeadIntent = new Intent(getActivity(), RecentLeadListActivity.class);
-                startActivity(RecentLeadIntent);
+
+
+
+                Toast.makeText(getActivity(), "position "+pos, Toast.LENGTH_SHORT).show();
+                String lead_type = GetDataAdapterLead.get(pos).getLead_type();
+                int id = GetDataAdapterLead.get(pos).getLead_ID();
+
+                Toast.makeText(getActivity(), "id "+GetDataAdapterLead.size(), Toast.LENGTH_SHORT).show();
+                SharedPrefsUtils.getInstance(getActivity()).setLid(id);
+                SharedPrefsUtils.getInstance(getActivity()).setFlag(1);
+
+                if(lead_type.equals("Seller"))
+                {
+                    Intent addnewsellerdetailsactivity = new Intent(getActivity().getApplicationContext(), SellerDetailsActivity.class);
+                    addnewsellerdetailsactivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    addnewsellerdetailsactivity.putExtra("lead_name", name);
+                    getActivity().startActivity(addnewsellerdetailsactivity);
+                }
+                else
+                {
+                    Intent addnewsellerdetailsactivity = new Intent(getActivity().getApplicationContext(), BuyerDetailsActivity.class);
+                    addnewsellerdetailsactivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    addnewsellerdetailsactivity.putExtra("lead_name", name);
+                    getActivity().startActivity(addnewsellerdetailsactivity);
+                }
+
+
+
             }
         });
 
@@ -219,9 +252,11 @@ public class DashboardFragment extends Fragment {
                     @Override
                     public void onItemClick(View view, int position) {
                         // TODO Handle item click
-                        String name = GetDataAdapterLead.get(position).getLead_name();
+                        pos=position;
+                        name = GetDataAdapterLead.get(position).getLead_name();
                         String image = GetDataAdapterLead.get(position).getLead_imageUrl();
                         String time = GetDataAdapterLead.get(position).getLead_time();
+                        SharedPrefsUtils.getInstance(getActivity()).setLid(0);
                         leadname.setText(name);
                         leaddate.setText(time);
                         Picasso.with(getActivity()).load(image).into(leadPic);
@@ -244,9 +279,12 @@ public class DashboardFragment extends Fragment {
     }
 
     public void COUNT_OF_LEAD_PIECHART(){
-        url = "http://202.88.239.14:8169/api/Lead/GetCountofLeads/"+userId;
+        url = ApiClient.BASE_URL+"statuspiechart";
+        Map<String, Object> jsonParams = new ArrayMap<>();
 
-        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+        jsonParams.put("user_id", userId);
+
+        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(jsonParams),
                 new Response.Listener<JSONObject>() {
 
                     @Override
@@ -255,130 +293,118 @@ public class DashboardFragment extends Fragment {
 
                         try {
                             Status_count = response.getString("status").toString().trim();
+                            if(Status_count.equals("success"))
+                            {
+                                JSONObject jo=response.getJSONObject("result");
+                               /* closed=50;
+                                open=35;
+                                failed=15;*/
+                                String closedString=jo.getString("openleads");
+                                String openString=jo.getString("closedleads");
+                                String failedString=jo.getString("failedleads");
+
+                                closed=Integer.parseInt(closedString);
+                                open=Integer.parseInt(openString);
+                                failed=Integer.parseInt(failedString);
 
 
-                           // closed = response.getInt("closed_LeadsCount");
-                           // open = response.getInt("open_LeadsCount");
-                           // failed = response.getInt("failedLeads_Count");
-                            closed=50;
-                            open=35;
-                            failed=15;
-                            String str3 = "Success";
-                           // int response_result = Status_count.compareTo(str3);
-                            int response_result=0;
-                            if (response_result == 0) {
+                                Log.e("9999999 ","closed "+closed+" open "+openString+" failed "+failedString);
+
+                                    total = open + closed + failed;
+                                    open_percentage = (float) (open / total) * 100;
+                                    closed_percentage = (float) (closed / total) * 100;
+                                    failed_percentage = (float) (failed / total) * 100;
+
+                                Log.e("9999999 ","total "+total+" open_percentage "+open_percentage+" closed_percentage "+closed_percentage+" failed_percentage "+failed_percentage);
+                                    PieChart pieChart = (PieChart) myFragmentView.findViewById(R.id.piechart);
+
+                                    ArrayList<Entry> yvalues = new ArrayList<Entry>();
+                                    yvalues.add(new Entry(closed_percentage, 0));
+                                    yvalues.add(new Entry(open_percentage, 1));
+                                    yvalues.add(new Entry(failed_percentage, 2));
 
 
-                                total = open + closed + failed;
-                                open_percentage = (float) (open / total) * 100;
-                                closed_percentage = (float) (closed / total) * 100;
-                                failed_percentage = (float) (failed / total) * 100;
+                                    PieDataSet dataSet = new PieDataSet(yvalues, "");
 
-                                PieChart pieChart = (PieChart) myFragmentView.findViewById(R.id.piechart);
-                                //pieChart.setUsePercentValues(true);
+                                    ArrayList<String> xVals = new ArrayList<String>();
 
-                                // IMPORTANT: In a PieChart, no values (Entry) should have the same
-                                // xIndex (even if from different DataSets), since no values can be
-                                // drawn above each other.
-                                ArrayList<Entry> yvalues = new ArrayList<Entry>();
-                                yvalues.add(new Entry(closed_percentage, 0));
-                                yvalues.add(new Entry(open_percentage, 1));
-                                yvalues.add(new Entry(failed_percentage, 2));
+                                    xVals.add("Closed Leads");
+                                    xVals.add("Open Leads");
+                                    xVals.add("Failed Leads");
 
 
-                                PieDataSet dataSet = new PieDataSet(yvalues, "");
+                                    PieData data1 = new PieData(xVals, dataSet);
+                                    data1.setValueFormatter(new PercentFormatter());
+                                    pieChart.setData(data1);
 
-                                ArrayList<String> xVals = new ArrayList<String>();
+                                    pieChart.setTransparentCircleRadius(25f);
+                                    pieChart.setHoleRadius(70f);
 
-                                xVals.add("Closed Leads");
-                                xVals.add("Open Leads");
-                                xVals.add("Failed Leads");
+                                    //added for checking by nithu
+
+                                    final int[] MY_COLORS = {Color.rgb(48, 213, 200), Color.rgb(244, 215, 152), Color.rgb(88, 86, 86)};
+                                    ArrayList<Integer> colors = new ArrayList<Integer>();
+
+                                    for (int c : MY_COLORS) colors.add(c);
+
+                                    dataSet.setColors(colors);
+
+                                    totaltxt = String.valueOf((int) total);
+                                    closedtxt = String.valueOf((int) closed);
+                                    opentxt = String.valueOf((int) open);
+                                    failedtxt = String.valueOf((int) failed);
+                                    closed_percentage_txt = String.valueOf((int) closed_percentage);
+                                    failed_percentage_txt = String.valueOf((int) failed_percentage);
+                                    open_percentage_txt = String.valueOf((int) open_percentage);
+
+                                    counttxt.setText(opentxt + "/" + totaltxt);
+                                    leadtxt.setText("Open Leads");
+                                    pertxt.setText(open_percentage_txt + "%");
+                                    pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+                                        @Override
+                                        public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
 
 
-                                PieData data1 = new PieData(xVals, dataSet);
-                                data1.setValueFormatter(new PercentFormatter());
-                                pieChart.setData(data1);
-                                // pieChart.setDescription("This is Pie Chart");
+                                            int xindex = e.getXIndex();
 
-                                // pieChart.setDrawHoleEnabled(true);
-                                pieChart.setTransparentCircleRadius(25f);
-                                pieChart.setHoleRadius(70f);
+                                            if (xindex == 0) {
+                                                counttxt.setText(closedtxt + "/" + totaltxt);
+                                                leadtxt.setText("Closed Leads");
+                                                pertxt.setText(closed_percentage_txt + "%");
 
-                                //added for checking by nithu
+                                            }
 
-                                final int[] MY_COLORS = {Color.rgb(48, 213, 200), Color.rgb(244, 215, 152), Color.rgb(88, 86, 86)};
-                                ArrayList<Integer> colors = new ArrayList<Integer>();
+                                            if (xindex == 1) {
+                                                counttxt.setText(opentxt + "/" + totaltxt);
+                                                leadtxt.setText("Open Leads");
+                                                pertxt.setText(open_percentage_txt + "%");
 
-                                for (int c : MY_COLORS) colors.add(c);
+                                            }
+                                            if (xindex == 2) {
+                                                counttxt.setText(failedtxt + "/" + totaltxt);
+                                                leadtxt.setText("Failed Leads");
+                                                pertxt.setText(failed_percentage_txt + "%");
 
-                                dataSet.setColors(colors);
+                                            }
+                                            float str1 = e.getVal();
 
-                                //dataSet.setColors(ColorTemplate.VORDIPLOM_COLORS);
-                                //data.setValueTextSize(13f);
-                                //data.setValueTextColor(Color.DKGRAY);
-                                totaltxt = String.valueOf((int) total);
-                                closedtxt = String.valueOf((int) closed);
-                                opentxt = String.valueOf((int) open);
-                                failedtxt = String.valueOf((int) failed);
-                                closed_percentage_txt = String.valueOf((int) closed_percentage);
-                                failed_percentage_txt = String.valueOf((int) failed_percentage);
-                                open_percentage_txt = String.valueOf((int) open_percentage);
-
-                                counttxt.setText(opentxt + "/" + totaltxt);
-                                leadtxt.setText("Open Leads");
-                                pertxt.setText(open_percentage_txt + "%");
-                                pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
-                                    @Override
-                                    public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
-                                        //Toast.makeText(getActivity(),"sbjnjs",Toast.LENGTH_SHORT).show();
-                                        // final ArrayList<String> xVals = new ArrayList<String>();
-                                        //Then use getXIndex() method from entry object. For example:
-
-                                        //xVals.get(e.getXIndex());
-                                        //String str = xVals.get(0);
-                                        //String str1 =str.toString();
-                                        //Toast.makeText(getActivity(),str,Toast.LENGTH_SHORT).show();
-
-                                        int xindex = e.getXIndex();
-
-                                        if (xindex == 0) {
-                                            counttxt.setText(closedtxt + "/" + totaltxt);
-                                            leadtxt.setText("Closed Leads");
-                                            pertxt.setText(closed_percentage_txt + "%");
-
+                                            Log.i("VAL SELECTED",
+                                                    "Value: " + e.getVal() + ", xIndex: " + e.getXIndex()
+                                                            + ", DataSet index: " + dataSetIndex);
                                         }
 
-                                        if (xindex == 1) {
-                                            counttxt.setText(opentxt + "/" + totaltxt);
-                                            leadtxt.setText("Open Leads");
-                                            pertxt.setText(open_percentage_txt + "%");
+                                        @Override
+                                        public void onNothingSelected() {
 
                                         }
-                                        if (xindex == 2) {
-                                            counttxt.setText(failedtxt + "/" + totaltxt);
-                                            leadtxt.setText("Failed Leads");
-                                            pertxt.setText(failed_percentage_txt + "%");
+                                    });
 
-                                        }
-                                        float str1 = e.getVal();
-                                        //String str = ((String) str1);
-                                        //String str =  Float.toString(str1);
-                                        //Toast.makeText(getActivity(),str,Toast.LENGTH_SHORT).show();
-                                        Log.i("VAL SELECTED",
-                                                "Value: " + e.getVal() + ", xIndex: " + e.getXIndex()
-                                                        + ", DataSet index: " + dataSetIndex);
+                                    pieChart.animateXY(1400, 1400);
 
-                                    }
 
-                                    @Override
-                                    public void onNothingSelected() {
 
-                                    }
-                                });
-
-                                pieChart.animateXY(1400, 1400);
-
-                            } else {
+                            }
+                            else {
                                 Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
                             }
 
@@ -389,122 +415,6 @@ public class DashboardFragment extends Fragment {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
-
-                closed=50;
-                open=35;
-                failed=15;
-
-
-
-
-
-                    total = open + closed + failed;
-                    open_percentage = (float) (open / total) * 100;
-                    closed_percentage = (float) (closed / total) * 100;
-                    failed_percentage = (float) (failed / total) * 100;
-
-                    PieChart pieChart = (PieChart) myFragmentView.findViewById(R.id.piechart);
-
-
-
-                    ArrayList<Entry> yvalues = new ArrayList<Entry>();
-                    yvalues.add(new Entry(closed_percentage, 0));
-                    yvalues.add(new Entry(open_percentage, 1));
-                    yvalues.add(new Entry(failed_percentage, 2));
-
-
-                    PieDataSet dataSet = new PieDataSet(yvalues, "");
-                    ArrayList<String> xVals = new ArrayList<String>();
-
-
-                    xVals.add("Closed Leads");
-                    xVals.add("Open Leads");
-                    xVals.add("Failed Leads");
-
-
-
-
-
-                    //PieData data1 = new PieData(xVals, dataSet);
-                PieData data1 = new PieData(xVals, dataSet);
-
-                data1.setValueFormatter(new PercentFormatter());
-                    pieChart.setData(data1);
-
-                    pieChart.setTransparentCircleRadius(25f);
-                    pieChart.setHoleRadius(70f);
-
-
-
-
-                    //added for checking by nithu
-
-                    final int[] MY_COLORS = {Color.rgb(48, 213, 200), Color.rgb(244, 215, 152), Color.rgb(88, 86, 86)};
-                    ArrayList<Integer> colors = new ArrayList<Integer>();
-
-                    for (int c : MY_COLORS) colors.add(c);
-                    dataSet.setColors(colors);
-
-
-
-
-                    totaltxt = String.valueOf((int) total);
-                    closedtxt = String.valueOf((int) closed);
-                    opentxt = String.valueOf((int) open);
-                    failedtxt = String.valueOf((int) failed);
-                    closed_percentage_txt = String.valueOf((int) closed_percentage);
-                    failed_percentage_txt = String.valueOf((int) failed_percentage);
-                    open_percentage_txt = String.valueOf((int) open_percentage);
-
-                    counttxt.setText(opentxt + "/" + totaltxt);
-                    leadtxt.setText("Open Leads");
-                    pertxt.setText(open_percentage_txt + "%");
-                    pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
-                        @Override
-                        public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
-
-
-                            int xindex = e.getXIndex();
-
-                            if (xindex == 0) {
-                                counttxt.setText(closedtxt + "/" + totaltxt);
-                                leadtxt.setText("Closed Leads");
-                                pertxt.setText(closed_percentage_txt + "%");
-
-                            }
-
-                            if (xindex == 1) {
-                                counttxt.setText(opentxt + "/" + totaltxt);
-                                leadtxt.setText("Open Leads");
-                                pertxt.setText(open_percentage_txt + "%");
-
-                            }
-                            if (xindex == 2) {
-                                counttxt.setText(failedtxt + "/" + totaltxt);
-                                leadtxt.setText("Failed Leads");
-                                pertxt.setText(failed_percentage_txt + "%");
-
-                            }
-                            float str1 = e.getVal();
-
-                            Log.i("VAL SELECTED",
-                                    "Value: " + e.getVal() + ", xIndex: " + e.getXIndex()
-                                            + ", DataSet index: " + dataSetIndex);
-
-                        }
-
-                        @Override
-                        public void onNothingSelected() {
-
-                        }
-                    });
-
-                    pieChart.animateXY(1400, 1400);
-
-
-
-
 
                 Toast.makeText(getActivity(), "Error" + error, Toast.LENGTH_SHORT).show();
 
@@ -522,11 +432,15 @@ public class DashboardFragment extends Fragment {
 
     }
     public  void RECENT_LEAD_DASHBOARD(){
-        url = "http://202.88.239.14:8169/api/Lead/recentLeads/"+userId;
+        url = ApiClient.BASE_URL+"recentleads";
+        Map<String, Object> jsonParams = new ArrayMap<>();
+        jsonParams.put("user_id", userId);
+
         progressDialog=new ProgressDialog(getActivity());
         progressDialog.setMessage("Loading");
         progressDialog.show();
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(jsonParams),
                 new Response.Listener<JSONObject>() {
 
                     @Override
@@ -537,24 +451,26 @@ public class DashboardFragment extends Fragment {
                             Status_missed = response.getString("status").toString().trim();
 
 
-                            JSONArray jsonArray = response.getJSONArray("data");
+                            JSONArray jsonArray = response.getJSONArray("result");
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 LeadListingRecyclerDataAdapter GetDataAdapter2 = new LeadListingRecyclerDataAdapter();
                                 JSONObject data = jsonArray.getJSONObject(i);
                                 JSONObject firstData = jsonArray.getJSONObject(0);
-                                firstRecentLeadname = firstData.getString("firstName");
-                                firstRecentLeadTime = firstData.getString("lead_CreatedDate");
-                                String firstimageurl = firstData.getString("leadProfileimage");
-                                firstRecentLeadImage = ImageUrl + firstimageurl;
-                                name1 = data.getString("firstName");
-                                profileimage = data.getString("leadProfileimage");
-                                leadCreated_date = data.getString("lead_CreatedDate");
-                                String image = ImageUrl + profileimage;
+                                firstRecentLeadname = firstData.getString("firstname");
+                                firstRecentLeadTime = firstData.getString("lead_createddate");
+                                String firstimageurl = firstData.getString("leadprofileimage");
+                                firstRecentLeadImage = ApiClient.BASE_URL_IMG + firstimageurl;
+                                name1 = data.getString("firstname");
+                                profileimage = data.getString("leadprofileimage");
+                                leadCreated_date = data.getString("lead_createddate");
+                                String image = ApiClient.BASE_URL_IMG + profileimage;
                                 GetDataAdapter2.setLead_name(name1);
                                 GetDataAdapter2.setLead_imageUrl(image);
                                 GetDataAdapter2.setLead_time(leadCreated_date);
+                                GetDataAdapter2.setLead_type(firstData.getString("lead_category"));
+                                GetDataAdapter2.setLead_ID(firstData.getInt("lead_id"));
                                 GetDataAdapterLead.add(GetDataAdapter2);
-                                String str3 = "Success";
+                                String str3 = "success";
                                 int response_result = Status_missed.compareTo(str3);
                                 if (response_result == 0) {
                                     progressDialog.dismiss();
@@ -585,35 +501,6 @@ public class DashboardFragment extends Fragment {
                 Toast.makeText(getActivity(), "Error_Recent " + error, Toast.LENGTH_SHORT).show();
 
 
-                for (int i = 0; i < 10; i++) {
-                    LeadListingRecyclerDataAdapter GetDataAdapter2 = new LeadListingRecyclerDataAdapter();
-                    firstRecentLeadname = "David";
-                    firstRecentLeadTime ="26/12/2018";
-                    firstRecentLeadImage = "http://firstflagrealty.com/images/ProfileImages/10237.jpg";
-                    name1 = "David";
-                    profileimage = "http://firstflagrealty.com/images/ProfileImages/10237.jpg";
-                    leadCreated_date = "26/12/2018";
-                    String image = "http://firstflagrealty.com/images/ProfileImages/10237.jpg";
-                    GetDataAdapter2.setLead_name("David");
-                    GetDataAdapter2.setLead_imageUrl(image);
-                    GetDataAdapter2.setLead_time("26/12/2018");
-                    GetDataAdapterLead.add(GetDataAdapter2);
-                    int response_result = 0;
-                    if (response_result == 0) {
-                        progressDialog.dismiss();
-
-                    } else {
-                        progressDialog.dismiss();
-                        Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
-                    }
-                }
-                int a = 3;
-                recyclerViewadapter = new RecyclerViewAdapter(GetDataAdapterLead, getActivity().getApplication(), a);
-                recyclerView.setAdapter(recyclerViewadapter);
-
-                leadname.setText(firstRecentLeadname);
-                leaddate.setText(firstRecentLeadTime);
-                Picasso.with(getActivity()).load(firstRecentLeadImage).into(leadPic);
 
 
             }

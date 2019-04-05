@@ -65,7 +65,7 @@ public class PropertyDetailsSellerFragment extends Fragment {
     SharedPreferences sharedpreferences;
     public static final String mypreference = "mypref";
     int LeadId;
-    String Token, url, imageUrl, beds, feature="", baths, squareFootage_Min, squareFootage_Max, discription, emaiL, additionalChara, shortsale, listingprice, listingtype, image;
+    String Token, url, imageUrl, beds, feature="", baths, squareFootage_Min, squareFootage_Max, discription, emaiL, additionalChara="", shortsale, listingprice, listingtype, image;
     String viewedDatetime, emailbuyer, buyername, mobilebuyer, commentbuyer;
     RequestQueue requestQueue;
     TextView address, pointofinterest, loggedbuyer, loggeddatetime, features, characteristics, status, salesstatus, propertyamount;
@@ -139,9 +139,6 @@ public class PropertyDetailsSellerFragment extends Fragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         RecyclerView.LayoutManager mLayoutManager1 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
 
-
-    //    recyclerViewPropertyviewed.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.HORIZONTAL));
-
         recyclerViewPropertyviewed.setLayoutManager(mLayoutManager1);
         recyclerViewPropertyviewed.setItemAnimator(new DefaultItemAnimator());
 
@@ -149,7 +146,7 @@ public class PropertyDetailsSellerFragment extends Fragment {
         logged_adapter = new PropertyViewloggedAdapter_seller(getActivity(), amount2);
 
         sharedpreferences = getActivity().getSharedPreferences(mypreference, Context.MODE_PRIVATE);
-        LeadId = SharedPrefsUtils.getInstance(getActivity()).getLeadId();
+        LeadId = SharedPrefsUtils.getInstance(getActivity()).getLId();
 
         Token = sharedpreferences.getString("token", "");
 
@@ -266,8 +263,17 @@ public class PropertyDetailsSellerFragment extends Fragment {
                                     }
                                     else
                                     {
-                                        additionalChara=additionalChara+","+featuresObject.getString("features_characteristics");
 
+                                        if(additionalChara.equals(""))
+                                        {
+                                            additionalChara=featuresObject.getString("features_characteristics");
+
+                                        }
+                                        else
+                                        {
+                                            additionalChara=additionalChara+","+featuresObject.getString("features_characteristics");
+
+                                        }
                                     }
 
                                 }

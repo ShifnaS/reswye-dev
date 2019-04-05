@@ -83,6 +83,7 @@ dependencies {
     implementation 'com.github.PhilJay:MPAndroidChart:v2.2.4'
     implementation project(':collapsiblecalendarview2')
     implementation 'pub.devrel:easypermissions:0.2.0'
+    compile 'org.greenrobot:eventbus:3.0.0'
 
     implementation 'com.android.support:appcompat-v7:27.1.0'
 
@@ -115,6 +116,14 @@ dependencies {
 
 dependencies {
     implementation 'com.android.support.constraint:constraint-layout:+'
+}
+
+dependencies {
+    implementation 'com.android.support.constraint:constraint-layout:+'
+}
+
+dependencies {
+    implementation 'com.android.support:support-v4:27.+'
 }
 
 dependencies {

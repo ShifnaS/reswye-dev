@@ -133,9 +133,9 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
                         int user_id=result.getUser_Id();
                         int agent_id=result.getAgent_Id();
                         String message=result.getMessage();
-                        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
-                        SharedPrefsUtils.getInstance(getApplicationContext()).setUserId(user_id);
-                        SharedPrefsUtils.getInstance(getApplicationContext()).setAgentId(agent_id);
+                        Toast.makeText(getApplicationContext(), agent_id+" "+user_id, Toast.LENGTH_SHORT).show();
+                        SharedPrefsUtils.getInstance(getApplicationContext()).setUserId(agent_id);
+                        SharedPrefsUtils.getInstance(getApplicationContext()).setAgentId(user_id);
 
                         goToHome();
                     }

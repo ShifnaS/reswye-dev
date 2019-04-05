@@ -38,7 +38,9 @@ public interface ApiInterface {
                                   @Part("lead_prospect") RequestBody lead_prospect,
                                   @Part("user_id") RequestBody uid,
                                   @Part("flag") RequestBody flags,
-                                  @Part("lead_id") RequestBody lead_id);
+                                  @Part("lead_id") RequestBody lead_id,
+                                  @Part("lead_category") RequestBody lead_category,
+                                  @Part("status") RequestBody status);
 
 
     @Multipart
@@ -81,5 +83,6 @@ public interface ApiInterface {
     Call<ResponseList> getListChara();
     @POST("buyerinfo")
     Call<Response> addBuyerComment(@Body Request body);
-
+    @POST("buyerinfovisited")
+    Call<Response> addBuyerComment2(@Body Request body);
 }

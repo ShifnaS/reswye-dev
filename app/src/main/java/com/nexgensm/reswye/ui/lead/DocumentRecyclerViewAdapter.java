@@ -62,6 +62,11 @@ public class DocumentRecyclerViewAdapter  extends RecyclerView.Adapter<DocumentR
 
         final Document_List_items docItems = DocumentItemList.get(i);
 
+
+       //  customViewHolder.imageView.setImageResource(images.get(i));
+         customViewHolder.doc_name.setText(docItems.getDocument_Name());
+         customViewHolder.doc_type.setText(docItems.getDoc_time());
+
         viewOption.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,11 +74,13 @@ public class DocumentRecyclerViewAdapter  extends RecyclerView.Adapter<DocumentR
                 String fileName=docItems.getDoc_pic();
                 String dis=docItems.getDoc_time();
 
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(fileName));
+                mContext.startActivity(browserIntent);
 
-                    Intent PdfViewer= new Intent(mContext, PdfViewerActivity.class);
+                   /* Intent PdfViewer= new Intent(mContext, PdfViewerActivity.class);
                     PdfViewer.putExtra("doc_name", name);
                     PdfViewer.putExtra("dbdoc_name", fileName);
-                    mContext.startActivity(PdfViewer);
+                    mContext.startActivity(PdfViewer);*/
                            }
         });
 
@@ -121,18 +128,14 @@ public class DocumentRecyclerViewAdapter  extends RecyclerView.Adapter<DocumentR
 
             }
         });
-        customViewHolder.imageView.setImageResource(images.get(i));
-        customViewHolder.textView.setText(Html.fromHtml(docItems.getDoc_name()));
-        customViewHolder.textView1.setText(Html.fromHtml(docItems.getDoc_time()));
-
 
     }
 
 
     class CustomViewHolder extends RecyclerView.ViewHolder {
         protected ImageView imageView;
-        protected TextView textView;
-        protected TextView textView1;
+        protected TextView doc_name;
+        protected TextView doc_type;
 
 
 
@@ -140,8 +143,8 @@ public class DocumentRecyclerViewAdapter  extends RecyclerView.Adapter<DocumentR
         public CustomViewHolder(View view) {
             super(view);
             this.imageView = (ImageView) view.findViewById(R.id.doc_pic);
-            this.textView = (TextView) view.findViewById(R.id.doc_name);
-            this.textView1 = (TextView) view.findViewById(R.id.doc_time);
+            this.doc_name = (TextView) view.findViewById(R.id.doc_name);
+            this.doc_type = (TextView) view.findViewById(R.id.doc_time);
         }
     }
     private BroadcastReceiver downloadReceiver = new BroadcastReceiver() {

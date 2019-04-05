@@ -107,11 +107,16 @@ public class AddNewPhotoActivity extends AppCompatActivity {
         jsonObject = new JSONObject();
         m = new MyAdapter();
         GetDataAdapter1 = new ArrayList<>();
-        sharedPreferences = getApplication().getSharedPreferences(mypreference, Context.MODE_PRIVATE);
-        flag = sharedPreferences.getInt("flag", 0);
-
-        ImageUrl = sharedPreferences.getString("imageURL", "");
-        LeadId = sharedPreferences.getInt("LeadId", 0);
+        flag = SharedPrefsUtils.getInstance(getApplicationContext()).getFlag();
+        if(flag==1)
+        {
+            LeadId = SharedPrefsUtils.getInstance(getApplicationContext()).getLId();
+        }
+        else
+        {
+            LeadId = SharedPrefsUtils.getInstance(getApplicationContext()).getLeadId();
+        }
+//        ImageUrl = sharedPreferences.getString("imageURL", "");
         Log.v(TAG, "FLAg" + flag);
         showPictureDialog();
         testphotocheck();
@@ -406,13 +411,13 @@ public class AddNewPhotoActivity extends AppCompatActivity {
 
 
 
-            int lid= SharedPrefsUtils.getInstance(getApplicationContext()).getLeadId();
+         //   int lid= SharedPrefsUtils.getInstance(getApplicationContext()).getLeadId();
           //  Toast.makeText(this, "LeadId "+lid, Toast.LENGTH_SHORT).show();
             ApiInterface apiService =ApiClient.getClient().create(ApiInterface.class);
 
             RequestBody name = RequestBody.create(MediaType.parse("text/plain"), "upload");
 
-            RequestBody lead_id = RequestBody.create(MediaType.parse("text/plain"), ""+lid);
+            RequestBody lead_id = RequestBody.create(MediaType.parse("text/plain"), ""+LeadId);
 
             Call<com.nexgensm.reswye.model.Response> req = apiService.uploadOwnerDocument(body,name,lead_id);
             req.enqueue(new Callback<com.nexgensm.reswye.model.Response>() {

@@ -1,6 +1,7 @@
 package com.nexgensm.reswye.ui.lead;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,6 +17,10 @@ import android.widget.Toast;
 
 import com.nexgensm.reswye.R;
 import com.nexgensm.reswye.Singleton;
+import com.nexgensm.reswye.util.Message;
+import com.nexgensm.reswye.util.SharedPrefsUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -139,13 +144,12 @@ public class LeadSortedActivity extends AppCompatActivity {
                     OrderType = "Descending";
                 }
                 sharedPreferences = getApplication().getSharedPreferences(mypreference, Context.MODE_PRIVATE);
-//
+               // EventBus.getDefault().post(new Message("hello world",1));
+                EventBus.getDefault().postSticky(new Message("sort",radiochecked));
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putInt("sortFlag", 1);
-                Singleton.getInstance().setSortSaveFlag(1);
-                Singleton.getInstance().setSortboxcheck(radiochecked);
-                Singleton.getInstance().setSortFiledname(FieldName);
-                Singleton.getInstance().setSortOrdertype(OrderType);
+              //  Intent i=new Intent(getApplicationContext(),LeadSortedActivity.class);
+               // startActivity(i);
                 // Toast.makeText(getApplicationContext(), , Toast.LENGTH_LONG).show(); // print the value of selected super star
                 finish();
             }
@@ -153,5 +157,6 @@ public class LeadSortedActivity extends AppCompatActivity {
 
 
     }
+
 
 }

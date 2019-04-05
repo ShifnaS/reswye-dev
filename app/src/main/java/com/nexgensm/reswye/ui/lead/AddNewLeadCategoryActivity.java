@@ -32,6 +32,7 @@ import android.widget.Toast;
 
 import com.nexgensm.reswye.R;
 import com.nexgensm.reswye.ui.bottomtabbar.BottomTabbarActivity;
+import com.nexgensm.reswye.util.SharedPrefsUtils;
 
 public class AddNewLeadCategoryActivity extends AppCompatActivity  {
 
@@ -53,9 +54,11 @@ public class AddNewLeadCategoryActivity extends AppCompatActivity  {
 
         sharedpreferences = getApplicationContext().getSharedPreferences(mypreference, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedpreferences.edit();
-        editor.putInt("flag", 0);
         editor.putInt("refresh",0);
         editor.commit();
+
+        SharedPrefsUtils.getInstance(getApplicationContext()).setFlag(0);
+
         Bundle b = getIntent().getExtras();
         if (b != null) {
             leaditem = (LeadItems) getIntent().getExtras()

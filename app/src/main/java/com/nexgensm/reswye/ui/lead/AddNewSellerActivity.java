@@ -71,12 +71,18 @@ public class AddNewSellerActivity extends AppCompatActivity implements AddNewLea
 
         Intent i=getIntent();
         flag=i.getIntExtra("flag",0);
-        lid=i.getIntExtra("lid",0);
         bundle.putInt("flag",flag);
-        bundle.putInt("lid",lid);//get this id from edit button click
-        SharedPrefsUtils.getInstance(getApplicationContext()).setLid(lid);
-        SharedPrefsUtils.getInstance(getApplicationContext()).setFlag(flag);
        // addNewLeadFragment.setArguments(bundle);
+
+        if(flag==1)
+        {
+
+            lid=SharedPrefsUtils.getInstance(getApplicationContext()).getLId();
+        }
+        else
+        {
+            lid=SharedPrefsUtils.getInstance(getApplicationContext()).getLeadId();
+        }
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.Lead_Creation, addNewLeadFragment);

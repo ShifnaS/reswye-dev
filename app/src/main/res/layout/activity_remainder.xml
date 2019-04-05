@@ -68,7 +68,7 @@
                 android:layout_centerHorizontal="true"
                 android:timePickerMode="spinner" />
 
-            <EditText
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:id="@+id/sound_name"
@@ -78,6 +78,7 @@
                 style="@style/spinnerbox"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
+                android:paddingTop="10dp"
                 android:drawableRight="@drawable/alarm_sound"
                 android:hint="Sound"
                 android:layout_below="@id/pickertime"/>

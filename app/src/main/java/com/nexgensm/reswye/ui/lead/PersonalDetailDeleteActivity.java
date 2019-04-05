@@ -19,7 +19,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.nexgensm.reswye.R;
+import com.nexgensm.reswye.api.ApiClient;
 import com.nexgensm.reswye.ui.bottomtabbar.BottomTabbarActivity;
+import com.nexgensm.reswye.util.SharedPrefsUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,22 +43,21 @@ public class PersonalDetailDeleteActivity extends AppCompatActivity {
         ImageButton back= (ImageButton)findViewById(R.id.Personal_detail_delete_Back);
         Button delete= (Button)findViewById(R.id.yes_delete);
         Button cancel= (Button)findViewById(R.id.delete_cancel);
-//        sharedpreferences =getApplicationContext().getSharedPreferences(mypreference, Context.MODE_PRIVATE);
-//        LeadId=sharedpreferences.getInt("LeadId",0);
-//        Token=sharedpreferences.getString("token","");
-//        userId=sharedpreferences.getInt("UserId",0);
+
         requestQueue = Volley.newRequestQueue(this);
         sharedpreferences =getSharedPreferences(mypreference, Context.MODE_PRIVATE);
-        userId=sharedpreferences.getInt("UserId",0);
         flag = sharedpreferences.getInt("flag", 0);
         Token=sharedpreferences.getString("token","");
         ImageUrl=sharedpreferences.getString("imageURL","");
-        LeadId = sharedpreferences.getInt("LeadId", 1);
+
+        userId=SharedPrefsUtils.getInstance(getApplicationContext()).getUserId();
+        LeadId=SharedPrefsUtils.getInstance(getApplicationContext()).getLId();
+
 
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                url = "http://202.88.239.14:8169/api/lead/deletelead";
+                url = ApiClient.BASE_URL+ "deleteLead";
                 Map<String, Object> jsonParams = new ArrayMap<>();
                 jsonParams.put("userid",userId);
                 jsonParams.put("leadId",LeadId);
@@ -67,7 +68,7 @@ public class PersonalDetailDeleteActivity extends AppCompatActivity {
                             public void onResponse(JSONObject response) {
                                 try {
                                     Status_missed = response.getString("status").toString().trim();
-                                    String str3 = "Success";
+                                    String str3 = "success";
                                     int response_result = Status_missed.compareTo(str3);
                                     if (response_result == 0) {
 

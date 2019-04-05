@@ -6,6 +6,9 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -35,6 +38,7 @@ public class ReminderActivity extends Activity {
 
     CollapsibleCalendar collapsibleCalendar;
     EditText snooze;
+    TextView ringtone;
     DatePicker pickerDate;
     TimePicker pickerTime;
     Button buttonSetAlarm;
@@ -49,7 +53,7 @@ public class ReminderActivity extends Activity {
     int day;
     int monthc,snoozeValue;
     int yearc;
-
+    Uri currentTone;
     SharedPreferences sharedpreferences;
     public static final String mypreference = "mypref";
     public static final String Snooze = "snoozekey";
@@ -62,8 +66,10 @@ public class ReminderActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_remainder);
+      currentTone= RingtoneManager.getActualDefaultRingtoneUri(ReminderActivity.this, RingtoneManager.TYPE_ALARM);
 
 
+        ringtone=findViewById(R.id.sound_name);
         info = (TextView)findViewById(R.id.info);
      //   pickerDate = (DatePicker)findViewById(R.id.pickerdate);
         pickerTime = (TimePicker)findViewById(R.id.pickertime);
@@ -85,7 +91,23 @@ public class ReminderActivity extends Activity {
 
             }
         });
+        Ringtone currentRingtone = RingtoneManager.getRingtone(getApplicationContext(), currentTone);
+        ringtone.setText(currentRingtone.getTitle(getApplicationContext()));
+        ringtone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
+                intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_ALARM);
+                intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, "Select Tone");
+                intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, currentTone);
+                intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, false);
+                intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_DEFAULT, true);
+                startActivityForResult(intent, 1);
 
+                Ringtone currentRingtone = RingtoneManager.getRingtone(getApplicationContext(), currentTone);
+                ringtone.setText(currentRingtone.getTitle(getApplicationContext()));
+            }
+        });
         Calendar now = Calendar.getInstance();
         ImageView backbtn= (ImageView)findViewById(R.id.set_rem_close);
         backbtn.setOnClickListener(new View.OnClickListener() {
@@ -122,13 +144,8 @@ public class ReminderActivity extends Activity {
                            pickerTime.getCurrentHour(),
                            pickerTime.getCurrentMinute(),
                            00);
-//                cal.set(pickerDate.getYear(),
-//                        pickerDate.getMonth(),
-//                        pickerDate.getDayOfMonth(),
-//                        pickerTime.getCurrentHour(),
-//                        pickerTime.getCurrentMinute(),
-//                        00);
-//               pickerTime.getCurrentMinute()+snoozeValue;
+
+
                 if(cal.compareTo(current) <= 0){
                     //The set Date/Time already passed
                     Toast.makeText(getApplicationContext(), "Invalid Date/Time", Toast.LENGTH_LONG).show();
@@ -140,6 +157,12 @@ public class ReminderActivity extends Activity {
 
             }});
 
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void setAlarm(Calendar targetCal){
@@ -154,22 +177,6 @@ public class ReminderActivity extends Activity {
         AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
         alarmManager.set(AlarmManager.RTC_WAKEUP, targetCal.getTimeInMillis(), pendingIntent);
     }
-//    public void snoozeAlarm()
-//    {
-//       try{
-//             Intent in = new Intent(getBaseContext(), AlarmReceiver.class);
-////             PendingIntent pendingIntent = PendingIntent.getActivity(getBaseContext(), 0, in, PendingIntent.FLAG_UPDATE_CURRENT);
-//           PendingIntent pendingIn = PendingIntent.getBroadcast(getBaseContext(), RQS_1, in, 0);
-//            AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-//           alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 2*1000, pendingIn);
-//
-//          }
-//       catch (Exception e)
-//       {
-//             e.printStackTrace();
-//       }
-//
-//   }
 
     private   String getMonthShortName(int monthNumber)
     {

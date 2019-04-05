@@ -120,20 +120,30 @@
                 android:text="From Location"
                 android:textStyle="bold" />
 
-            <EditText
+
+
+
+            <com.seatgeek.placesautocomplete.PlacesAutocompleteTextView
                 android:id="@+id/location"
-                style="@style/spinnerbox"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="60dp"
+                android:drawableRight="@mipmap/loaction"
+
                 android:layout_below="@+id/from_loc"
                 android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
                 android:layout_marginTop="20dp"
-                android:drawableRight="@mipmap/loaction"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/spinner_focus"
                 android:hint="Location"
+                android:paddingStart="10dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                android:textColorHint="#A9A9A9" />
+                android:textColorHint="#A9A9A9"
+                app:pacv_adapterClass="com.nexgensm.reswye.adapter.TestPlacesAutocompleteAdapter"
+                app:pacv_clearEnabled="true"
+                app:pacv_googleMapsApiKey="@string/google_maps_api_key"
+                app:pacv_languageCode="en"
+                app:pacv_resultType="no_type" />
 
             <TextView
                 android:id="@+id/created"

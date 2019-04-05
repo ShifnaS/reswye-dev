@@ -19,73 +19,18 @@
             android:paddingTop="10dp"
             />
 
-                <TextView
-                    android:id="@+id/Neighbourhood"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Neighbourhood"
-                    android:layout_below="@+id/preferdLocation"
-                    android:fontFamily="sans-serif"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginLeft="20dp"/>
-                <TextView
-                    android:id="@+id/Williamsburg"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Williamsburg"
-                    android:layout_toRightOf="@+id/Neighbourhood"
-                    android:textStyle="bold"
-                    android:layout_below="@+id/preferdLocation"
-                    android:fontFamily="sans-serif"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginLeft="70dp"
-                    />
 
 
-             <TextView
-                 android:id="@+id/City"
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:text="City"
-                 android:layout_below="@+id/Williamsburg"
-                 android:fontFamily="sans-serif"
-                 android:layout_marginTop="10dp"
-                 android:layout_marginLeft="20dp"
-                 />
-             <TextView
-                 android:id="@+id/CityName"
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:text="New York City"
-                 android:textStyle="bold"
-                 android:layout_toRightOf="@+id/Neighbourhood"
-                 android:layout_below="@+id/Williamsburg"
-                 android:fontFamily="sans-serif"
-                 android:layout_marginTop="10dp"
-                 android:layout_marginLeft="70dp"
-                 />
 
           <TextView
-              android:id="@+id/State"
-              android:layout_width="wrap_content"
+              android:id="@+id/address"
+              android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:text="State"
-              android:layout_below="@+id/CityName"
+              android:textStyle="bold"
+              android:layout_below="@+id/preferdLocation"
               android:fontFamily="sans-serif"
               android:layout_marginTop="10dp"
               android:layout_marginLeft="20dp"
-              />
-          <TextView
-              android:id="@+id/StateName"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:text="New York"
-              android:textStyle="bold"
-              android:layout_toRightOf="@+id/Neighbourhood"
-              android:layout_below="@+id/CityName"
-              android:fontFamily="sans-serif"
-              android:layout_marginTop="10dp"
-              android:layout_marginLeft="70dp"
               />
 
 
@@ -99,7 +44,7 @@
             android:textStyle="bold"
             android:paddingStart="20dp"
             android:paddingTop="10dp"
-            android:layout_below="@+id/StateName"
+            android:layout_below="@+id/address"
 
             />
 

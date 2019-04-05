@@ -19,23 +19,22 @@ import android.widget.TextView;
 
 
 import com.nexgensm.reswye.R;
+import com.nexgensm.reswye.util.SharedPrefsUtils;
 
 public class BuyerDetailsActivity extends AppCompatActivity implements PropertyDetailsBuyerFragment.OnFragmentInteractionListener,PersonalDetailsBuyerFragment.OnFragmentInteractionListener,DocumentDetailsBuyerFragment.OnFragmentInteractionListener {
 
-    PropertyDetailsBuyerFragment propertyDetailsFragment = new PropertyDetailsBuyerFragment();
-    PersonalDetailsBuyerFragment personalDetailsFragment = new PersonalDetailsBuyerFragment();
-    DocumentDetailsBuyerFragment DocumentDetailsFragment = new DocumentDetailsBuyerFragment();
 
     FragmentManager fragmentManagerpersonal = getFragmentManager();
     FragmentManager fragmentManager = getFragmentManager();
     FragmentManager fragmentManagerDocument = getFragmentManager();
-
+    int  newId;
     int backstatus;
     Button Personal ;
     Button propertybtn;
     Button documents;
     Drawable btn_click;
     Drawable btn_unclick;
+    Bundle bundle;
     SharedPreferences sharedpreferences;
     public static final String mypreference = "mypref";
     @Override
@@ -60,17 +59,26 @@ public class BuyerDetailsActivity extends AppCompatActivity implements PropertyD
 
         ImageButton backbtnLead=(ImageButton)findViewById(R.id.AddLead_Back);
         backbtnLead.setImageResource(R.mipmap.status_bar_back_arrow);
-
+        Bundle extras = getIntent().getExtras();
+        newId = SharedPrefsUtils.getInstance(getApplicationContext()).getLId();
+        SharedPrefsUtils.getInstance(getApplicationContext()).setLid(newId);
         TextView toolbartxt = (TextView)findViewById(R.id.AddLead_Text);
         String newString;
-        Bundle extras = getIntent().getExtras();
+
         newString= extras.getString("lead_name");
         toolbartxt.setText(newString);
 
+        bundle = new Bundle();
+        bundle.putString("type", "buyer");
+        PersonalDetailsBuyerFragment personalDetailsFragment = new PersonalDetailsBuyerFragment();
+
         FragmentTransaction fragmentPersonal = fragmentManagerpersonal.beginTransaction();
         fragmentPersonal.replace(R.id.Lead_Details, personalDetailsFragment);
+        personalDetailsFragment.setArguments(bundle);
+
         fragmentPersonal.addToBackStack(null);
         fragmentPersonal.commit();
+
 
 
         Personal.setOnClickListener(new View.OnClickListener() {
@@ -84,12 +92,16 @@ public class BuyerDetailsActivity extends AppCompatActivity implements PropertyD
                 Personal.setTextColor(Color.WHITE);
                 propertybtn.setTextColor(Color.BLACK);
                 documents.setTextColor(Color.BLACK);
+                PersonalDetailsBuyerFragment personalDetailsFragment = new PersonalDetailsBuyerFragment();
 
                 FragmentTransaction fragmentPersonal = fragmentManagerpersonal.beginTransaction();
                 fragmentPersonal.replace(R.id.Lead_Details, personalDetailsFragment);
+                bundle = new Bundle();
+                bundle.putString("type", "buyer");
+
+                personalDetailsFragment.setArguments(bundle);
                 fragmentPersonal.addToBackStack(null);
                 fragmentPersonal.commit();
-
                 ImageButton backbtnLead=(ImageButton)findViewById(R.id.AddLead_Back);
                 backbtnLead.setImageResource(R.mipmap.status_bar_back_arrow);
 
@@ -107,9 +119,15 @@ public class BuyerDetailsActivity extends AppCompatActivity implements PropertyD
                 propertybtn.setTextColor(Color.WHITE);
                 Personal.setTextColor(Color.BLACK);
                 documents.setTextColor(Color.BLACK);
+                PropertyDetailsBuyerFragment propertyDetailsFragment = new PropertyDetailsBuyerFragment();
 
                 FragmentTransaction fragmentProperty = fragmentManager.beginTransaction();
+
                 fragmentProperty.replace(R.id.Lead_Details, propertyDetailsFragment);
+                bundle = new Bundle();
+                bundle.putString("type", "buyer");
+
+                propertyDetailsFragment.setArguments(bundle);
                 fragmentProperty.addToBackStack(null);
                 fragmentProperty.commit();
                 ImageButton backbtnLead=(ImageButton)findViewById(R.id.AddLead_Back);
@@ -132,9 +150,15 @@ public class BuyerDetailsActivity extends AppCompatActivity implements PropertyD
                 Personal.setTextColor(Color.BLACK);
                 ImageButton backbtnLead=(ImageButton)findViewById(R.id.AddLead_Back);
                 backbtnLead.setImageResource(0);
+                DocumentDetailsBuyerFragment DocumentDetailsFragment = new DocumentDetailsBuyerFragment();
 
                 FragmentTransaction fragmentdocument = fragmentManagerDocument.beginTransaction();
+
                 fragmentdocument.replace(R.id.Lead_Details, DocumentDetailsFragment);
+                bundle = new Bundle();
+                bundle.putString("type", "buyer");
+
+                DocumentDetailsFragment.setArguments(bundle);
                 fragmentdocument.addToBackStack(null);
                 fragmentdocument.commit();
                 backbtnLead = (ImageButton) findViewById(R.id.AddLead_Back);

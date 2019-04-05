@@ -1,11 +1,9 @@
-
 package com.nexgensm.reswye.ui.lead;
 
-import android.Manifest;
+
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Context;
@@ -22,16 +20,12 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.os.Parcelable;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
+import android.app.Fragment;
 import android.support.v7.widget.SwitchCompat;
 import android.text.TextUtils;
-import android.util.Base64;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
@@ -58,7 +52,6 @@ import com.nexgensm.reswye.api.ApiClient;
 import com.nexgensm.reswye.api.ApiInterface;
 import com.nexgensm.reswye.model.Response;
 import com.nexgensm.reswye.model.Result;
-import com.nexgensm.reswye.ui.signinpage.SigninActivity;
 import com.nexgensm.reswye.util.KeyboardUtils;
 import com.nexgensm.reswye.util.SharedPrefsUtils;
 import com.squareup.picasso.Picasso;
@@ -78,24 +71,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
-import pub.devrel.easypermissions.EasyPermissions;
 import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 import static android.Manifest.permission.CAMERA;
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static android.support.v4.content.ContextCompat.checkSelfPermission;
 
-public class AddNewLeadFragment extends Fragment {
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class AddNewBuyerFragment extends Fragment {
     private ArrayList<String> permissionsToRequest;
+
     private ArrayList<String> permissionsRejected = new ArrayList<>();
     private ArrayList<String> permissions = new ArrayList<>();
     private final static int ALL_PERMISSIONS_RESULT = 107;
@@ -107,7 +99,7 @@ public class AddNewLeadFragment extends Fragment {
     private static final int RESULT_CANCELED = 0;
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private OnFragmentInteractionListener mListener;
+    private AddNewLeadFragment.OnFragmentInteractionListener mListener;
     private int  userId,  encodedImage_flag = 0;
     int lid=0;
     int flag=0;
@@ -119,6 +111,7 @@ public class AddNewLeadFragment extends Fragment {
     ImageView circleView;
     TextView tv_additionaldetails;
     Spinner lead_status;
+
     SwitchCompat selectgender_selection;
     LinearLayout leadstauslayout;
     Button warmbtn, coldbtn, neutral, addnewleadbtn,success;
@@ -129,30 +122,17 @@ public class AddNewLeadFragment extends Fragment {
     ProgressDialog pd;
     ScrollView ScrollView01;
     RequestQueue requestQueue;
+    String image="";
     String Token;
     int uid=0;
     private static final int REQUEST_GALLERY_CODE = 200;
     private static final int READ_REQUEST_CODE = 300;
     private static final String SERVER_PATH = "Path_to_your_server";
-    public AddNewLeadFragment() {
+
+    public AddNewBuyerFragment() {
         // Required empty public constructor
     }
-    // TODO: Rename and change types and number of parameters
-    public static AddNewLeadFragment newInstance(String param1, String param2) {
-        AddNewLeadFragment fragment = new AddNewLeadFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
 
-    }
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-
-    }
     @SuppressLint("NewApi")
     @TargetApi(Build.VERSION_CODES.M)
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -203,8 +183,11 @@ public class AddNewLeadFragment extends Fragment {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         additional_details.setAdapter(adapter);
 
-        flag=SharedPrefsUtils.getInstance(getActivity()).getFlag();
 
+        //  flag = getArguments().getInt("flag");
+        // lid = getArguments().getInt("lid");
+        flag=SharedPrefsUtils.getInstance(getActivity()).getFlag();
+          Toast.makeText(getActivity(), "flag "+flag, Toast.LENGTH_SHORT).show();
 
 
         if (flag == 1) {
@@ -214,9 +197,7 @@ public class AddNewLeadFragment extends Fragment {
         else
         {
             lid=SharedPrefsUtils.getInstance(getActivity()).getLeadId();
-
         }
-
 
 
         warmbtn.setBackground(btn_click);
@@ -274,7 +255,7 @@ public class AddNewLeadFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 encodedImage_flag = 1;
-               // showPictureDialog();
+                // showPictureDialog();
                 startActivityForResult(getPickImageChooserIntent(), IMAGE_RESULT);
 
             }
@@ -285,14 +266,14 @@ public class AddNewLeadFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                 additional=additional_details.getSelectedItem().toString();
-                 frtsName=firstnameedittext.getText().toString();
-                 address= AddressSelleredittext.getText().toString();
-                 lname= lastnameedittext .getText().toString();
-                 mobile=mobilenumberedittext.getText().toString();
-                 email= emailedittext .getText().toString();
+                additional=additional_details.getSelectedItem().toString();
+                frtsName=firstnameedittext.getText().toString();
+                address= AddressSelleredittext.getText().toString();
+                lname= lastnameedittext .getText().toString();
+                mobile=mobilenumberedittext.getText().toString();
+                email= emailedittext .getText().toString();
                 // gender=selectgender_selection .getText().toString();
-                 status= lead_status .getSelectedItem().toString();
+                status= lead_status .getSelectedItem().toString();
                 if (selectgender_selection.isChecked() == false) {
                     gender = "Male";
                 } else {
@@ -300,7 +281,7 @@ public class AddNewLeadFragment extends Fragment {
                 }
                 if(frtsName.equals("")||address.equals("")||lname.equals("")||mobile.equals("")||email.equals(""))
                 {
-                   // Toast.makeText(context, "gender "+gender, Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(context, "gender "+gender, Toast.LENGTH_SHORT).show();
                     Toast.makeText(getContext(), "Please enter all fields", Toast.LENGTH_SHORT).show();
                 }
                 else if(mobile.length()!=10)
@@ -329,8 +310,7 @@ public class AddNewLeadFragment extends Fragment {
 
     private void viewData() {
         final ArrayList<String> stringArrayList=new ArrayList<String>();
-        if(flag==1)
-        {
+
             tv_additionaldetails.setText("How did you find about us?");
             String url = "http://192.168.0.3:3000/reswy/leadlistpersonal/"+lid;
 
@@ -341,9 +321,9 @@ public class AddNewLeadFragment extends Fragment {
                         @Override
                         public void onResponse(JSONObject response) {
                             try {
-                                String statuse = response.getString("status").toString().trim();
+                                String status = response.getString("status").toString().trim();
 
-                                if(statuse.equals("success"))
+                                if(status.equals("success"))
                                 {
 
                                     JSONArray jsonArray=response.getJSONArray("result");
@@ -362,14 +342,14 @@ public class AddNewLeadFragment extends Fragment {
                                     String hwfindabtusTxt = data.getString("hwfindabtus");
                                     String emailID = data.getString("emailid");
                                     //   transferedAgentName = data.getString("transfered_AgentName");
-                                    String image=ApiClient.BASE_URL_IMG+leadProfileimage;
+                                    image=ApiClient.BASE_URL_IMG+leadProfileimage;
                                     String gender = data.getString("gender");
 
                                     if(gender.equalsIgnoreCase("Female"))
                                     {
                                         //selectgender_selection.setOnCheckedChangeListener (null);
                                         selectgender_selection.setChecked(true);
-                                       // selectgender_selection.setOnCheckedChangeListener (getActivity());
+                                        // selectgender_selection.setOnCheckedChangeListener (getActivity());
                                     }
                                     else
                                     {
@@ -456,7 +436,7 @@ public class AddNewLeadFragment extends Fragment {
                 }
             };
             requestQueue.add(jsonObjectRequest);
-        }
+
 
     }
 
@@ -560,8 +540,8 @@ public class AddNewLeadFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+        if (context instanceof AddNewLeadFragment.OnFragmentInteractionListener) {
+            mListener = (AddNewLeadFragment.OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -681,7 +661,7 @@ public class AddNewLeadFragment extends Fragment {
     private void multipartImageUpload() {
         try {
 
-            if(bitmap!=null)
+            if(bitmap!=null||!image.equals(""))
             {
                 File filesDir = getActivity().getFilesDir();
                 File file = new File(filesDir, "image" + ".png");
@@ -707,7 +687,7 @@ public class AddNewLeadFragment extends Fragment {
                 fos.close();
 
                 uid= SharedPrefsUtils.getInstance(getActivity()).getUserId();
-               // lid=SharedPrefsUtils.getInstance(getActivity()).getLeadId();
+                // lid=SharedPrefsUtils.getInstance(getActivity()).getLeadId();
 
 
 
@@ -728,9 +708,8 @@ public class AddNewLeadFragment extends Fragment {
                 RequestBody user_id = RequestBody.create(MediaType.parse("text/plain"), ""+uid);
                 RequestBody flags = RequestBody.create(MediaType.parse("text/plain"), ""+flag);
                 RequestBody lead_id = RequestBody.create(MediaType.parse("text/plain"), ""+lid);
-                RequestBody category = RequestBody.create(MediaType.parse("text/plain"), "Seller");
+                RequestBody category = RequestBody.create(MediaType.parse("text/plain"), "Buyer");
                 RequestBody statuss = RequestBody.create(MediaType.parse("text/plain"), status);
-
 
                 Log.e("11111","DATA "+leadwarmth+" "+additional);
                 Log.e("11111","DATA "+uid+" "+address);
@@ -743,6 +722,8 @@ public class AddNewLeadFragment extends Fragment {
                         pd.dismiss();
 
                         if (response.code() == 200) {
+                            //  textView.setText("Uploaded Successfully!");
+                            // textView.setTextColor(Color.BLUE);
                             Toast.makeText(context, "response "+response.body().getStatus(), Toast.LENGTH_SHORT).show();
                             if(response.body().getStatus().equals("success"))
                             {
@@ -760,7 +741,7 @@ public class AddNewLeadFragment extends Fragment {
                                     mobilenumberedittext.setText("");
                                     emailedittext .setText("");
                                     // gender=selectgender_selection .getText().toString();
-                                  //  lead_status .setText("");
+                                    //lead_status .setText("");
                                     circleView.setImageResource(R.mipmap.man);
                                     final ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, additionaldetails);
                                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -784,7 +765,9 @@ public class AddNewLeadFragment extends Fragment {
 
 
                         }
-                        }
+
+                        // Toast.makeText(getActivity(), response.code() + " ", Toast.LENGTH_SHORT).show();
+                    }
 
                     @Override
                     public void onFailure(Call<Response> call, Throwable t) {

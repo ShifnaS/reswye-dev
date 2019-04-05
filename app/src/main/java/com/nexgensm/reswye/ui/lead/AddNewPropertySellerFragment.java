@@ -196,10 +196,6 @@ public class AddNewPropertySellerFragment extends Fragment {
         et_squareFeet= (EditText) myFragmentView.findViewById(R.id.propertysqrft);
 //
         et_buyer = (TextView) myFragmentView.findViewById(R.id.buyer);
-       // BuyerComments = (EditText) myFragmentView.findViewById(R.id.BuyerComments);
-
-      //  phoneviewed = (EditText) myFragmentView.findViewById(R.id.phoneviewed);
-       // Mail = (EditText) myFragmentView.findViewById(R.id.Mail);
 
         featurestxt = (TextView) myFragmentView.findViewById(R.id.featurestxt);
         ImageButton ownerbtn = (ImageButton) myFragmentView.findViewById(R.id.ownerinfo);
@@ -214,15 +210,19 @@ public class AddNewPropertySellerFragment extends Fragment {
         savebtn_property = (Button) myFragmentView.findViewById(R.id.savebtn_property);
         KeyboardUtils.hideKeyboard(getActivity());
         setback();
-//        sharedpreferences = getActivity().getSharedPreferences(mypreference, Context.MODE_PRIVATE);
-//        flag=sharedpreferences.getInt("flag",0);
-//        LeadId=sharedpreferences.getInt("LeadId",0);
+
         flag=SharedPrefsUtils.getInstance(getActivity()).getFlag();
         Toast.makeText(getActivity(), "flag "+flag, Toast.LENGTH_SHORT).show();
-        lid=SharedPrefsUtils.getInstance(getActivity()).getLId();
         if(flag==1)
         {
+            lid=SharedPrefsUtils.getInstance(getActivity()).getLId();
+
             et_buyer.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            lid=SharedPrefsUtils.getInstance(getActivity()).getLeadId();
+
         }
         et_buyer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -776,20 +776,7 @@ public class AddNewPropertySellerFragment extends Fragment {
                                             listingtype.setChecked(true);
                                    }
 
-                                    //  Log.v("year",""+year);
 
-
-                                  /*  JSONArray jsonArray2 = response.getJSONArray("viewpropdetails");
-
-
-                                    if (jsonArray2.length() > 0) {
-                                        JSONObject viewpropdetails = jsonArray2.getJSONObject(0);
-                                        buyerName = viewpropdetails.getString("buyerName");
-                                        mobile = viewpropdetails.getString("mobile");
-                                        email = viewpropdetails.getString("email");
-                                        viewedDatetime = viewpropdetails.getString("viewedDatetime");
-                                        comments = viewpropdetails.getString("comments");
-                                    }*/
 
 
                                 } else {
@@ -861,22 +848,15 @@ public class AddNewPropertySellerFragment extends Fragment {
                     Toast.makeText(getActivity(), "Please fill mandatory fields", Toast.LENGTH_SHORT).show();
                 } else {
 
-                    int lead_id= SharedPrefsUtils.getInstance(getActivity()).getLeadId();
-                    Toast.makeText(getActivity(), "led_id "+lead_id, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "led_id "+lid, Toast.LENGTH_SHORT).show();
 
                     requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
                     url = "http://192.168.0.3:3000/reswy/addlead_step2";
                     Map<String, Object> jsonParams = new ArrayMap<>();
-                    if(flag==1)
-                    {
-                        jsonParams.put("lead_id", lid);
-                    }
-                    else
-                    {
-                        jsonParams.put("lead_id", lead_id);
 
-                    }
-                   // jsonParams.put("lead_id", lid);
+                        jsonParams.put("lead_id", lid);
+
+
                     jsonParams.put("flag", flag);
                     jsonParams.put("Update", 0);
                     jsonParams.put("beds", bedCountTxt);

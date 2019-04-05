@@ -28,6 +28,15 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.nexgensm.reswye.R;
+import com.nexgensm.reswye.api.ApiClient;
+import com.nexgensm.reswye.util.SharedPrefsUtils;
+import com.seatgeek.placesautocomplete.DetailsCallback;
+import com.seatgeek.placesautocomplete.OnPlaceSelectedListener;
+import com.seatgeek.placesautocomplete.PlacesAutocompleteTextView;
+import com.seatgeek.placesautocomplete.model.AddressComponent;
+import com.seatgeek.placesautocomplete.model.AddressComponentType;
+import com.seatgeek.placesautocomplete.model.Place;
+import com.seatgeek.placesautocomplete.model.PlaceDetails;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,8 +52,9 @@ public class AddAppointmentActivity extends AppCompatActivity {
     SwitchCompat remainder;
     Button addAppointment;
     RequestQueue addAppointmentQueue,getLeadnamesQueue;
-    EditText add_app_nameTxt, add_app_dateTxt, add_app_timeTxt, add_app_locationTxt, add_app_purposeTxt, meetingMinutesTxt;
+    EditText add_app_nameTxt, add_app_dateTxt, add_app_timeTxt, add_app_purposeTxt, meetingMinutesTxt;
     SwitchCompat smsSwitchTxt, remainderTxt;
+    PlacesAutocompleteTextView add_app_locationTxt;
     SharedPreferences sharedpreferences;
     String[] leadNameArray;
     int[] leadIdArray;
@@ -65,7 +75,7 @@ public class AddAppointmentActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_appointment);
         add_app_dateTxt = (EditText) findViewById(R.id.add_app_date);
         add_app_timeTxt = (EditText) findViewById(R.id.add_app_time);
-        add_app_locationTxt = (EditText) findViewById(R.id.add_app_location);
+        add_app_locationTxt =  findViewById(R.id.add_app_location);
         add_app_purposeTxt = (EditText) findViewById(R.id.add_app_purpose);
         meetingMinutesTxt = (EditText) findViewById(R.id.meetingMinutes);
         smsSwitchTxt = (SwitchCompat) findViewById(R.id.smsSwitch);
@@ -76,7 +86,7 @@ public class AddAppointmentActivity extends AppCompatActivity {
 //        userId = sharedpreferences.getInt("UserId", 0);
 //        Token = sharedpreferences.getString("token", "");
         sharedpreferences =getSharedPreferences(mypreference, Context.MODE_PRIVATE);
-        userId=sharedpreferences.getInt("UserId",0);
+        userId=SharedPrefsUtils.getInstance(getApplicationContext()).getUserId();
         Token=sharedpreferences.getString("token","");
         SharedPreferences.Editor editor = sharedpreferences.edit();
         editor.putInt("refreshCal",0);
@@ -104,7 +114,7 @@ public class AddAppointmentActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
-                new DatePickerDialog(AddAppointmentActivity.this, date, myCalendar
+                new DatePickerDialog(AddAppointmentActivity.this,R.style.DialogTheme, date, myCalendar
                         .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
                         myCalendar.get(Calendar.DAY_OF_MONTH)).show();
             }
@@ -118,7 +128,7 @@ public class AddAppointmentActivity extends AppCompatActivity {
                 final int second = mcurrentTime.get(Calendar.SECOND);
 
                 TimePickerDialog mTimePicker;
-                mTimePicker = new TimePickerDialog(AddAppointmentActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                mTimePicker = new TimePickerDialog(AddAppointmentActivity.this,R.style.DialogTheme, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
                         add_app_timeTxt.setText(selectedHour + ":" + selectedMinute + ":" + second);
@@ -128,41 +138,105 @@ public class AddAppointmentActivity extends AppCompatActivity {
                 mTimePicker.show();
             }
         });
+        add_app_locationTxt.setOnPlaceSelectedListener(new OnPlaceSelectedListener() {
+            @Override
+            public void onPlaceSelected(final Place place) {
+                add_app_locationTxt.getDetailsFor(place, new DetailsCallback() {
+                    @Override
+                    public void onSuccess(final PlaceDetails details) {
+                        Log.d("test", "details " + details);
+                        //  mStreet.setText(details.name);
+                        for (AddressComponent component : details.address_components) {
+                            for (AddressComponentType type : component.types) {
+                                switch (type) {
+                                    case STREET_NUMBER:
+                                        break;
+                                    case ROUTE:
+                                        break;
+                                    case NEIGHBORHOOD:
+                                        break;
+                                    case SUBLOCALITY_LEVEL_1:
+                                        break;
+                                    case SUBLOCALITY:
+                                        break;
+                                    case LOCALITY:
+                                        // mCity.setText(component.long_name);
+                                        break;
+                                    case ADMINISTRATIVE_AREA_LEVEL_1:
+                                        // mState.setText(component.short_name);
+                                        break;
+                                    case ADMINISTRATIVE_AREA_LEVEL_2:
+                                        break;
+                                    case COUNTRY:
+                                        break;
+                                    case POSTAL_CODE:
+                                        //  mZip.setText(component.long_name);
+                                        break;
+                                    case POLITICAL:
+                                        break;
+                                }
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(final Throwable failure) {
+                        Log.d("test", "failure " + failure);
+                    }
+                });
+            }
+        });
+
+
+
+
+
+
+
 //////////////////////////////GET LEAD NAMES AND LEAD ID//////////////////////////////////////////////////
 
         getLeadnamesQueue = Volley.newRequestQueue(this);
       ///  url = "http://202.88.239.14:8169/api/Lead/GetLeadsList";//normaly used
-        url = "http://202.88.239.14:8169/api/Lead/GetLeadsListwithuserId ";///updated in 14/06/2018
+        url = ApiClient.BASE_URL+"listleads/"+userId;///updated in 14/06/2018
         progressDialog=new ProgressDialog(AddAppointmentActivity.this);
         progressDialog.setMessage("Loading Details");
         progressDialog.show();
-        Map<String, Object> jsonParams = new ArrayMap<>();
-        jsonParams.put("User_Id", userId);
-        JsonObjectRequest jsonObjectRequest1 = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(jsonParams),
+      //  Map<String, Object> jsonParams = new ArrayMap<>();
+       // jsonParams.put("User_Id", userId);
+        JsonObjectRequest jsonObjectRequest1 = new JsonObjectRequest(Request.Method.GET, url,null ,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-                            getAgentStatus = response.getString("status").toString().trim();
-                            JSONArray jsonArray=response.getJSONArray("leadLists");
-                            Log.v("Json Array",""+jsonArray);
+                            getAgentStatus = response.getString("status");
+                            Log.e("111111111111111","status "+getAgentStatus);
+                            JSONArray jsonArray=response.getJSONArray("result");
+                            Log.e("11111111111111","jsonArray "+jsonArray.length());
+
                             String SpinnerTxt="Select Lead";
-                            String str3 = "Success";
+                            String str3 = "success";
                             int response_result = getAgentStatus.compareTo(str3);
-                            if (response_result == 0)
+                            if (getAgentStatus.equals("success"))
                             {
                                 progressDialog.dismiss();
-                                leadNameArray=new String[jsonArray.length()];
-                                leadIdArray=new int[jsonArray.length()];
+                                leadNameArray=new String[jsonArray.length()+1];
+                                leadIdArray=new int[jsonArray.length()+1];
 
                                 leadNameArray[0]=SpinnerTxt;
                                 leadIdArray[0]=0;
-                                for ( i = 1; i < jsonArray.length(); i++) {
+                                for ( int i = 0; i < jsonArray.length(); i++) {
+                                  //  Toast.makeText(AddAppointmentActivity.this, "Success "+i, Toast.LENGTH_SHORT).show();
+
+                                    Log.e("11111111111111","i "+i);
                                     JSONObject leadLists = jsonArray.getJSONObject(i);
-                                    String name = leadLists.getString("firstName");
-                                    int id=leadLists.getInt("lead_ID");
-                                    leadNameArray[i]=name;
-                                    leadIdArray[i]=id;
+                                    Log.e("111111111111111",""+leadLists);
+
+                                    String name = leadLists.getString("firstname");
+                                    Log.e("111111111111111",""+name);
+                                    int id=leadLists.getInt("lead_id");
+                                    Log.e("111111111111111",""+id);
+                                    leadNameArray[i+1]=name;
+                                    leadIdArray[i+1]=id;
 
                                 }
                                 int ivaLUE=i;
@@ -236,18 +310,21 @@ public class AddAppointmentActivity extends AppCompatActivity {
                 }
 
                 addAppointmentQueue = Volley.newRequestQueue(getApplicationContext().getApplicationContext());
-                url = "http://202.88.239.14:8169/api/Lead/saveReminder";
+                url = ApiClient.BASE_URL+"followupmeeting";
 
                 Map<String, Object> jsonParams = new ArrayMap<>();
-                jsonParams.put("Lead_ID",lead);
-                jsonParams.put("Location", add_app_locationTxtValue);
-                jsonParams.put("PurposeOf_Meeting", add_app_purposeTxtValue);
-                jsonParams.put("Lead_Name", add_app_spinnerTxtValue);
-                jsonParams.put("Appointment_Date", add_app_dateTxtValue);
-                jsonParams.put("Appointment_Time", add_app_timeTxtValue);
-                jsonParams.put("Meeting_minutes", meetingMinutesTxtValue);
-                jsonParams.put("Reminder",reminderValue);
-                jsonParams.put("Send_SMS",smsValue);
+                jsonParams.put("lead_id",lead);
+                jsonParams.put("location", add_app_locationTxtValue);
+                jsonParams.put("purpose", add_app_purposeTxtValue);
+                jsonParams.put("lead_name", add_app_spinnerTxtValue);
+                jsonParams.put("date", add_app_dateTxtValue);
+                jsonParams.put("time", add_app_timeTxtValue);
+                jsonParams.put("meeting_minutes", meetingMinutesTxtValue);
+                jsonParams.put("reminder",1);
+                jsonParams.put("reminder_time","10:30");
+                jsonParams.put("sms",1);
+                jsonParams.put("email",1);
+
 
 
                 JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(jsonParams),
@@ -256,10 +333,7 @@ public class AddAppointmentActivity extends AppCompatActivity {
                             public void onResponse(JSONObject response) {
                                 try {
                                     responseResult = response.getString("status").toString().trim();
-                                    String str3 = "Success";
-                                    int response_result = responseResult.compareTo(str3);
-//                          Lead_ID = response.getInt("Lead_ID");
-                                    if (response_result == 0) {
+                                    if (responseResult.equals("success")) {
                                         progressDialog.dismiss();
                                         Toast.makeText(getApplicationContext(), "Appointment added Successfully", Toast.LENGTH_SHORT).show();
                                         finish();
@@ -287,7 +361,7 @@ public class AddAppointmentActivity extends AppCompatActivity {
                     @Override
                     public Map<String, String> getHeaders() throws AuthFailureError {
                         final Map<String, String> headers = new HashMap<>();
-                        headers.put("Authorization", Token);
+                        headers.put("Authorization", "");
                         return headers;
                     }
                 };
