@@ -18,6 +18,6 @@ public class Utlity {
 //public static final String SERVER_URL = "http://www.ededge.in/allspice/AndroidUploadImage/UploadToServer.php";
     public static final String SERVER_URL = "http://202.88.239.14:8169/api/lead/propertyDocUpload";
 
-    public static final String AppointmentListUrl ="http://202.88.239.14:8169/api/Lead/GetReminderdates";
+    public static final String AppointmentListUrl =ApiClient.BASE_URL+"appoinmentslistcalender";
 
 }

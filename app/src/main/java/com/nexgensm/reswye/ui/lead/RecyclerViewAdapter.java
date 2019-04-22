@@ -96,7 +96,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             }
 
             imageLoader1 = ServerImageParseAdapter.getInstance(context).getImageLoader();
-            Log.v("LOADER", "" + getDataAdapter1.getLead_imageUrl());
+            Log.v("1111111", "LOADER " + getDataAdapter1.getLead_imageUrl());
             imageLoader1.get(getDataAdapter1.getLead_imageUrl(),
                     ImageLoader.getImageListener(
                             Viewholder.leadPictureView,//Server Image

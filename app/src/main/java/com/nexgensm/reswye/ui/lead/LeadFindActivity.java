@@ -40,6 +40,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import com.nexgensm.reswye.util.SharedPrefsUtils;
 import com.seatgeek.placesautocomplete.DetailsCallback;
 import com.seatgeek.placesautocomplete.OnPlaceSelectedListener;
 import com.seatgeek.placesautocomplete.PlacesAutocompleteTextView;
@@ -56,18 +57,19 @@ public class LeadFindActivity extends AppCompatActivity {
 
 
     private String TAG = "LeadFindActivity";
-    Boolean transferStatusFlag;
-    Integer leadCategory;
+    int transferStatusFlag;
+    String leadCategory="";
     Integer isdefault = 0;
     int propID, filersetFlag;
     String seekMin, seekMax;
 
-    String leadStatus, prospectStatus;
+    int leadStatus=0;
+    String prospectStatus;
     Context context = this;
     EditText editDate, agentName, firstName, lastName;
     Calendar myCalendar = Calendar.getInstance();
 //    String dateFormat = "dd.MM.yyyy";
-String dateFormat = "yyyy/MM/dd";
+    String dateFormat = "yyyy/MM/dd";
     DatePickerDialog.OnDateSetListener date;
     SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.GERMAN);
     public String locationtxt, dateTxt, propertyIdTxt, firstnameTxt, lastnameTxt, mobileNoTxt, agentnameTxt, emailIdTxt, emailedittext;
@@ -82,10 +84,8 @@ String dateFormat = "yyyy/MM/dd";
         } catch (Exception e) {
             e.printStackTrace();
         }
-        leadStatus = "";
         prospectStatus = "";
-        transferStatusFlag = false;
-        leadCategory = 1;
+        transferStatusFlag = 0;
         filersetFlag =Singleton.getInstance().getFilterFlag();
         final Drawable btn_click = getResources().getDrawable(R.drawable.add_new_btn_click);
         final Drawable btn_unclick = getResources().getDrawable(R.drawable.add_new_btn);
@@ -216,11 +216,11 @@ String dateFormat = "yyyy/MM/dd";
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
                 if (isChecked) {
-                    transferStatusFlag = isChecked;
+                    transferStatusFlag = 1;
 //                    Snackbar.make(buttonView, " yes" + isChecked, Snackbar.LENGTH_LONG)
 //                            .setAction("ACTION", null).show();
                 } else {
-                    transferStatusFlag = isChecked;
+                    transferStatusFlag = 0;
 //                    Snackbar.make(buttonView, " no" + isChecked, Snackbar.LENGTH_LONG)
 //                            .setAction("ACTION", null).show();
                 }
@@ -230,11 +230,11 @@ String dateFormat = "yyyy/MM/dd";
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    leadCategory = 2;
+                    leadCategory = "Buyer";
 //                    Snackbar.make(buttonView, " Buyer" + isChecked, Snackbar.LENGTH_LONG)
 //                            .setAction("ACTION", null).show();
                 } else {
-                    leadCategory = 1;
+                    leadCategory = "Seller";
 //                    Snackbar.make(buttonView, " Seller" + isChecked, Snackbar.LENGTH_LONG)
 //                            .setAction("ACTION", null).show();
                 }
@@ -291,12 +291,30 @@ String dateFormat = "yyyy/MM/dd";
                     Log.v(TAG, "mob" + mobileNoTxt);
                     Log.v(TAG, "email" + emailIdTxt);
                     Log.v(TAG, "ID" + propertyIdTxt);
+
+                    SharedPrefsUtils.getInstance(getApplicationContext()).setData("agentName",agentnameTxt);
+                    SharedPrefsUtils.getInstance(getApplicationContext()).setData("firstName",firstnameTxt);
+                    SharedPrefsUtils.getInstance(getApplicationContext()).setData("lasttName",lastnameTxt);
+                    SharedPrefsUtils.getInstance(getApplicationContext()).setData("propID",""+propID);
+                    SharedPrefsUtils.getInstance(getApplicationContext()).setData("propertyIdTxt",propertyIdTxt);
+                    SharedPrefsUtils.getInstance(getApplicationContext()).setIntData("leadStatus",leadStatus);
+                    SharedPrefsUtils.getInstance(getApplicationContext()).setData("locationtxt",locationtxt);
+                    SharedPrefsUtils.getInstance(getApplicationContext()).setData("dateTxt",dateTxt);
+                    SharedPrefsUtils.getInstance(getApplicationContext()).setData("mobileNoTxt",mobileNoTxt);
+                    SharedPrefsUtils.getInstance(getApplicationContext()).setData("emailIdTxt",""+emailIdTxt);
+                    SharedPrefsUtils.getInstance(getApplicationContext()).setData("propertyMinimum",propertyMinimum);
+                    SharedPrefsUtils.getInstance(getApplicationContext()).setData("propertymaximum",propertymaximum);
+                    SharedPrefsUtils.getInstance(getApplicationContext()).setData("prospectStatus",prospectStatus);
+                    SharedPrefsUtils.getInstance(getApplicationContext()).setIntData("transferStatusFlag",transferStatusFlag);
+                    SharedPrefsUtils.getInstance(getApplicationContext()).setData("leadCategory",""+leadCategory);
+                    SharedPrefsUtils.getInstance(getApplicationContext()).setData("filter","filter");
+
                     Singleton.getInstance().setFilterAgent(agentnameTxt);
                     Singleton.getInstance().setFilterFirstName(firstnameTxt);
                     Singleton.getInstance().setFilterLastName(lastnameTxt);
                     Singleton.getInstance().setPropID(propID);
                     Singleton.getInstance().setPropIDD(propertyIdTxt);
-                    Singleton.getInstance().setFilterLeadStatus(leadStatus);
+                 //   Singleton.getInstance().setFilterLeadStatus(leadStatus);
                     Singleton.getInstance().setFilterLoc(locationtxt);
                     Singleton.getInstance().setFilterDate(dateTxt);
                     Singleton.getInstance().setFilterMob(mobileNoTxt);
@@ -304,8 +322,8 @@ String dateFormat = "yyyy/MM/dd";
                     Singleton.getInstance().setMinvalue(propertyMinimum);
                     Singleton.getInstance().setMaxvalue(propertymaximum);
                     Singleton.getInstance().setPropStatus(prospectStatus);
-                    Singleton.getInstance().setFilterTransferStatus(transferStatusFlag);
-                    Singleton.getInstance().setLeadCategory(leadCategory);
+                   // Singleton.getInstance().setFilterTransferStatus(""+transferStatusFlag);
+                 //   Singleton.getInstance().setLeadCategory(leadCategory);
                     Singleton.getInstance().setIsfilterDefaultt(0);
                     Singleton.getInstance().setFilterFlag(1);
                     finish();
@@ -317,7 +335,7 @@ String dateFormat = "yyyy/MM/dd";
         newbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                leadStatus = "New";
+                leadStatus = 1;
                 newbtn.setBackground(btn_click);
                 convertedbtn.setBackground(btn_unclick);
                 inactivebtn.setBackground(btn_unclick);
@@ -333,7 +351,7 @@ String dateFormat = "yyyy/MM/dd";
             @Override
             public void onClick(View v) {
                 //Drawable dr = getResources().getDrawable(R.drawable.add_new_btn_click);
-                leadStatus = "Success";
+                leadStatus = 2;
                 convertedbtn.setBackground(btn_click);
                 newbtn.setBackground(btn_unclick);
                 inactivebtn.setBackground(btn_unclick);
@@ -349,7 +367,7 @@ String dateFormat = "yyyy/MM/dd";
             @Override
             public void onClick(View v) {
                 //Drawable dr = getResources().getDrawable(R.drawable.add_new_btn_click);
-                leadStatus = "Failure";
+                leadStatus = 3;
                 inactivebtn.setBackground(btn_click);
                 convertedbtn.setBackground(btn_unclick);
                 newbtn.setBackground(btn_unclick);

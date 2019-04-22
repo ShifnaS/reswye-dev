@@ -11,8 +11,6 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.util.AttributeSet;
-import android.view.GestureDetector;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -21,29 +19,25 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 import com.shrikanthravi.collapsiblecalendarview.R;
 import com.shrikanthravi.collapsiblecalendarview.data.CalendarAdapter;
 import com.shrikanthravi.collapsiblecalendarview.data.Day;
 import com.shrikanthravi.collapsiblecalendarview.data.Event;
-import com.shrikanthravi.collapsiblecalendarview.view.ExpandIconView;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 
 
-public class CollapsibleCalendar extends UICalendar {
+public class CollapsibleCalendar extends UICalendar  {
 
     private CalendarAdapter mAdapter;
     private CalendarListener mListener;
-
+  //  private OnFragmentInteractionListener nListener;
     private boolean expanded=true;
-
     private int mInitHeight = 0;
-
     private Handler mHandler = new Handler();
     private boolean mIsWaitingForUpdate = false;
     int flag_calendarType;
@@ -108,21 +102,11 @@ public class CollapsibleCalendar extends UICalendar {
             }
         });
 
-       // expandIconView.setState(ExpandIconView.LESS,true);
-
-//        expandIconView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if(expanded){
-//                    collapse(400);
-//                }
-//                else{
-//                    expand(400);
-//                }
-//                expanded = !expanded;
-//
-//            }
-//        });
+       /* try {
+            nListener = (OnFragmentInteractionListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + " must implement OnFragmentInteractionListener");
+        }*/
 
         btn_click = getResources().getDrawable(R.drawable.add_new_btn_click);
         btn_unclick = getResources().getDrawable(R.drawable.add_new_btn);
@@ -138,11 +122,16 @@ public class CollapsibleCalendar extends UICalendar {
                     collapse(400);
                     btn1.setBackground(btn_click);
                     btn2.setBackground(btn_unclick);
-                    flag_calendarType=0;
+                    flag_calendarType=1;
+               // Toast.makeText(context, "flag_calendarType "+flag_calendarType, Toast.LENGTH_SHORT).show();
                 sharedpreferences = context.getSharedPreferences(mypreference, Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedpreferences.edit();
                 editor.putInt("flag_calender", flag_calendarType);
                 editor.commit();
+
+               /* if (mListener != null) {
+                    nListener.onFragmentInteraction(flag_calendarType);
+                }*/
 
             }
         });
@@ -154,11 +143,16 @@ public class CollapsibleCalendar extends UICalendar {
                     expand(400);
                     btn1.setBackground(btn_unclick);
                     btn2.setBackground(btn_click);
-                    flag_calendarType=1;
+                    flag_calendarType=2;
+               // Toast.makeText(context, "flag_calendarType "+flag_calendarType, Toast.LENGTH_SHORT).show();
+
                 sharedpreferences = context.getSharedPreferences(mypreference, Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedpreferences.edit();
                 editor.putInt("flag_calender", flag_calendarType);
                 editor.commit();
+               /* if (mListener != null) {
+                    nListener.onFragmentInteraction(flag_calendarType);
+                }*/
 
             }
         });

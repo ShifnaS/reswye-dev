@@ -40,9 +40,13 @@ import com.android.volley.toolbox.Volley;
 import com.nexgensm.reswye.R;
 import com.nexgensm.reswye.Singleton;
 import com.nexgensm.reswye.Utlity;
+import com.nexgensm.reswye.api.ApiClient;
 import com.nexgensm.reswye.ui.navigationdrawer.ProfileSettingsActivity;
 import com.nexgensm.reswye.ui.signinpage.SigninActivity;
+import com.nexgensm.reswye.util.SharedPrefsUtils;
+import com.shrikanthravi.collapsiblecalendarview.data.Day;
 import com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar;
+import com.shrikanthravi.collapsiblecalendarview.widget.OnFragmentInteractionListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -65,7 +69,7 @@ import pyxis.uzuki.live.sectioncalendarview.SectionCalendarView;
  * Use the {@link CalendarFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CalendarFragment extends Fragment {
+public class CalendarFragment extends Fragment  {
 
     Button add;
     // TODO: Rename parameter arguments, choose names that match
@@ -145,23 +149,23 @@ public class CalendarFragment extends Fragment {
         int yearq = c.get(Calendar.YEAR);
         // datemonth = dayq+"."+(monthq+1)+"."+yearq;
         datemonth = yearq + "." + (monthq + 1) + "." + dayq;
+        sharedpreferences = getActivity().getSharedPreferences(mypreference, Context.MODE_PRIVATE);
 
-
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putInt("flag_calender", 1);
+        editor.commit();
         collapsibleCalendar = (CollapsibleCalendar) myFragmentView.findViewById(R.id.calendar);
 
         collapsibleCalendar.setCalendarListener(new CollapsibleCalendar.CalendarListener() {
-            @Override
+
+          @Override
             public void onDaySelect(int date, int month, int year) {
                 datestr = Integer.toString(date);
-                // datestr = date;
-                // Toast.makeText(getApplicationContext(),Integer.toString(month),Toast.LENGTH_SHORT).show();
                 getMonthShortName(month);
                 day = date;
                 monthc = month;
                 yearc = year;
-                //datemonth = monthName+" "+datestr+" "+yearc;
-                datemonth = yearc + "." + (monthc + 1) + "." + day;
-                sharedpreferences = getActivity().getSharedPreferences(mypreference, Context.MODE_PRIVATE);
+                datemonth = yearc + "/" + (monthc + 1) + "/" + day;
                 flag_Calender = sharedpreferences.getInt("flag_calender", 1);//WEEKLY MONTHLY FLAG
                 refreshCal = sharedpreferences.getInt("refreshCal", 1);
              //   JSON_DATA_WEB_CALL1();
@@ -169,6 +173,10 @@ public class CalendarFragment extends Fragment {
 
             }
         });
+
+
+
+
         Toast.makeText(getActivity(), datemonth, Toast.LENGTH_SHORT).show();
 
         recyclerView = (RecyclerView) myFragmentView.findViewById(R.id.recycler_view);
@@ -177,25 +185,19 @@ public class CalendarFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
 
         sharedpreferences = getActivity().getSharedPreferences(mypreference, Context.MODE_PRIVATE);
-        userId = sharedpreferences.getInt("UserId", 0);
+        userId = SharedPrefsUtils.getInstance(getActivity()).getUserId();
         Token = sharedpreferences.getString("token", "");
         ImageUrl = sharedpreferences.getString("imageURL", "");
         refreshCal = sharedpreferences.getInt("refreshCal", 1);
-        SharedPreferences.Editor editor = sharedpreferences.edit();
         editor.putInt("refresh", 1);
         editor.commit();
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
-        sharedpreferences = getActivity().getSharedPreferences(mypreference, Context.MODE_PRIVATE);
         flag_Calender = sharedpreferences.getInt("flag_calender", 1);//WEEKLY MONTHLY FLAG
 
 
-      //  JSON_DATA_WEB_CALL();//////////// APPOINTMENTS DISPLAY default/////////////
-////shifna///
-      /*  int a = 0;
-        calenderrecyclerViewadapter = new CalenderRecyclerViewAdapter(GetDataAdapter1, getActivity().getApplication(), a);
-        recyclerView.swapAdapter(calenderrecyclerViewadapter, true);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());*/
+        JSON_DATA_WEB_CALL();//////////// APPOINTMENTS DISPLAY default/////////////
+
         recyclerView.addOnItemTouchListener(
 
                 new AppointmentRecyclerItemClickListener(getActivity().getApplicationContext(), new AppointmentRecyclerItemClickListener.OnItemClickListener() {
@@ -221,49 +223,6 @@ public class CalendarFragment extends Fragment {
 
         btn_click = getResources().getDrawable(R.drawable.add_new_btn_click);
         btn_unclick = getResources().getDrawable(R.drawable.add_new_btn);
-        //calimage = (ImageView)myFragmentView.findViewById(R.id.cal);
-        //weekly = (Button)myFragmentView.findViewById(R.id.weekly) ;
-        // monthly = (Button)myFragmentView.findViewById(R.id.monthly) ;
-        //calimage.setImageResource(R.drawable.date_bg);
-
-//        weekly.setBackground(btn_click);
-//        monthly.setBackground(btn_unclick);
-//
-//        weekly.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//               // calimage.setImageResource(R.drawable.date_bg);
-//                weekly.setBackground(btn_click);
-//                monthly.setBackground(btn_unclick);
-//
-//
-//
-//
-//            }
-//        });
-//        monthly.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//               // calimage.setImageResource(R.drawable.monthly_bg);
-//                weekly.setBackground(btn_unclick);
-//                monthly.setBackground(btn_click);
-//
-//
-//
-//
-//            }
-//        });
-        /*ImageView logoutBTN = (ImageView) myFragmentView.findViewById(R.id.menu);
-        logoutBTN.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent_logout  = new Intent(getActivity(), SigninActivity.class);
-                intent_logout.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent_logout);
-
-            }
-        });*/
-
 
         add = (Button) myFragmentView.findViewById(R.id.add);
         add.setOnClickListener(new View.OnClickListener() {
@@ -274,7 +233,6 @@ public class CalendarFragment extends Fragment {
 
             }
         });
-        // prepareData();
 
         nvDrawer = (NavigationView) myFragmentView.findViewById(R.id.nvView);
 
@@ -292,17 +250,6 @@ public class CalendarFragment extends Fragment {
         });
 
 
-//        collapsibleCalendar = (CollapsibleCalendar)myFragmentView.findViewById(R.id.calendar);
-//        collapsibleCalendar.setCalendarListener(new CollapsibleCalendar.CalendarListener() {
-//            @Override
-//            public void onDaySelect(String date) {
-//
-//                datestr = date;
-//                Toast.makeText(myFragmentView.getContext(),datestr,Toast.LENGTH_SHORT).show();
-//
-//            }
-//        });
-
         return myFragmentView;
     }
 
@@ -313,8 +260,8 @@ public class CalendarFragment extends Fragment {
         int ee = flag_Calender;
         GetDataAdapter1 = new ArrayList<>();
         try {
-            jsonObject.put("UserId", userId);
-            jsonObject.put("flag_ID", flag_Calender);
+            jsonObject.put("agent_id", userId);
+            jsonObject.put("mode", flag_Calender);
             jsonObject.put("Currentdate", date);
 
         } catch (JSONException e) {
@@ -330,15 +277,13 @@ public class CalendarFragment extends Fragment {
                     @Override
                     public void onResponse(JSONObject response) {
                         loading.dismiss();
-                     /*   sharedpreferences = getActivity().getSharedPreferences(mypreference, Context.MODE_PRIVATE);
-                        refreshCal = sharedpreferences.getInt("refreshCal", 0);
-                        if (refreshCal == 1) {
+
                             JSON_PARSE_DATA_AFTER_WEBCALL(response);
-                        }
+
                         int a = 0;
                         calenderrecyclerViewadapter = new CalenderRecyclerViewAdapter(GetDataAdapter1, getActivity().getApplication(), a);
                         recyclerView.swapAdapter(calenderrecyclerViewadapter, true);
-                        recyclerView.removeAllViewsInLayout();*/
+                        recyclerView.removeAllViewsInLayout();
 
                     }
                 }, new Response.ErrorListener() {
@@ -364,31 +309,26 @@ public class CalendarFragment extends Fragment {
 
         requestQueue.add(jsObjRequest);
 
-        int a = 0;
-       /* Shifna*/
-       /* calenderrecyclerViewadapter = new CalenderRecyclerViewAdapter(GetDataAdapter1, getActivity().getApplication(), a);
-        recyclerView.swapAdapter(calenderrecyclerViewadapter, true);
-        recyclerView.removeAllViewsInLayout();*/
-
 
     }
 
     public void JSON_PARSE_DATA_AFTER_WEBCALL(JSONObject jsonObject) {
 
-        JSONArray jarray = jsonObject.optJSONArray("data");
+        JSONArray jarray = jsonObject.optJSONArray("result");
+       // Toast.makeText(getActivity(), "Length "+jarray.length(), Toast.LENGTH_SHORT).show();
 
         for (int i = 0; i < jarray.length(); i++) {
             AppointmentListingRecyclerDataAdapter GetDataAdapter2 = new AppointmentListingRecyclerDataAdapter();
             try {
                 JSONObject abc = jarray.getJSONObject(i);
 
-                lead_Name = abc.getString("lead_Name");
+                lead_Name = abc.getString("lead_name");
                 Apnmt_Location = abc.getString("location");
-                Apnmt_lead_id = abc.getInt("lead_ID");
-                Apnmt_Time = abc.getString("appointment_Time");
-                Apnmt_date = abc.getString("appointment_Date");
-                Apnmt_profileimage = abc.getString("leadProfileimage");
-                image = ImageUrl + Apnmt_profileimage;
+                Apnmt_lead_id = abc.getInt("lead_id");
+                Apnmt_Time = abc.getString("appointment_time");
+                Apnmt_date = abc.getString("appointment_date");
+                Apnmt_profileimage = abc.getString("leadprofileimage");
+                image = ApiClient.BASE_URL_IMG + Apnmt_profileimage;
                 GetDataAdapter2.setLead_name(lead_Name);
                 GetDataAdapter2.setLead_address(Apnmt_Location);
                 GetDataAdapter2.setLead_ID(Apnmt_lead_id);
@@ -402,134 +342,10 @@ public class CalendarFragment extends Fragment {
 
         }
 
-        int a = 0;
-        /*shifna*/
-     /*   calenderrecyclerViewadapter = new CalenderRecyclerViewAdapter(GetDataAdapter1, getActivity().getApplication(), a);
-        // Log.v(TAG, "RECYCLER");
-        recyclerView.swapAdapter(calenderrecyclerViewadapter, true);*/
-
     }
 
 
-    //////////////////////////////////////REMINDER DATES on date click//////////////////////////////////////////////////
-    public void JSON_DATA_WEB_CALL1() {
 
-        jsonObject = new JSONObject();
-        String date = datemonth;
-        GetDataAdapter1 = new ArrayList<>();
-        try {
-            jsonObject.put("UserId", userId);
-            jsonObject.put("Current_Date", date);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        //  Log.v("JsonObject", "" + jsonObject.toString());
-        @SuppressLint({"NewApi", "LocalSuppress"}) final ProgressDialog loading = ProgressDialog.show(getContext(), "Please wait...", "Fetching data...", false, false);
-        String url = "http://202.88.239.14:8169/api/Lead/GetReminders";
-        JsonObjectRequest jsObjRequest;
-        jsObjRequest = new JsonObjectRequest
-                (Request.Method.POST, url, jsonObject, new Response.Listener<JSONObject>() {
-
-                    @Override
-                    public void onResponse(JSONObject response) {
-
-                      /*  try {
-                            loading.dismiss();
-                            String ss = "Success";
-                            String Status = response.getString("status").toString();
-                            if (ss.compareTo(Status) == 0) {
-                                sharedpreferences = getActivity().getSharedPreferences(mypreference, Context.MODE_PRIVATE);
-                                refreshCal = sharedpreferences.getInt("refreshCal", 0);
-                                if (refreshCal == 1) {
-                                    JSON_PARSE_DATA_AFTER_WEBCALL1(response);
-                                }
-                            } else {
-                                Toast.makeText(getActivity(), "No Appointments Found", Toast.LENGTH_SHORT).show();
-                            }
-
-                        } catch (JSONException e) {
-                            loading.dismiss();
-                            e.printStackTrace();
-                        }
-*/
-
-//                        int a = 0;
-//                        calenderrecyclerViewadapter = new CalenderRecyclerViewAdapter(GetDataAdapter1, getActivity().getApplication(), a);
-//                        recyclerView.swapAdapter(calenderrecyclerViewadapter, true);
-//                        recyclerView.removeAllViewsInLayout();
-
-                    }
-                }, new Response.ErrorListener() {
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        loading.dismiss();
-                        Log.v("Error", "" + error.toString());
-
-                    }
-                }) {
-
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-
-                HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("Authorization", Token);
-
-                return headers;
-            }
-        };
-        requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
-
-        requestQueue.add(jsObjRequest);
-
-        int a = 0;
-        /*shifna*/
-/*        calenderrecyclerViewadapter = new CalenderRecyclerViewAdapter(GetDataAdapter1, getActivity().getApplication(), a);
-        recyclerView.swapAdapter(calenderrecyclerViewadapter, true);
-        recyclerView.removeAllViewsInLayout();*/
-
-
-    }
-
-    public void JSON_PARSE_DATA_AFTER_WEBCALL1(JSONObject jsonObject) {
-
-        JSONArray jarray = jsonObject.optJSONArray("data");
-        if (jarray.length() > 0) {
-
-            for (int i = 0; i < jarray.length(); i++) {
-                AppointmentListingRecyclerDataAdapter GetDataAdapter2 = new AppointmentListingRecyclerDataAdapter();
-                try {
-                    JSONObject abc = jarray.getJSONObject(i);
-
-                    lead_Name = abc.getString("firstName");
-                    Apnmt_Location = abc.getString("location");
-                    Apnmt_lead_id = abc.getInt("lead_ID");
-                    Apnmt_Time = abc.getString("appointment_Time");
-                    Apnmt_date = abc.getString("appointment_Date");
-                    Apnmt_profileimage = abc.getString("leadProfileimage");
-                    image = ImageUrl + Apnmt_profileimage;
-                    GetDataAdapter2.setLead_name(lead_Name);
-                    GetDataAdapter2.setLead_address(Apnmt_Location);
-                    GetDataAdapter2.setLead_ID(Apnmt_lead_id);
-                    GetDataAdapter2.setLead_time(Apnmt_Time);
-                    GetDataAdapter2.setLead_imageUrl(image);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                GetDataAdapter1.add(GetDataAdapter2);
-
-            }
-        }
-        int a = 0;
-            /*Shifna*/
-      /*  calenderrecyclerViewadapter = new CalenderRecyclerViewAdapter(GetDataAdapter1, getActivity().getApplication(), a);
-        // Log.v(TAG, "RECYCLER");
-        recyclerView.swapAdapter(calenderrecyclerViewadapter, true);*/
-
-    }
 
     private void setupDrawerContent(NavigationView navigationView) {
         navigationView.setNavigationItemSelectedListener(
@@ -641,11 +457,6 @@ public class CalendarFragment extends Fragment {
                                                         dialog.dismiss();
                                                         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
 
-//                                                        sharedpreferences = getActivity().getSharedPreferences(mypreference, Context.MODE_PRIVATE);
-//                                                        SharedPreferences.Editor editor = sharedpreferences.edit();
-//                                                        editor.putInt("firstTime", 1);
-//                                                        editor.commit();
-
                                                     } else {
                                                         progressDialog.dismiss();
                                                         dialog.dismiss();
@@ -716,6 +527,8 @@ public class CalendarFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
+
+
 
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name

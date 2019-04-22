@@ -110,9 +110,6 @@ public class BottomTabbarActivity extends AppCompatActivity implements LeadFragm
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
 
-//        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-//        transaction.replace(R.id.frame_layout, LeadFragment.newInstance(2));
-//        transaction.commit();
     }
 
     @Override

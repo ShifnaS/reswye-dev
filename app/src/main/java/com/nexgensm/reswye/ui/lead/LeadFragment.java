@@ -158,7 +158,7 @@ public class LeadFragment extends Fragment implements RecyclerViewAdapter.DataAd
         View myFragmentView = inflater.inflate(R.layout.fragment_lead, container, false);
         recyclerView = (RecyclerView) myFragmentView.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
-
+        SharedPrefsUtils.getInstance(getActivity()).setData("filter","nofilter");
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -377,6 +377,7 @@ public class LeadFragment extends Fragment implements RecyclerViewAdapter.DataAd
         Token = sharedpreferences.getString("token", "");
         ImageUrl = sharedpreferences.getString("imageURL", "");
         JSONArray jarray = jsonObject.optJSONArray("result");
+        Log.v(TAG, "json arayy length "+jarray.length());
        arr = new String[jarray.length()];
         //        Log.v("test", "" + jarray.length());
 //        Log.v("json", "" + jarray.toString());
@@ -392,7 +393,10 @@ public class LeadFragment extends Fragment implements RecyclerViewAdapter.DataAd
                 lead_CreatedDate = abc.getString("lead_createddate");
                 profileimage = abc.getString("leadprofileimage");
                 String leadType=abc.getString("lead_category");
-
+                Log.e("name ",name1 );
+                Log.e("address ",address);
+                Log.e("lead_ID ",""+lead_ID);
+                Log.e("lead_CreatedDate ",lead_CreatedDate);
                 arr[i]=name1;
                 arrayList.add(name1);
 
@@ -618,8 +622,8 @@ public class LeadFragment extends Fragment implements RecyclerViewAdapter.DataAd
     public void onResume() {
         super.onResume();
 
-        int flag=Singleton.getInstance().getFilterFlag();
-        Toast.makeText(getActivity(), "Filter Flag "+flag, Toast.LENGTH_SHORT).show();
+
+       // Toast.makeText(getActivity(), "Filter Flag "+SharedPrefsUtils.getInstance(getActivity()).getData("filter"), Toast.LENGTH_SHORT).show();
         Log.v(TAG, "TEST");
         JSON_DATA_WEB_CALL();
 
@@ -636,10 +640,6 @@ public class LeadFragment extends Fragment implements RecyclerViewAdapter.DataAd
                 recyclerView.swapAdapter(recyclerViewadapter, true);
                 recyclerView.removeAllViewsInLayout();
                 JSON_DATA_WEB_CALL1(name);
-
-
-
-
 
                 return false;
 
@@ -663,12 +663,27 @@ public class LeadFragment extends Fragment implements RecyclerViewAdapter.DataAd
             }
         });
 
+
+        String flag=SharedPrefsUtils.getInstance(getActivity()).getData("filter");
+        if(flag.equals("filter"))
+        {
+            GetDataAdapter1.clear();
+            // recyclerViewadapter.notifyDataSetChanged();
+            recyclerView.getRecycledViewPool().clear();
+            recyclerView.swapAdapter(recyclerViewadapter, true);
+            recyclerView.removeAllViewsInLayout();
+            JSON_DATA_WEB_CALL_Filter();
+
+
+        }
+
     }
 
     @Override
     public void onPause() {
 
-        Singleton.getInstance().setFilterFlag(1);
+       // Singleton.getInstance().setFilterFlag(1);
+        SharedPrefsUtils.getInstance(getActivity()).setData("filter","nofilter");
 
         GetDataAdapter1.clear();
        // recyclerViewadapter.notifyDataSetChanged();
@@ -836,20 +851,46 @@ public class LeadFragment extends Fragment implements RecyclerViewAdapter.DataAd
 
 
     public void JSON_DATA_WEB_CALL_Filter() {
+
+
+        String agentName= SharedPrefsUtils.getInstance(getActivity()).getData("agentName");
+        String firstName=SharedPrefsUtils.getInstance(getActivity()).getData("firstName");
+        String lasttName=SharedPrefsUtils.getInstance(getActivity()).getData("lasttName");
+        String propID=SharedPrefsUtils.getInstance(getActivity()).getData("propID");
+        String propertyIdTxt=SharedPrefsUtils.getInstance(getActivity()).getData("propertyIdTxt");
+        int leadStatus=SharedPrefsUtils.getInstance(getActivity()).getIntData("leadStatus");
+        String locationtxt=SharedPrefsUtils.getInstance(getActivity()).getData("locationtxt");
+        String dateTxt=SharedPrefsUtils.getInstance(getActivity()).getData("dateTxt");
+        String mobileNoTxt=SharedPrefsUtils.getInstance(getActivity()).getData("mobileNoTxt");
+        String emailIdTxt=SharedPrefsUtils.getInstance(getActivity()).getData("emailIdTxt");
+        String propertyMinimum=SharedPrefsUtils.getInstance(getActivity()).getData("propertyMinimum");
+        String propertymaximum=SharedPrefsUtils.getInstance(getActivity()).getData("propertymaximum");
+        String prospectStatus=SharedPrefsUtils.getInstance(getActivity()).getData("prospectStatus");
+        int transferStatusFlag=SharedPrefsUtils.getInstance(getActivity()).getIntData("transferStatusFlag");
+        String leadCategory=SharedPrefsUtils.getInstance(getActivity()).getData("leadCategory");
         Log.v(TAG, "JSON CALL");
         url = ApiClient.BASE_URL+"filterlead";
-
         requestQueue1 = Volley.newRequestQueue(getActivity().getApplicationContext());
         Log.v(TAG, "NO Filter");
         Toast.makeText(getActivity(), "Sort "+sortsave, Toast.LENGTH_SHORT).show();
-        if (sortsave == 0) {
-            Log.v(TAG, "SORT zero");
 
             @SuppressLint({"NewApi", "LocalSuppress"}) final ProgressDialog loading = ProgressDialog.show(getContext(), "Please wait...", "Fetching data...", false, false);
             Map<String, Object> jsonParams = new ArrayMap<>();
-
-            jsonParams.put("agent _id", userId);
-            jsonParams.put("name", "");
+            jsonParams.put("agent_id", userId);
+            jsonParams.put("sts", leadStatus);
+            jsonParams.put("createddate", dateTxt);
+            jsonParams.put("location", locationtxt);
+            jsonParams.put("minprice", propertyMinimum);
+            jsonParams.put("maxprice", propertymaximum);
+            jsonParams.put("prospectus", prospectStatus);
+            jsonParams.put("category", leadCategory);
+            jsonParams.put("transfersts", transferStatusFlag);
+            jsonParams.put("transferagent", agentName);
+            jsonParams.put("propertyid", propID);
+            jsonParams.put("leadfname", firstName);
+            jsonParams.put("leadlname", lasttName);
+            jsonParams.put("mobile", mobileNoTxt);
+            jsonParams.put("email", emailIdTxt);
             JsonObjectRequest jsObjRequest1;
             sortsave = Singleton.getInstance().getSortSaveFlag();
             jsObjRequest1 = new JsonObjectRequest
@@ -866,12 +907,27 @@ public class LeadFragment extends Fragment implements RecyclerViewAdapter.DataAd
 
                             }
                             Log.e("111111111",""+response);
-                            JSON_PARSE_DATA_AFTER_WEBCALL(response);
+
+                            JSONArray jarray = jsonObject.optJSONArray("result");
+                            if(jarray!=null)
+                            {
+                                JSON_PARSE_DATA_AFTER_WEBCALL(response);
+
+                            }
+
+                           // mAdapter = new MoviesAdapter(movieList);
+                            recyclerViewadapter = new RecyclerViewAdapter(GetDataAdapter1, getActivity().getApplication(), 0);
+
+                            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+                            recyclerView.setLayoutManager(mLayoutManager);
+                            recyclerView.setItemAnimator(new DefaultItemAnimator());
+                            recyclerView.setAdapter(recyclerViewadapter);
+/*
                             int a = 0;
                             recyclerViewadapter = new RecyclerViewAdapter(GetDataAdapter1, getActivity().getApplication(), a);
                             recyclerView.swapAdapter(recyclerViewadapter, true);
                             recyclerView.removeAllViewsInLayout();
-                            recyclerViewadapter.notifyDataSetChanged();
+                            recyclerViewadapter.notifyDataSetChanged();*/
 
 
 
@@ -896,53 +952,7 @@ public class LeadFragment extends Fragment implements RecyclerViewAdapter.DataAd
             int a = 0;
             recyclerView.swapAdapter(recyclerViewadapter, true);
             recyclerView.removeAllViewsInLayout();
-        }
-        else {
-            Toast.makeText(getActivity(), "inside else", Toast.LENGTH_SHORT).show();
 
-            String url = ApiClient.BASE_URL+ "sortdetails";
-            Map<String, Object> jsonParams = new ArrayMap<>();
-
-            jsonParams.put("user_id", userId);
-            jsonParams.put("sts", sortsave);
-
-
-            @SuppressLint({"NewApi", "LocalSuppress"}) final ProgressDialog loading = ProgressDialog.show(getContext(), "Please wait...", "Fetching data...", false, false);
-
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(jsonParams),
-                    new Response.Listener<JSONObject>() {
-
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            loading.dismiss();
-                            JSON_PARSE_DATA_AFTER_WEBCALL(response);
-
-                            int a = 0;
-                            recyclerViewadapter = new RecyclerViewAdapter(GetDataAdapter1, getActivity().getApplication(), a);
-                            recyclerView.swapAdapter(recyclerViewadapter, true);
-                            recyclerView.removeAllViewsInLayout();
-                            recyclerViewadapter.notifyDataSetChanged();
-                        }
-                    }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.v("Error", "" + error.toString());
-                }
-            }) {
-
-                @Override
-                public Map<String, String> getHeaders() throws AuthFailureError {
-                    HashMap<String, String> headers = new HashMap<String, String>();
-                    headers.put("Authorization", Token);
-                    return headers;
-                }
-            };
-            recyclerView.getRecycledViewPool().clear();
-            requestQueue1.add(jsonObjectRequest);
-            int a = 0;
-            recyclerView.swapAdapter(recyclerViewadapter, true);
-            recyclerView.removeAllViewsInLayout();
-        }
 
 
 

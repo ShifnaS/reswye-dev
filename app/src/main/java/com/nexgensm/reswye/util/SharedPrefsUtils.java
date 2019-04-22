@@ -92,6 +92,35 @@ import com.nexgensm.reswye.app.Constants;
         int id= sharedPreferences.getInt(Constants.KEY_AGENT_ID, 0);
         return  id;
     }
+
+    public boolean setData(String key,String value) {
+        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(Constants.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(key,value);
+        editor.apply();
+        return true;
+    }
+    public String getData(String key) {
+        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(Constants.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        String value= sharedPreferences.getString(key,"");
+        return  value;
+    }
+
+    public boolean setIntData(String key,int value) {
+        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(Constants.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(key,value);
+        editor.apply();
+        return true;
+    }
+    public int getIntData(String key) {
+        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(Constants.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        int value= sharedPreferences.getInt(key,0);
+        return  value;
+    }
+
+
+
     public boolean logout() {
         SharedPreferences sharedPreferences = mCtx.getSharedPreferences(Constants.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();

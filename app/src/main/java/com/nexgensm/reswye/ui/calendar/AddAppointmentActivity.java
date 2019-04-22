@@ -313,6 +313,8 @@ public class AddAppointmentActivity extends AppCompatActivity {
                 url = ApiClient.BASE_URL+"followupmeeting";
 
                 Map<String, Object> jsonParams = new ArrayMap<>();
+                jsonParams.put("agent_id",userId);
+
                 jsonParams.put("lead_id",lead);
                 jsonParams.put("location", add_app_locationTxtValue);
                 jsonParams.put("purpose", add_app_purposeTxtValue);

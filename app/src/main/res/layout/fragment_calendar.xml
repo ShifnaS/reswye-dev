@@ -48,69 +48,7 @@
 
             />
     </LinearLayout>
-    <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:id="@+id/buttonlayout"-->
-        <!--android:layout_below="@id/toolbarlayout"-->
-        <!--android:orientation="horizontal"-->
-        <!--android:weightSum="1"-->
 
-
-        <!--&gt;-->
-
-        <!--<Button-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="30dp"-->
-            <!--android:id="@+id/weekly"-->
-            <!--style="@style/AddNewButtonStyle"-->
-            <!--android:text="Weekly"-->
-            <!--android:layout_marginTop="10dp"-->
-            <!--android:layout_marginLeft="30dp"-->
-            <!--android:layout_marginStart="30dp"-->
-            <!--android:textAllCaps="false"-->
-            <!--android:layout_weight=".5"-->
-            <!--android:layout_marginRight="20dp"-->
-            <!--android:layout_marginEnd="20dp"-->
-
-
-            <!--/>-->
-
-
-
-        <!--<Button-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="30dp"-->
-            <!--android:id="@+id/monthly"-->
-            <!--style="@style/AddNewButtonStyle"-->
-            <!--android:text="Monthly"-->
-            <!--android:layout_marginEnd="30dp"-->
-            <!--android:textAllCaps="false"-->
-            <!--android:layout_weight=".5"-->
-            <!--android:layout_marginTop="10dp"-->
-            <!--android:layout_marginLeft="20dp"-->
-            <!--android:layout_marginStart="20dp"-->
-            <!--/>-->
-
-
-
-
-
-    <!--</LinearLayout>-->
-
-
-
-      <!--  <pyxis.uzuki.live.sectioncalendarview.SectionCalendarView
-            android:layout_width="match_parent"
-            android:layout_height="340dp"
-            android:layout_marginTop="10dp"
-            android:id="@+id/calendarView" />-->
-        <!--<ImageView-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:id="@+id/cal"-->
-            <!--android:layout_below="@id/buttonlayout"-->
-            <!--/>-->
     <com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -126,6 +64,9 @@
         app:expandIconColor="@android:color/white"
         android:layout_below="@id/toolbarlayout"
         >
+
+
+
 
 
     </com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar>
